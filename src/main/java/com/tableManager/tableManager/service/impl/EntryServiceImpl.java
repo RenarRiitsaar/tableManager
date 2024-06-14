@@ -36,15 +36,14 @@ public class EntryServiceImpl implements EntryService {
     public Entry addEntry(Long userId, Entry entry) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
-        entry.setId(entry.getId());
-        entry.setArticleNum(entry.getArticleNum());
-        entry.setArticleName(entry.getArticleName());
-        entry.setPriceBeforeTax(entry.getPriceBeforeTax());
-        entry.setPriceAfterTax(entry.getPriceAfterTax() / 100 *22 + entry.getPriceBeforeTax());
-        entry.setInventoryAmount(entry.getInventoryAmount());
-        entry.setUserId(user.getId());
-      return entryRepository.save(entry);
+        Entry newEntry = new Entry();
+        newEntry.setArticleNum(entry.getArticleNum());
+        newEntry.setArticleName(entry.getArticleName());
+        newEntry.setPriceBeforeTax(entry.getPriceBeforeTax());
+        newEntry.setPriceAfterTax((entry.getPriceBeforeTax() / 100 *22) + entry.getPriceBeforeTax());
+        newEntry.setInventoryAmount(entry.getInventoryAmount());
+        newEntry.setUserId(user.getId());
+      return entryRepository.save(newEntry);
     }
 
     @Override

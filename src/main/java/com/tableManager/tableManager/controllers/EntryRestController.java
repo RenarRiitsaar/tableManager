@@ -24,7 +24,6 @@ public class EntryRestController {
 
 
     @GetMapping("/entries")
-    //@PreAuthorize("#userId == @userServiceImpl.getCurrentUserId()")
     public ResponseEntity<List<Entry>> getEntries() {
         Long currentUserId =userService.getCurrentUserId();
         if(currentUserId != null) {
@@ -36,7 +35,6 @@ public class EntryRestController {
     }
 
     @PostMapping("/addEntry")
-    //@PreAuthorize("#userId == @userServiceImpl.getCurrentUserId()")
     public ResponseEntity<Entry> addEntry( @RequestBody Entry entry) {
         Long currentUserId = userService.getCurrentUserId();
 
@@ -49,7 +47,6 @@ public class EntryRestController {
         }
 
     @DeleteMapping("/deleteEntry/{entryId}")
-    //@PreAuthorize("#userId == @userServiceImpl.getCurrentUserId()")
     public ResponseEntity<Entry> deleteEntry(@PathVariable Long entryId) {
         Long currentUserId = userService.getCurrentUserId();
 
@@ -62,7 +59,6 @@ public class EntryRestController {
     }
 
     @PutMapping("/updateEntry/{entryId}")
-    //PreAuthorize("#userId == @userServiceImpl.getCurrentUserId()")
     public ResponseEntity<Entry> updateEntry( @PathVariable Long entryId, @RequestBody Entry entry) {
         Long currentUserId = userService.getCurrentUserId();
 

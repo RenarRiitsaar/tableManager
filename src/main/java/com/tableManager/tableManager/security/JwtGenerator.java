@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtGenerator {
-    public long JWT_EXPIRATION = 70000;
+    public long JWT_EXPIRATION = 1800000;
     private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     public String generateToken(Authentication authentication) {
