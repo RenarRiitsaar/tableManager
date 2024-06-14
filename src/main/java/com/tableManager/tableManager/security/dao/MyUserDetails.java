@@ -1,6 +1,6 @@
-package com.tableManager.tableManager.dao;
+package com.tableManager.tableManager.security.dao;
 
-/*
+
 import com.tableManager.tableManager.model.Role;
 import com.tableManager.tableManager.model.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,7 +57,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled();
+        return true;
     }
 }
-*/

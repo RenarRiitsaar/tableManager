@@ -1,6 +1,5 @@
-package com.tableManager.tableManager.dao;
+package com.tableManager.tableManager.security.dao;
 
-/*
 import com.tableManager.tableManager.model.User;
 import com.tableManager.tableManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,4 +26,3 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     }
 }
-*/
