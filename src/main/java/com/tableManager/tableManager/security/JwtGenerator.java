@@ -44,7 +44,7 @@ public class JwtGenerator {
             Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect",
                     ex.fillInStackTrace());
         }
     }

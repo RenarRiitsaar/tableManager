@@ -19,4 +19,6 @@ public interface UserService {
     boolean usernameExists(String username);
 
     public Long getCurrentUserId();
+
+    String findByRoleId(Set<Role> roles);
 }

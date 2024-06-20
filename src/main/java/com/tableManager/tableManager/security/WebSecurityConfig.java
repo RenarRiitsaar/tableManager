@@ -80,17 +80,5 @@ public class WebSecurityConfig {
        http.csrf(AbstractHttpConfigurer::disable);
        return http.build();
     }
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/auth/**").permitAll()
-//                        .requestMatchers("/api/entry/**").hasAnyAuthority("USER")
-//                        .requestMatchers("/**").hasAnyAuthority("ADMIN")
-//                        .anyRequest().authenticated())
-//                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        http.exceptionHandling((exceptions) -> exceptions.authenticationEntryPoint(authEntryPoint));
-//
-//        return http.build();
-//    }
     }
 

@@ -3,6 +3,7 @@ package com.tableManager.tableManager.controllers;
 import com.tableManager.tableManager.dto.AuthResponseDTO;
 import com.tableManager.tableManager.dto.LoginDTO;
 import com.tableManager.tableManager.dto.RegisterDTO;
+import com.tableManager.tableManager.model.Role;
 import com.tableManager.tableManager.model.User;
 import com.tableManager.tableManager.security.JwtGenerator;
 import com.tableManager.tableManager.service.UserService;
@@ -14,14 +15,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -33,16 +32,16 @@ public class AuthController {
 
 
 @PostMapping("/signup")
-public ResponseEntity<String> signUp(@RequestBody RegisterDTO registerDTO) {
-        if(userService.userEmailExists(registerDTO.getEmail()) || userService.usernameExists(registerDTO.getUsername())){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email/Username already exists");
-        }
-       User user =  userService.signUp(registerDTO);
+public ResponseEntity<User> signUp(@RequestBody RegisterDTO registerDTO) {
 
-        if(user == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        if(userService.userEmailExists(registerDTO.getEmail()) ||
+                userService.usernameExists(registerDTO.getUsername())){
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("User Registered Successfully", HttpStatus.OK);
+
+         User user =  userService.signUp(registerDTO);
+        return new ResponseEntity<>(user,HttpStatus.OK);
 
     }
 
@@ -51,8 +50,12 @@ public ResponseEntity<String> signUp(@RequestBody RegisterDTO registerDTO) {
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-             String token = jwtGenerator.generateToken(authentication);
-             return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String token = jwtGenerator.generateToken(authentication);
+                User user = userService.findByUsername(loginDTO.getUsername());
+                String roleName = userService.findByRoleId(user.getRoles());
+                return new ResponseEntity<>(new AuthResponseDTO(token, roleName, user.getId(),
+                        user.getUsername(), user.getEmail()), HttpStatus.OK);
+
     }
 }

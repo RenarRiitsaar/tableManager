@@ -5,13 +5,11 @@ import com.tableManager.tableManager.dto.RegisterDTO;
 import com.tableManager.tableManager.model.User;
 import com.tableManager.tableManager.repository.RoleRepository;
 import com.tableManager.tableManager.repository.UserRepository;
-import com.tableManager.tableManager.security.WebSecurityConfig;
 import com.tableManager.tableManager.security.dao.MyUserDetails;
 import com.tableManager.tableManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +39,10 @@ public class UserServiceImpl implements UserService {
     public Boolean userEmailExists(String email) {
         User user = userRepository.findByEmail(email);
 
-        if(user == null){
-            return false;
+        if(user != null){
+            return true;
         }else{
-            throw new RuntimeException("User with email " + email + " already exists");
+            return false;
         }
     }
 
@@ -73,10 +71,10 @@ public class UserServiceImpl implements UserService {
     public boolean usernameExists(String username) {
         User user = userRepository.findByUsername(username);
 
-        if(user == null){
-            return false;
+        if(user != null){
+            return true;
         }else{
-            throw new RuntimeException("User with name " + username + " already exists");
+            return false;
         }
     }
 
@@ -90,6 +88,16 @@ public class UserServiceImpl implements UserService {
             return user.getId();
         }
         return null;
+    }
+
+    @Override
+    public String findByRoleId(Set<Role> roles) {
+
+     String userRoleName = "";
+     for(Role role: roles){
+         userRoleName = role.getName();
+     }
+     return userRoleName;
     }
 }
 

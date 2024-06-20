@@ -1,0 +1,28 @@
+.navbar {
+    display:flex;
+    align-items: center;
+    padding:0 16px;
+    color:rgb(65, 57, 57)
+}
+
+.navbar-brand{
+    font-size: 20px;
+    font-weight: 600;
+    margin-right:16px;
+}
+
+.spacer{
+    flex:1;
+}
+
+button{
+    color: rgb(89, 129, 165);
+    text-transform: uppercase;
+    margin-left: 8px;
+}
+button.active{
+    font-weight: 600;
+}
+.custom-toolbar{
+    background-color: rgb(31, 14, 14);
+}
