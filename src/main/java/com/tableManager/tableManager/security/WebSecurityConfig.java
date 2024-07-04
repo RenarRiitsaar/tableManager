@@ -8,6 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     public static final String ADMIN = "ADMIN";
@@ -55,27 +58,26 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       http.authorizeHttpRequests((auth) -> auth.requestMatchers("/api/auth/**").permitAll()
-               .requestMatchers(HttpMethod.GET)
-               .permitAll()
-               .requestMatchers(HttpMethod.POST)
-               .permitAll()
-               .requestMatchers(HttpMethod.PUT)
-               .permitAll()
-               .requestMatchers(HttpMethod.DELETE)
-               .permitAll()
-               .requestMatchers("/api/entry/**").hasAnyAuthority(ADMIN,USER)
-               .requestMatchers(HttpMethod.GET)
-               .permitAll()
-               .requestMatchers(HttpMethod.POST)
-               .permitAll()
-               .requestMatchers(HttpMethod.PUT)
-               .permitAll()
-               .requestMatchers(HttpMethod.DELETE)
-               .permitAll()
-               .anyRequest().authenticated());
+        http.authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET).permitAll()
+                .requestMatchers(HttpMethod.POST).permitAll()
 
-       http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
+                .requestMatchers("/**").hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.GET).hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.POST).hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.PUT).hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.DELETE).hasAuthority(ADMIN)
+
+                .requestMatchers("/api/entry/**").hasAnyAuthority(USER, ADMIN)
+                .requestMatchers(HttpMethod.GET).hasAnyAuthority(USER, ADMIN)
+                .requestMatchers(HttpMethod.POST).hasAnyAuthority(USER, ADMIN)
+                .requestMatchers(HttpMethod.PUT).hasAnyAuthority(USER, ADMIN)
+                .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(USER, ADMIN)
+                .anyRequest().authenticated());
+
+
+        http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
        http.csrf(AbstractHttpConfigurer::disable);
        return http.build();

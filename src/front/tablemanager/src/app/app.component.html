@@ -6,12 +6,30 @@
   </head>
 
   <body>
-<div>
+<div *ngIf="!isAdminLoggedIn && !isUserLoggedIn">
   <mat-toolbar color = "primary" class = "navbar">
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/signup" routerLinkActive="active">Register</button>
     <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
+  </mat-toolbar>
+</div>
+
+<div *ngIf="!isAdminLoggedIn && isUserLoggedIn">
+  <mat-toolbar color = "primary" class = "navbar">
+    <span class="navbar-brand">Table manager</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/user/dashboard" routerLinkActive="active">DashBoard</button>
+    <button mat-button (click) = "logout()" routerLinkActive="active">Logout</button>
+  </mat-toolbar>
+</div>
+
+<div *ngIf="isAdminLoggedIn && !isUserLoggedIn">
+  <mat-toolbar color = "primary" class = "navbar">
+    <span class="navbar-brand">Table manager</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</button>
+    <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
   </mat-toolbar>
 </div>
 <router-outlet></router-outlet>

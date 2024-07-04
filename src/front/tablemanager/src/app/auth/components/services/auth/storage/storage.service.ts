@@ -52,6 +52,14 @@ export class StorageService {
       return false;
     }
   }
+  
+  static isUser():boolean{
+    if(this.getUserRole() == "USER"){
+      return true;
+    }else{
+      return false;
+    }
+  }
  
   static logout(): void{
     window.localStorage.removeItem(accessToken);
