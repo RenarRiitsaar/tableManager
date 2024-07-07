@@ -28,14 +28,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
-import { HttpErrorResponse, provideHttpClient} from '@angular/common/http';
+import {provideHttpClient} from '@angular/common/http';
+import { DeleteConfirmComponent } from './public-components/delete-confirm/delete-confirm.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    DeleteConfirmComponent,
+    
   ],
   imports: [
     BrowserModule,

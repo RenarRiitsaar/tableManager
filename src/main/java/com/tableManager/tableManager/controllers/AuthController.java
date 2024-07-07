@@ -3,7 +3,6 @@ package com.tableManager.tableManager.controllers;
 import com.tableManager.tableManager.dto.AuthResponseDTO;
 import com.tableManager.tableManager.dto.LoginDTO;
 import com.tableManager.tableManager.dto.RegisterDTO;
-import com.tableManager.tableManager.model.Role;
 import com.tableManager.tableManager.model.User;
 import com.tableManager.tableManager.security.JwtGenerator;
 import com.tableManager.tableManager.service.UserService;

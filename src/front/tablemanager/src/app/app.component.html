@@ -28,9 +28,16 @@
   <mat-toolbar color = "primary" class = "navbar">
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="adminMenu">Menu</button>
+    <mat-menu #adminMenu="matMenu">
     <button mat-button routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</button>
+    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Manage Users</button>
+    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Test</button>
+    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Test2</button>
+  </mat-menu>
     <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
   </mat-toolbar>
+
 </div>
 <router-outlet></router-outlet>
 </body>

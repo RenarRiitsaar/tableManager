@@ -1,3 +1,4 @@
+import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 
 const accessToken = "token";
@@ -7,6 +8,9 @@ const USER = "user";
   providedIn: 'root'
 })
 export class StorageService {
+  static getToken() {
+    return localStorage.getItem(accessToken);
+  }
 
   constructor() { }
 
