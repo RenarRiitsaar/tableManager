@@ -1,0 +1,73 @@
+/* Container styles */
+.edit-user-container {
+    padding: 20px;
+  }
+  
+  /* Form group styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Label styles */
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Input styles */
+  input.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Input focus styles */
+  input.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    outline: none;
+  }
+  
+  /* Error message styles */
+  .text-danger {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  /* Dialog title styles */
+  .mat-dialog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Dialog actions styles */
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0 0;
+  }
+  
+  /* Button styles */
+  button.mat-button {
+    margin-left: 10px;
+  }
+  
+  /* Save button styles */
+  button.mat-button:disabled {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+  }
+  
+  /* General styling */
+  .mat-dialog-content {
+    padding: 0 20px;
+  }

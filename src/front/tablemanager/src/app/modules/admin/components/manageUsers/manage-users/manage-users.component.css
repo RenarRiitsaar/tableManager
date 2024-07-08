@@ -65,6 +65,10 @@ body {
   margin-right: 5px;
   color: #3474ac;
 }
+.table-link-check {
+  margin-right: 5px;
+  color: #08eb26;
+}
 
 .table-link-danger {
 	margin-right: 5px;

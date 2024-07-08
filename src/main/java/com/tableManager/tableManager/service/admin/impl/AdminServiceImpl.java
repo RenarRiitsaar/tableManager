@@ -26,4 +26,27 @@ public class AdminServiceImpl implements AdminService {
         roleRepository.deleteUserRolesByUserId(id);
         userRepository.deleteById(id);
     }
+
+    @Override
+    public boolean setActive(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(!user.isEnabled()){
+            user.setEnabled(true);
+            userRepository.save(user);
+            return true;
+
+        }else{
+            user.setEnabled(false);
+            userRepository.save(user);
+            return false;
+        }
+    }
+
+    @Override
+    public User findById(Long id) {
+
+        return userRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }

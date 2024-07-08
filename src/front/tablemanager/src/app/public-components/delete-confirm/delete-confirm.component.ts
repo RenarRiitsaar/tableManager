@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-confirm',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './delete-confirm.component.css'
 })
 export class DeleteConfirmComponent {
-
+  constructor(public dialogRef: MatDialogRef<DeleteConfirmComponent>) { }
 }

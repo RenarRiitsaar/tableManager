@@ -10,11 +10,33 @@ const BASIC_URL = "http://localhost:8080"
   providedIn: 'root'
 })
 export class AdminService {
+
+
   
 users: User[] = [];
 
   constructor(private http: HttpClient) { }
 
+
+  updateUser(userId: number, value: any): Observable<any> {
+    return this.http.put(BASIC_URL + "/api/admin/users/" + userId, value,
+      {headers: this.authHeader()}).pipe(
+        catchError((error) => {
+          console.error("Error updating user: " + error)
+          throw error;
+        })
+      );
+  }
+
+  toggleUserActive(id: number): Observable<any>{
+    return this.http.put(BASIC_URL + "/api/admin/users/toggleUser/" + id,{},
+    {headers:this.authHeader()}).pipe(
+      catchError((error) => {
+        console.error("Error setting user active/inactive" + error);
+        throw error;
+      })
+    );
+  }
 
   deleteUser(id:number): Observable<any> {
     return this.http.delete(BASIC_URL + "/api/admin/users/delete/" + id,
@@ -36,6 +58,17 @@ users: User[] = [];
         throw error;
       })
     );
+  }
+
+  getUserById(id: number): Observable<User>{
+    return this.http.get<User>(BASIC_URL + "/api/admin/users/" +id,{
+      headers:this.authHeader()
+      }).pipe(
+        catchError((error) => {
+        console.error("Couldnt get user: " + error);
+      throw error;
+  })
+  );
   }
 
   private authHeader() {

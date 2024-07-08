@@ -9,4 +9,8 @@ public interface AdminService {
     List<User> getAllUsers();
 
     void deleteById(Long id);
+
+    boolean setActive(Long id);
+
+    User findById(Long id);
 }

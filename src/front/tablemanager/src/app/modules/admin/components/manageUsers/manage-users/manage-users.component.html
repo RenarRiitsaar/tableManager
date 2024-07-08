@@ -37,14 +37,21 @@
                     </span>
                   </td>
                   <td style="width: 20%;">
-                    <a href="#" class="table-link">
+                    <a class="table-link" (click)="openEditUserDialog(user.id)" >
                       <span class="fa-stack">
                         <i class="fa fa-square fa-stack-2x"></i>
                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                       </span>
                     </a>
                     
-                    <a href="#" class="table-link">
+                    <a class="table-link-check" (click)="toggleUserActivity(user.id)" *ngIf = "!user.enabled">
+                        <span class="fa-stack">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-check fa-stack-1x fa-inverse "></i>
+                          </span>
+                        </a>
+                        <a class="table-link-danger" (click)="toggleUserActivity(user.id)" *ngIf = "user.enabled">
+                         
                         <span class="fa-stack">
                           <i class="fa fa-square fa-stack-2x"></i>
                           <i class="fa fa-times fa-stack-1x fa-inverse "></i>

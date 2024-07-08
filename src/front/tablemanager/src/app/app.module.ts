@@ -30,6 +30,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import {provideHttpClient} from '@angular/common/http';
 import { DeleteConfirmComponent } from './public-components/delete-confirm/delete-confirm.component';
+import { EditUserDialogComponent } from './modules/admin/components/edit-user-dialog/edit-user-dialog.component';
+
 
 
 @NgModule({
@@ -38,6 +40,7 @@ import { DeleteConfirmComponent } from './public-components/delete-confirm/delet
     LoginComponent,
     SignupComponent,
     DeleteConfirmComponent,
+    EditUserDialogComponent
     
   ],
   imports: [

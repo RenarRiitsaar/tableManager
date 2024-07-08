@@ -63,10 +63,10 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST).permitAll()
 
                 .requestMatchers("/**").permitAll()
-                .requestMatchers(HttpMethod.GET).hasAuthority(ADMIN)
-                .requestMatchers(HttpMethod.POST).hasAuthority(ADMIN)
-                .requestMatchers(HttpMethod.PUT).hasAuthority(ADMIN)
-                .requestMatchers(HttpMethod.DELETE).hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.GET).permitAll()
+                .requestMatchers(HttpMethod.POST).permitAll()
+                .requestMatchers(HttpMethod.PUT).permitAll()
+                .requestMatchers(HttpMethod.DELETE).permitAll()
 
                 .requestMatchers("/api/entry/**").hasAnyAuthority(USER, ADMIN)
                 .requestMatchers(HttpMethod.GET).hasAnyAuthority(USER, ADMIN)
