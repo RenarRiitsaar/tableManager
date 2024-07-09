@@ -13,7 +13,7 @@ body {
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  height: 50vh; /* Full viewport height */
+  height: 40vh; /* Full viewport height */
 }
 
 .table {
@@ -27,7 +27,7 @@ body {
 
 .table th,
 .table td {
-  padding: 8px;
+  padding: 20px;
   text-align: left;
   border-bottom: 1px solid #ddd; /* Example border bottom */
 }
@@ -50,11 +50,12 @@ body {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  border-radius: 3px;
+  border-radius: 14px;
 }
 
 .label-inactive {
   background-color: #fd2929;
+  
 }
 
 .label-success {
@@ -74,3 +75,8 @@ body {
 	margin-right: 5px;
 	color: #ff2f20; 
   }
+
+  .table-link-deactivate {
+    margin-right: 5px;
+    color: #ffd901; 
+    }

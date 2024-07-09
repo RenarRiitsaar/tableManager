@@ -1,11 +1,10 @@
-import { StorageService } from './../services/auth/storage/storage.service';
-import { AuthService } from './../services/auth/auth.service';
+import { StorageService } from '../../services/storage/storage.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HttpClient} from '@angular/common/http';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, of, Subscription, tap, timer } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +12,15 @@ import { catchError, of, tap } from 'rxjs';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
 loginForm!: FormGroup;
 hidePassword = true;
+  static startLogoutTimer: any;
 
 constructor(private fb: FormBuilder,
   private authService:AuthService,
   private snackbar: MatSnackBar,
-  private router:Router,
-  private error:HttpClient){
+  private router:Router){
 
   this.loginForm = this.fb.group({
     username:[null,[Validators.required]],
@@ -43,6 +43,8 @@ onSubmit() {
         };
         StorageService.saveUser(user);
         StorageService.saveAccessToken(res.accessToken);
+        this.authService.startLogoutTimer();
+        
         if (StorageService.isAdmin()) {
           this.router.navigateByUrl('/admin/dashboard');
         } else {
@@ -59,4 +61,5 @@ onSubmit() {
     })
   ).subscribe();
 }
+
 }

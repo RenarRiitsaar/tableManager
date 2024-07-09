@@ -10,8 +10,8 @@
   <mat-toolbar color = "primary" class = "navbar">
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
-    <button mat-button routerLink="/signup" routerLinkActive="active">Register</button>
-    <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
+    <button mat-button routerLink="/signup" routerLinkActive="active"  class="mat-button">Register</button>
+    <button mat-button routerLink="/login" routerLinkActive="active"  class="mat-button">Login</button>
   </mat-toolbar>
 </div>
 
@@ -19,8 +19,8 @@
   <mat-toolbar color = "primary" class = "navbar">
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
-    <button mat-button routerLink="/user/dashboard" routerLinkActive="active">DashBoard</button>
-    <button mat-button (click) = "logout()" routerLinkActive="active">Logout</button>
+    <button mat-button routerLink="/user/dashboard" routerLinkActive="active" class="mat-button">DashBoard</button>
+    <button mat-button (click) = "logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>
 </div>
 
@@ -28,14 +28,14 @@
   <mat-toolbar color = "primary" class = "navbar">
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
-    <button mat-button [matMenuTriggerFor]="adminMenu">Menu</button>
+    <button mat-button routerLink="/admin/dashboard" routerLinkActive="active" class="mat-button">Dashboard</button>
+    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active" class="mat-button">Manage Users</button>
+    <button mat-button [matMenuTriggerFor]="adminMenu" class="mat-button">Menu</button>
     <mat-menu #adminMenu="matMenu">
-    <button mat-button routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</button>
+    <button mat-button routerLink="/admin/dashboard" routerLinkActive="active" c>Dashboard</button>
     <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Manage Users</button>
-    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Test</button>
-    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Test2</button>
   </mat-menu>
-    <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
+    <button mat-button (click)="logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>
 
 </div>

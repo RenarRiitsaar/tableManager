@@ -4,7 +4,7 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { SignupComponent } from './auth/components/signup/signup.component';
 import { ADashboardComponent } from './modules/admin/components/a-dashboard/a-dashboard.component';
 import { UDashboardComponent } from './modules/user/components/u-dashboard/u-dashboard.component';
-import { ManageUsersComponent } from './modules/admin/components/manageUsers/manage-users/manage-users.component';
+import { ManageUsersComponent } from './modules/admin/components/manage-users/manage-users.component';
 const routes: Routes = [
   {path: "login", component : LoginComponent},
   {path: "admin/dashboard", component: ADashboardComponent},

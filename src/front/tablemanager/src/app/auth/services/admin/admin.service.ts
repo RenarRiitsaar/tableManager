@@ -1,8 +1,9 @@
+import { User } from './../../../modules/user/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { catchError, Observable } from 'rxjs';
-import { User } from '../../../../../modules/user/User';
+
 
 const BASIC_URL = "http://localhost:8080"
 

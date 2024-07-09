@@ -1,14 +1,12 @@
-
+import { EditUserDialogComponent } from './../edit-user-dialog/edit-user-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
-import { AdminService } from '../../../../../auth/components/services/auth/admin/admin.service';
-import { User } from '../../../../user/User';
-import { HttpClient } from '@angular/common/http';
+import { AdminService } from '../../../../auth/services/admin/admin.service';
+import { User } from '../../../user/User';
 import { catchError, of, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmComponent } from '../../../../../public-components/delete-confirm/delete-confirm.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EditUserDialogComponent } from '../../edit-user-dialog/edit-user-dialog.component';
+import { DeleteConfirmComponent } from '../../../../public-components/delete-confirm/delete-confirm.component';
+
 
 const BASIC_URL = "http://localhost:8080";
 
@@ -21,12 +19,10 @@ const BASIC_URL = "http://localhost:8080";
 
 export class ManageUsersComponent implements OnInit {
   
-  editUserForm!: FormGroup;
   users: User[] = [];
 
   
   constructor(private adminService : AdminService,
-              private http: HttpClient,
               private snackbar: MatSnackBar,
               private dialog: MatDialog
               ){ }

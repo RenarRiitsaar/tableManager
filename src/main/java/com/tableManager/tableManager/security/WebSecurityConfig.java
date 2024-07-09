@@ -58,21 +58,14 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET).permitAll()
-                .requestMatchers(HttpMethod.POST).permitAll()
 
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .requestMatchers(HttpMethod.POST).permitAll()
                 .requestMatchers(HttpMethod.PUT).permitAll()
                 .requestMatchers(HttpMethod.DELETE).permitAll()
-
                 .requestMatchers("/api/entry/**").hasAnyAuthority(USER, ADMIN)
-                .requestMatchers(HttpMethod.GET).hasAnyAuthority(USER, ADMIN)
-                .requestMatchers(HttpMethod.POST).hasAnyAuthority(USER, ADMIN)
-                .requestMatchers(HttpMethod.PUT).hasAnyAuthority(USER, ADMIN)
-                .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(USER, ADMIN)
+                .requestMatchers("/**").hasAuthority(ADMIN)
                 .anyRequest().authenticated());
 
 

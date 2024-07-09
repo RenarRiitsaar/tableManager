@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AdminService } from '../../../../auth/components/services/auth/admin/admin.service';
+import { AdminService } from '../../../../auth/services/admin/admin.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../../user/User';
 import { catchError, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ManageUsersComponent } from '../manageUsers/manage-users/manage-users.component';
+import { ManageUsersComponent } from '../manage-users/manage-users.component';
 
 @Component({
   selector: 'app-edit-user-dialog',

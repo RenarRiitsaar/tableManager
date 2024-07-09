@@ -1,5 +1,5 @@
-import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+
 
 const accessToken = "token";
 const USER = "user";
@@ -8,6 +8,7 @@ const USER = "user";
   providedIn: 'root'
 })
 export class StorageService {
+  
   static getToken() {
     return localStorage.getItem(accessToken);
   }
@@ -68,5 +69,6 @@ export class StorageService {
   static logout(): void{
     window.localStorage.removeItem(accessToken);
     window.localStorage.removeItem(USER);
+    
   }
 }
