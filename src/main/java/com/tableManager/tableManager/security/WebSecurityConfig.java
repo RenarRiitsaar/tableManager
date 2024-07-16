@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST).permitAll()
                 .requestMatchers(HttpMethod.PUT).permitAll()
                 .requestMatchers(HttpMethod.DELETE).permitAll()
+                .requestMatchers("/api/tickets/{userId}/newTicket").hasAnyAuthority(USER, ADMIN)
                 .requestMatchers("/api/entry/**").hasAnyAuthority(USER, ADMIN)
                 .requestMatchers("/**").hasAuthority(ADMIN)
                 .anyRequest().authenticated());

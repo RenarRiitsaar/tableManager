@@ -1,7 +1,9 @@
 package com.tableManager.tableManager.controllers.admin;
 
 import com.tableManager.tableManager.dto.UserDTO;
+import com.tableManager.tableManager.model.Ticket;
 import com.tableManager.tableManager.model.User;
+import com.tableManager.tableManager.repository.TicketRepository;
 import com.tableManager.tableManager.repository.UserRepository;
 import com.tableManager.tableManager.service.UserService;
 import com.tableManager.tableManager.service.admin.AdminService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,7 +61,6 @@ public class AdminController {
         usr.setFirstName(user.getFirstName());
         usr.setLastName(user.getLastName());
         if(userService.userEmailExists(user.getEmail()) && !Objects.equals(user.getEmail(), usr.getEmail())){
-            System.out.println("UserID: " + user.getId() + ", USR ID: " + usr.getId());
             return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
         }else {
             usr.setEmail(user.getEmail());
