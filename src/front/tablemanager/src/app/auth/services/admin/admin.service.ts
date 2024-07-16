@@ -2,7 +2,8 @@ import { User } from './../../../modules/user/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
-import { catchError, Observable } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
+import { MatSnackBar, matSnackBarAnimations } from '@angular/material/snack-bar';
 
 
 const BASIC_URL = "http://localhost:8080"
@@ -16,14 +17,17 @@ export class AdminService {
   
 users: User[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private snackbar: MatSnackBar
+  ) { }
 
 
   updateUser(userId: number, value: any): Observable<any> {
     return this.http.put(BASIC_URL + "/api/admin/users/" + userId, value,
       {headers: this.authHeader()}).pipe(
         catchError((error) => {
-          console.error("Error updating user: " + error)
+          
+          console.error("Error updating user: " + error.message)
           throw error;
         })
       );

@@ -6,6 +6,7 @@ import { User } from '../../../user/User';
 import { catchError, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ManageUsersComponent } from '../manage-users/manage-users.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -59,8 +60,10 @@ export class EditUserDialogComponent implements OnInit{
           this.dialogRef.close(true);
         }),
         catchError((error) =>{
-          this.snackbar.open('Error updating user', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
-          return of(null);
+        if(error.status === 409){
+          this.snackbar.open('Email already exists', 'Close', {duration: 5000})
+        }
+          throw error;
         })
       ).subscribe();
     }

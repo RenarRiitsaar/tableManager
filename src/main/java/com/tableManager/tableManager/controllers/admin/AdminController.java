@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class AdminController {
     private final AdminService adminService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
     public ResponseEntity<?> getUsers(){
@@ -49,11 +53,18 @@ public class AdminController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO user){
+
         User usr = adminService.findById(id);
         usr.setFirstName(user.getFirstName());
         usr.setLastName(user.getLastName());
-        usr.setEmail(user.getEmail());
-        usr.setPassword(user.getPassword());
+        if(userService.userEmailExists(user.getEmail()) && !Objects.equals(user.getEmail(), usr.getEmail())){
+            System.out.println("UserID: " + user.getId() + ", USR ID: " + usr.getId());
+            return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+        }else {
+            usr.setEmail(user.getEmail());
+        }
+
+        usr.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(usr);
 
         return new ResponseEntity<>(HttpStatus.OK);

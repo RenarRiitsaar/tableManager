@@ -5,6 +5,7 @@ import com.tableManager.tableManager.model.Role;
 import com.tableManager.tableManager.dto.RegisterDTO;
 import com.tableManager.tableManager.model.User;
 
+import javax.sql.RowSet;
 import java.util.Set;
 
 public interface UserService {
@@ -21,4 +22,6 @@ public interface UserService {
     public Long getCurrentUserId();
 
     String findByRoleId(Set<Role> roles);
+
+    User findByUserId(Long id);
 }
