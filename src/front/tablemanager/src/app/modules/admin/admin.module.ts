@@ -8,14 +8,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCard, MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
+import { TicketsComponent } from './components/tickets/tickets.component';
+import { TicketModalComponent } from './components/ticket-modal/ticket-modal.component';
+import { MatDialogTitle } from '@angular/material/dialog';
 
 
 
 @NgModule({
   declarations: [
     ADashboardComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    TicketsComponent,
+    TicketModalComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatMenuModule
+    MatDialogTitle
 
   ]
 })

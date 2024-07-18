@@ -5,7 +5,9 @@ import { SignupComponent } from './auth/components/signup/signup.component';
 import { ADashboardComponent } from './modules/admin/components/a-dashboard/a-dashboard.component';
 import { UDashboardComponent } from './modules/user/components/u-dashboard/u-dashboard.component';
 import { ManageUsersComponent } from './modules/admin/components/manage-users/manage-users.component';
+import { TicketsComponent } from './modules/admin/components/tickets/tickets.component';
 const routes: Routes = [
+  {path: "admin/tickets", component : TicketsComponent},
   {path: "login", component : LoginComponent},
   {path: "admin/dashboard", component: ADashboardComponent},
   {path: "admin/manageUsers", component: ManageUsersComponent},

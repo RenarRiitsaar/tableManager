@@ -19,6 +19,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticket_id")
     private Long id;
+    @Column(columnDefinition = "TEXT")
     private String message;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

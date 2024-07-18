@@ -29,10 +29,9 @@
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/admin/dashboard" routerLinkActive="active" class="mat-button">Dashboard</button>
-    <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active" class="mat-button">Manage Users</button>
     <button mat-button [matMenuTriggerFor]="adminMenu" class="mat-button">Menu</button>
     <mat-menu #adminMenu="matMenu">
-    <button mat-button routerLink="/admin/dashboard" routerLinkActive="active" c>Dashboard</button>
+    <button mat-button routerLink="/admin/tickets" routerLinkActive="active">User tickets</button>
     <button mat-button routerLink="/admin/manageUsers" routerLinkActive="active">Manage Users</button>
   </mat-menu>
     <button mat-button (click)="logout()" routerLinkActive="active" class="mat-button">Logout</button>

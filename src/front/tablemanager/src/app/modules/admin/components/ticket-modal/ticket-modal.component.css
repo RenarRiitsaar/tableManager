@@ -1,0 +1,50 @@
+.mat-dialog-container {
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: auto;
+  }
+  
+  .mat-dialog-title {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #3f51b5;
+  }
+  
+  .mat-dialog-content {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    color: #333;
+    white-space: pre-wrap; /* Preserve whitespace and wrap text */
+    word-break: break-word; /* Break long words */
+  }
+  
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  button {
+    background-color: #3b3b9b;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #7886e6;
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.5);
+  }
+  button.actions-button {
+    color: #faf5f7;
+  }
