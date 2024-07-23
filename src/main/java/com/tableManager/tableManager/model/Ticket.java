@@ -19,6 +19,8 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticket_id")
     private Long id;
+    private boolean status = true;
+    private String answer;
     @Column(columnDefinition = "TEXT")
     private String message;
     @ManyToOne(fetch = FetchType.EAGER)

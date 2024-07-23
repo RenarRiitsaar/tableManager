@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Tickets } from './Tickets';
-import { User } from '../../../user/User';
+import { Tickets } from '../../../../model/Tickets';
+import { User } from '../../../../model/User';
 import { TicketsService } from '../../../../auth/services/tickets/tickets.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,6 +26,7 @@ export class TicketsComponent implements OnInit {
     this.refreshTickets();
   }
 
+
   deleteTicket(id : number):void{
     const dialogRef = this.dialog.open(DeleteConfirmComponent);
 
@@ -45,12 +46,27 @@ export class TicketsComponent implements OnInit {
     });
   }
 
+  toggleTicket(id: number): void{
+    this.ticketsService.toggleTicket(id).pipe(
+      tap((res) =>{
+        this.snackbar.open('Ticket activity toggled', 'Close', {duration: 5000});
+        this.refreshTickets();
+      }),
+      catchError((error) => {
+        this.snackbar.open('Error toggling ticket', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  
+
   viewTicket(id: number): void {
 
     this.ticketsService.getTicketById(id).subscribe(ticket => {
       const dialogRef = this.dialog.open(TicketModalComponent, {
       
-        data: { message: ticket.message }
+        data: { message: ticket.message, id: ticket.id }
       });
   
       dialogRef.afterClosed().subscribe(result => {

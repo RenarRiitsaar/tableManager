@@ -1,4 +1,4 @@
-import { User } from './../../../modules/user/User';
+import { User } from '../../../model/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
@@ -17,9 +17,7 @@ export class AdminService {
   
 users: User[] = [];
 
-  constructor(private http: HttpClient,
-              private snackbar: MatSnackBar
-  ) { }
+  constructor(private http: HttpClient) { }
 
 
   updateUser(userId: number, value: any): Observable<any> {
@@ -59,7 +57,7 @@ users: User[] = [];
       headers: this.authHeader()
     }).pipe(
       catchError((error) => {
-        console.error('error deleting user: ' + error);
+        console.error('error getting users: ' + error);
         throw error;
       })
     );

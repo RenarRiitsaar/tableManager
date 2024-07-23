@@ -27,10 +27,10 @@ export class StorageService {
    const user = window.localStorage.getItem(USER);
    return user ? JSON.parse(user): null;
   }
-  static getUserId(): string{
+  static getUserId(): number{
     const user = this.getUser();
     if(user == null){
-      return "";
+      return 0;
     }
     return user.id;
   }

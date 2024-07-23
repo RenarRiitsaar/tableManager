@@ -1,10 +1,16 @@
 <mat-card class = mat-dialog-container>
-<h1 class= mat-dialog-title>Ticket Message</h1>
-<div class= mat-dialog-content>
-  <p class = mat-dialog-content>{{ data.message }}</p>
-</div>
-<div class = mat-dialog-actions>
-  <button mat-button class="actions-button" (click)="onClose()">Answer</button>
-  <button mat-button class="actions-button" (click)="onClose()">Close</button>
-</div>
-</mat-card>
+  <h1 class= mat-dialog-title>Ticket Message</h1>
+  <div class= mat-dialog-content>
+    <p class = mat-dialog-content>{{ data.message }}</p>
+  </div>
+  <div class = mat-dialog-actions>
+   
+      <form>
+        <label for="answer">Answer:</label>
+        <textarea id="answer" [(ngModel)]="data.answer" name="answer" required></textarea>
+      </form>
+      <button mat-button class="actions-button" (click)="answerTicket(data.id)">Submit</button>
+      <button mat-button class="actions-button" (click)="onClose()">Close</button>
+    </div>
+  
+  </mat-card>

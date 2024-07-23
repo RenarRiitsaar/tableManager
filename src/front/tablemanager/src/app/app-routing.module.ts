@@ -1,3 +1,4 @@
+import {UserTicketsComponent} from './modules/user/components/tickets/userTickets.component'
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/components/login/login.component';
@@ -6,7 +7,12 @@ import { ADashboardComponent } from './modules/admin/components/a-dashboard/a-da
 import { UDashboardComponent } from './modules/user/components/u-dashboard/u-dashboard.component';
 import { ManageUsersComponent } from './modules/admin/components/manage-users/manage-users.component';
 import { TicketsComponent } from './modules/admin/components/tickets/tickets.component';
+import { EntriesComponent } from './modules/user/components/entries/entries.component';
 const routes: Routes = [
+  
+  {path: "user/tickets", component : UserTicketsComponent},
+  {path: "user/entry", component : EntriesComponent},
+  {path: "admin/tickets", component : TicketsComponent},
   {path: "admin/tickets", component : TicketsComponent},
   {path: "login", component : LoginComponent},
   {path: "admin/dashboard", component: ADashboardComponent},

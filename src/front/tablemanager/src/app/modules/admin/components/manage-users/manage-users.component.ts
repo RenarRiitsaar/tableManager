@@ -2,7 +2,7 @@ import { EditUserDialogComponent } from './../edit-user-dialog/edit-user-dialog.
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../../auth/services/admin/admin.service';
-import { User } from '../../../user/User';
+import { User } from '../../../../model/User';
 import { catchError, of, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmComponent } from '../../../../public-components/delete-confirm/delete-confirm.component';

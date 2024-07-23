@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -23,10 +26,35 @@ public class TicketController {
         this.userService = userService;
     }
 
+    @PutMapping("/toggleTicket/{id}")
+    public ResponseEntity<TicketDTO> toggleTicket(@PathVariable Long id) {
+        ticketService.setActive(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/answerTicket/{id}")
+    public ResponseEntity<TicketDTO> answerTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
+        ticketService.answerTicket(id, ticketDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> getAllTickets() {
         return ResponseEntity.ok(ticketService.findAll());
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getTicketsByUserId(@PathVariable Long userId) {
+        Long currentUserId = userService.getCurrentUserId();
+
+        if(currentUserId.equals(userId)) {
+
+            return ResponseEntity.ok(ticketService.findByUserId(userId));
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
@@ -49,6 +77,7 @@ public class TicketController {
         Ticket ticket = ticketService.createTicket(ticketDTO, currentUserId);
         return new ResponseEntity<>(ticket, HttpStatus.CREATED);
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO) {
         Long currentUserId = userService.getCurrentUserId();

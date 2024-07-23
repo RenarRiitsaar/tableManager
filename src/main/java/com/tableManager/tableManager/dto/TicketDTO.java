@@ -14,6 +14,8 @@ public class TicketDTO {
     private String message;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    private boolean status;
+    private String answer;
     private User user;
 
 }

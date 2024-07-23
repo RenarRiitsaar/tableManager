@@ -20,6 +20,11 @@
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/user/dashboard" routerLinkActive="active" class="mat-button">DashBoard</button>
+    <button mat-button [matMenuTriggerFor]="adminMenu" class="mat-button">Menu</button>
+    <mat-menu #adminMenu="matMenu">
+    <button mat-button routerLink="/user/entry" routerLinkActive="active">Entries</button>
+    <button mat-button routerLink="/user/tickets" routerLinkActive="active">Tickets</button>
+  </mat-menu>
     <button mat-button (click) = "logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>
 </div>

@@ -16,4 +16,10 @@ public interface TicketService {
     Ticket updateTicket(Long id, TicketDTO ticketDTO, Long userId);
 
     void deleteById(Long id, Long userId);
+
+    void setActive(Long id);
+
+    Ticket answerTicket(Long id, TicketDTO ticketDTO);
+
+    List<Ticket> findByUserId(Long userId);
 }

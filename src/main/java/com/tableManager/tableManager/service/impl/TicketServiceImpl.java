@@ -9,6 +9,7 @@ import com.tableManager.tableManager.service.TicketService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,7 +57,7 @@ public class TicketServiceImpl implements TicketService {
             ticket.setMessage(ticketDTO.getMessage());
             ticketRepository.save(ticket);
             return ticket;
-        }else{
+        } else {
             return null;
         }
     }
@@ -65,8 +66,40 @@ public class TicketServiceImpl implements TicketService {
     public void deleteById(Long id, Long userId) {
         Ticket ticket = findById(id);
 
-        if(Objects.equals(ticket.getUser().getId(), userId) ||userId == 1L) {
+        if (Objects.equals(ticket.getUser().getId(), userId) || userId == 1L) {
             ticketRepository.delete(ticket);
         }
+    }
+
+    @Override
+    public void setActive(Long id) {
+        Ticket ticket = findById(id);
+
+        if (ticket.isStatus()) {
+            ticket.setStatus(false);
+        } else {
+            ticket.setStatus(true);
+        }
+    }
+
+    @Override
+    public Ticket answerTicket(Long id, TicketDTO ticketDTO) {
+        Ticket ticket = findById(id);
+        ticket.setAnswer(ticketDTO.getAnswer());
+        ticketRepository.save(ticket);
+        return ticket;
+    }
+
+    @Override
+    public List<Ticket> findByUserId(Long userId) {
+
+        List<Ticket> tickets = new ArrayList<>();
+
+        for (Ticket ticket : ticketRepository.findAll()) {
+            if (ticket.getUser().getId().equals(userId)) {
+                tickets.add(ticket);
+            }
+        }
+        return tickets;
     }
 }
