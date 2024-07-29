@@ -1,0 +1,15 @@
+<mat-card class = mat-dialog-container>
+    <h1 class= mat-dialog-title>Ticket Message</h1>
+    <div class= mat-dialog-content>
+    <h6 class="bold">Ticket</h6>
+      <p class = mat-dialog-content>{{ data.message }}</p>
+      
+      <h6 class="bold">Answer</h6>
+    <p class = mat-dialog-content>{{ data.answer }}</p>
+    </div>
+    <div class = mat-dialog-actions>
+     
+        <button mat-button class="actions-button" (click)="onClose()">Close</button>
+      </div>
+    
+    </mat-card>

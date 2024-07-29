@@ -20,6 +20,7 @@ public class Ticket {
     @Column(name = "ticket_id")
     private Long id;
     private boolean status = true;
+    @Column(columnDefinition = "TEXT")
     private String answer;
     @Column(columnDefinition = "TEXT")
     private String message;

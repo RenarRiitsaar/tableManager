@@ -20,10 +20,17 @@
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/user/dashboard" routerLinkActive="active" class="mat-button">DashBoard</button>
-    <button mat-button [matMenuTriggerFor]="adminMenu" class="mat-button">Menu</button>
-    <mat-menu #adminMenu="matMenu">
-    <button mat-button routerLink="/user/entry" routerLinkActive="active">Entries</button>
-    <button mat-button routerLink="/user/tickets" routerLinkActive="active">Tickets</button>
+
+    <button mat-button [matMenuTriggerFor]="entries" class="mat-button">Entries</button>
+    <mat-menu #entries="matMenu">
+    <button mat-button routerLink="/user/entry" routerLinkActive="active">View Entries</button>
+    <button mat-button routerLink="/user/entry/add" routerLinkActive="active">Add Entry</button>
+  </mat-menu>
+
+  <button mat-button [matMenuTriggerFor]="ticketMenu" class="mat-button">Tickets</button>
+  <mat-menu #ticketMenu="matMenu">
+    <button mat-button [routerLink]="['/user/tickets']" routerLinkActive="active">View Tickets</button>
+    <button mat-button (click)="addTicket()">Add Ticket</button>
   </mat-menu>
     <button mat-button (click) = "logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>

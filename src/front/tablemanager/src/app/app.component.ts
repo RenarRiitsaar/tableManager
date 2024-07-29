@@ -1,8 +1,9 @@
+import { AddTicketComponent } from './modules/user/components/tickets/add-ticket/add-ticket.component';
 import { Component, HostListener } from '@angular/core';
 import { StorageService } from './auth/services/storage/storage.service';
 import { Router } from '@angular/router';
-import { LoginComponent } from './auth/components/login/login.component';
 import { AuthService } from './auth/services/auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class AppComponent {
   
 
   constructor(private router: Router,
-              private authService: AuthService
+              private authService: AuthService,
+              private dialog:MatDialog
   ) {}
 
   ngOnInit(){
@@ -32,6 +34,18 @@ export class AppComponent {
   @HostListener('window:touchstart')
   resetLogoutTimer(): void {
     this.authService.startLogoutTimer();
+  }
+
+  addTicket(){
+    const dialogRef = this.dialog.open(AddTicketComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Ticket created:', result);
+      }
+    });
   }
 
   logout(){

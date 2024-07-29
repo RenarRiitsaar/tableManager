@@ -66,11 +66,11 @@ export class TicketsComponent implements OnInit {
     this.ticketsService.getTicketById(id).subscribe(ticket => {
       const dialogRef = this.dialog.open(TicketModalComponent, {
       
-        data: { message: ticket.message, id: ticket.id }
+        data: { message: ticket.message, id: ticket.id, answer: ticket.answer, status: ticket.status }
       });
-  
+    
       dialogRef.afterClosed().subscribe(result => {
-        console.log("Closed message modal");
+        this.refreshTickets();
       });
     });
   }

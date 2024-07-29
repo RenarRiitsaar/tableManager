@@ -28,18 +28,33 @@ export class TicketModalComponent{
   onClose(): void {
     this.dialogRef.close();
   }
+
   
+  toggleTicket(id: number): void{
+    this.ticketsService.toggleTicket(id).pipe(
+      tap((res) =>{
+       
+      }),
+      catchError((error) => {
+        this.snackbar.open('Error toggling ticket', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
+        return of(null);
+      })
+    ).subscribe();
+  }
+  
+
   answerTicket(id:number): void{
     this.ticketsService.answerTicket(id, this.data.answer).pipe(
       tap((res) =>{
         this.snackbar.open('Ticket answered', 'Close', {duration: 5000});
-      
+        this.toggleTicket(id);
       }),
       catchError((error) => {
         this.snackbar.open('Error answering ticket', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
         return of(null);
       })
     ).subscribe();
+
     this.dialogRef.close();
     
   }

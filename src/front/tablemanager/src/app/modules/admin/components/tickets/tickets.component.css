@@ -10,10 +10,11 @@ body {
     }
   
   .container {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 40vh; /* Full viewport height */
+    width: 100%;
+    max-width: 1200px; /* Adjust based on design */
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
   }
   
   .table {
@@ -74,6 +75,11 @@ body {
   .table-link-danger {
       margin-right: 5px;
       color: #ff2f20; 
+    }
+
+    .table-link-unanswered {
+      margin-right: 5px;
+      color: #071ac9; 
     }
   
     .table-link-deactivate {

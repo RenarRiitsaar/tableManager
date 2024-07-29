@@ -10,10 +10,11 @@ body {
   }
 
 .container {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 40vh; /* Full viewport height */
+  width: 100%;
+  max-width: 1200px; /* Adjust based on design */
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .table {
