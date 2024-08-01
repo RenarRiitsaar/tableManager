@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* Example background color */
+  }
+  
+  .centered {
+      text-align: center;
+      
+    }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px; /* Adjust based on design */
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border: 1px solid #ddd; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+    margin-top: 20px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Example border bottom */
+  }
+  
+  .table th {
+    background-color: #f2f2f2; /* Example header background color */
+  }
+  
+  .table tbody tr:hover {
+    background-color: #9bfcc6; /* Example hover color */
+  }
+  
+  .label {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 14px;
+  }
+  
+  .label-inactive {
+    background-color: #fd2929;
+    
+  }
+  
+  .label-success {
+    background-color: #5cb85c;
+  }
+  
+  .table-link {
+    margin-right: 5px;
+    color: #3474ac;
+  }
+  .table-link-check {
+    margin-right: 5px;
+    color: #08eb26;
+  }
+  
+  .table-link-danger {
+      margin-right: 5px;
+      color: #ff2f20; 
+    }
+
+    .table-link-unanswered {
+      margin-right: 5px;
+      color: #e6fa2f; 
+    }
+  
+    .table-link-deactivate {
+      margin-right: 5px;
+      color: #ffd901; 
+      }

@@ -27,11 +27,7 @@
     <button mat-button routerLink="/user/entry/add" routerLinkActive="active">Add Entry</button>
   </mat-menu>
 
-  <button mat-button [matMenuTriggerFor]="ticketMenu" class="mat-button">Tickets</button>
-  <mat-menu #ticketMenu="matMenu">
-    <button mat-button [routerLink]="['/user/tickets']" routerLinkActive="active">View Tickets</button>
-    <button mat-button (click)="addTicket()">Add Ticket</button>
-  </mat-menu>
+  <button mat-button [routerLink]="['/user/tickets']" routerLinkActive="active" class="mat-button">Tickets</button>
     <button mat-button (click) = "logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>
 </div>

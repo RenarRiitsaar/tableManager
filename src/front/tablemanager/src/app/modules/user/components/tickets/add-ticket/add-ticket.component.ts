@@ -1,11 +1,8 @@
-import { Component, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TicketsService } from '../../../../../auth/services/tickets/tickets.service';
 import { catchError, of, tap } from 'rxjs';
-import { Tickets } from '../../../../../model/Tickets';
-import { StorageService } from '../../../../../auth/services/storage/storage.service';
-import { UserTicketsComponent } from '../userTickets.component';
 
 @Component({
   selector: 'app-add-ticket',

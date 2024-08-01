@@ -4,11 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Tickets } from '../../../../model/Tickets';
 import { StorageService } from '../../../../auth/services/storage/storage.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of, tap } from 'rxjs';
-import { TicketModalComponent } from '../../../admin/components/ticket-modal/ticket-modal.component';
 import { ViewTicketComponent } from './view-ticket/view-ticket.component';
 import { DeleteConfirmComponent } from '../../../../public-components/delete-confirm/delete-confirm.component';
+import { AddTicketComponent } from './add-ticket/add-ticket.component';
 
 @Component({
   selector: 'app-userTickets',
@@ -29,6 +28,19 @@ export class UserTicketsComponent implements OnInit {
   ngOnInit(): void {
     let userId = StorageService.getUserId();
     this.refreshTickets(userId);
+  }
+
+  addTicket(){
+    const dialogRef = this.dialog.open(AddTicketComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshTickets(StorageService.getUserId());
+      if (result) {
+        console.log('Ticket created:', result);
+      }
+    });
   }
 
   viewTicket(id:number):void{
@@ -63,6 +75,8 @@ export class UserTicketsComponent implements OnInit {
       }
     });
   }
+
+  
 
 public refreshTickets(id :number){
     this.ticketsService.findByUserId(id).subscribe(( data : Tickets[]) => 

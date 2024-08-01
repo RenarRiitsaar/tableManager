@@ -6,4 +6,5 @@ export interface Entry{
     priceBeforeTax: number;
     priceAfterTax: number;
     inventoryAmount: number;
+    userId:number;
 }

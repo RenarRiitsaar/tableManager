@@ -38,6 +38,7 @@ export class EntriesService {
   }
 
   deleteEntry(entryId:number):Observable<any>{
+
     return this.http.delete(BASIC_URL + "/api/entry/deleteEntry/" + entryId,
        {headers: this.authHeader()})
     .pipe(
@@ -45,12 +46,14 @@ export class EntriesService {
         console.error("Couldn't delete the ticket", error);
         throw error;
       })
+      
     );
   }
 
 
-  updateEntry(entryId:number, value: any): Observable<any>{
-    return this.http.put(BASIC_URL + "/api/entry/updateEntry/" + entryId, value, 
+  updateEntry(entry:Entry): Observable<Entry>{
+  
+    return this.http.put<Entry>(BASIC_URL + "/api/entry/updateEntry/" + entry.id, entry,
       {headers: this.authHeader()})
     .pipe(
       catchError((error) => {
@@ -58,6 +61,7 @@ export class EntriesService {
         throw error;
       })
     );
+    
   }
 
 

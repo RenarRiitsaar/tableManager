@@ -1,0 +1,21 @@
+
+<mat-card class = mat-dialog-container>
+    <h1 class= mat-dialog-title>Set VAT Rate</h1>
+    <div class = mat-dialog-actions>
+     
+        <form [formGroup]="vatForm">
+            <mat-label class="mat-label">VAT Rate (%)</mat-label>
+            <input matInput formControlName="vatRate" type="number" min="1" step="0.01" />
+            <mat-error class="table-link-danger" *ngIf="vatForm.get('vatRate')?.hasError('required')">
+                VAT rate is required!
+              </mat-error>
+              <mat-error class="table-link-danger" *ngIf="vatForm.get('vatRate')?.hasError('min')">
+                VAT rate must be a positive number
+              </mat-error>
+        </form>
+        <div mat-dialog-actions>
+            <button class="actions-button" (click)="onCancel()">Cancel</button>
+            <button class="actions-button" (click)="onSave()" [disabled]="vatForm.invalid">Set</button>
+          </div>
+      </div>
+</mat-card>

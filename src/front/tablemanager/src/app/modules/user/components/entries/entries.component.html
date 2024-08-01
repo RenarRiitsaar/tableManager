@@ -1,1 +1,100 @@
-<p>entries works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entry</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <h2 class="centered">Entries</h2>
+      <div class="col-lg-12">
+        <div class="main-box clearfix">
+          <div class="table-responsive">
+            <table class="table user-list">
+              <thead>
+                <tr>
+                  <th class="text-center"><span>Art. Number</span>
+                    <a class="table-link" (click)="openAddEntryModal()">
+                        <span class="fa-stack">
+                          <i class="fa fa-square fa-stack-2x"></i>
+                          <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a></th>
+                  <th class="text-center"><span>Art. Name</span></th>
+                  <th class="text-center"><span>Price</span></th>
+                  <th class="text-center"><span>VAT Price</span>
+                    <a class="table-link" (click)="openVatModal()">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                  </th>
+                  <th class="text-center"><span>Amount</span></th>
+                  <th class="text-center"><span>Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let entry of entries">
+                  <td *ngIf="!editMode[entry.id]"><a>{{ entry.articleNum }}</a></td>
+                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.articleNum" /></td>
+
+                  <td *ngIf="!editMode[entry.id]"><a>{{ entry.articleName }}</a></td>
+                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.articleName" /></td>
+
+                  <td *ngIf="!editMode[entry.id]"><a>{{ entry.priceBeforeTax }}</a></td>
+                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.priceBeforeTax" /></td>
+
+                  <td>{{entry.priceAfterTax}}</td>
+
+                  <td *ngIf="!editMode[entry.id]"><a>{{ entry.inventoryAmount }}</a></td>
+                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.inventoryAmount" /></td>
+
+                  <td style="width: 20%;">
+                   
+                    <a class="table-link" *ngIf="!editMode[entry.id]" (click)="enableEditing(entry.id)">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                    <a class="table-link-check" *ngIf="editMode[entry.id]" (click)="saveEntry(entry)">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-save fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                    <a class="table-link-unanswered" *ngIf="editMode[entry.id]" (click)="cancelEditMode(entry.id)">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+
+                    <a class="table-link" *ngIf="!editMode[entry.id]">
+                        <span class="fa-stack">
+                          <i class="fa fa-square fa-stack-2x"></i>
+                          <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    <a class="table-link-danger" *ngIf="!editMode[entry.id]" (click)="deleteEntry(entry.id)">
+                        <span class="fa-stack">
+                          <i class="fa fa-square fa-stack-2x"></i>
+                          <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

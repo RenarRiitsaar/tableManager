@@ -36,17 +36,6 @@ export class AppComponent {
     this.authService.startLogoutTimer();
   }
 
-  addTicket(){
-    const dialogRef = this.dialog.open(AddTicketComponent, {
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Ticket created:', result);
-      }
-    });
-  }
 
   logout(){
     StorageService.logout();

@@ -34,6 +34,7 @@ import { EditUserDialogComponent } from './modules/admin/components/edit-user-di
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +72,8 @@ import { EditUserDialogComponent } from './modules/admin/components/edit-user-di
     MatNativeDateModule,
     MatDialogModule,
     MatTableModule,
-    MatListModule
+    MatListModule,
+    ReactiveFormsModule
 
 
   ],
