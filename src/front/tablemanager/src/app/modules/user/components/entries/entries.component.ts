@@ -6,7 +6,7 @@ import { Entry } from '../../../../model/Entry';
 import { DeleteConfirmComponent } from '../../../../public-components/delete-confirm/delete-confirm.component';
 import { catchError, of, tap } from 'rxjs';
 import { VatModalComponent } from './vat-modal/vat-modal.component';
-import { AddEntryModalComponent } from './add-entry-modal/add-entry-modal.component';
+import { StorageService } from '../../../../auth/services/storage/storage.service';
 
 
 
@@ -19,6 +19,7 @@ export class EntriesComponent implements OnInit {
   vatRate: number =22;
   entries: Entry[] = [];
   editMode: {[key:number]: boolean} = {};
+  sortDirection: 'asc' | 'desc' = 'asc';
  
 
 
@@ -30,6 +31,83 @@ constructor(private entriesService:EntriesService,
   ngOnInit(): void {
     this.getEntries();
   
+  }
+  toggleSort(){
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+  }
+  sortByName(){
+    this.toggleSort();
+
+    this.entries.sort((a, b) => {
+      if (a.articleName < b.articleName) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a.articleName > b.articleName) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
+ 
+  sortByArtNum(){
+    this.toggleSort();
+
+    this.entries.sort((a, b) => {
+      if (a.articleNum < b.articleNum) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a.articleNum > b.articleNum) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
+  sortByPrice(){
+    this.toggleSort();
+
+    this.entries.sort((a,b) =>{
+      if(a.priceBeforeTax < b.priceBeforeTax){
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if(a.priceBeforeTax > b.priceBeforeTax){
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
+  }
+
+  sortByAmount(){
+    this.toggleSort();
+
+    this.entries.sort((a,b) =>{
+      if(a.inventoryAmount < b.inventoryAmount){
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if(a.inventoryAmount > b.inventoryAmount){
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
+
+  addEntry(): void{
+    let entry = {
+      articleNum: 0,
+      articleName: "Article Name",
+      priceBeforeTax: 0,
+      priceAfterTax: 0,
+      inventoryAmount: 0,
+      userId:StorageService.getUserId()
+    };
+
+   this.entriesService.addEntry(entry).subscribe(()=>{
+    this.getEntries();
+   });
+   
   }
 
   openVatModal(): void {
@@ -52,18 +130,6 @@ constructor(private entriesService:EntriesService,
 
   calculateVatPrice(priceBeforeTax: number, vatRate: number): number {
     return (priceBeforeTax * (1 + (vatRate / 100)))
-  }
-
-  openAddEntryModal(): void {
-    const dialogRef = this.dialog.open(AddEntryModalComponent, {
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-       
-      }
-    });
   }
 
   enableEditing(id:number): void{

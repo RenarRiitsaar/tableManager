@@ -9,7 +9,6 @@ import { ViewTicketComponent } from './components/tickets/view-ticket/view-ticke
 import { AddTicketComponent } from './components/tickets/add-ticket/add-ticket.component';
 import { VatModalComponent } from './components/entries/vat-modal/vat-modal.component';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
-import { AddEntryModalComponent } from './components/entries/add-entry-modal/add-entry-modal.component';
 
 
 
@@ -22,8 +21,7 @@ import { AddEntryModalComponent } from './components/entries/add-entry-modal/add
     UserTicketsComponent,
     AddTicketComponent,
     ViewTicketComponent,
-    VatModalComponent,
-    AddEntryModalComponent
+    VatModalComponent
   ],
   imports: [
     CommonModule,
