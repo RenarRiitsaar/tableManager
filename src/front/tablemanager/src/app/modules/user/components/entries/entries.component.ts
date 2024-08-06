@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Entry } from './../../../../model/Entry';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EntriesService } from '../../../../auth/services/entries/entries.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { Entry } from '../../../../model/Entry';
+import { MatDialog } from '@angular/material/dialog'
 import { DeleteConfirmComponent } from '../../../../public-components/delete-confirm/delete-confirm.component';
 import { catchError, of, tap } from 'rxjs';
 import { VatModalComponent } from './vat-modal/vat-modal.component';
 import { StorageService } from '../../../../auth/services/storage/storage.service';
+import { PdfGeneratorComponent } from './pdf-generator/pdf-generator.component';
 
 
 
@@ -20,6 +21,7 @@ export class EntriesComponent implements OnInit {
   entries: Entry[] = [];
   editMode: {[key:number]: boolean} = {};
   sortDirection: 'asc' | 'desc' = 'asc';
+  
  
 
 
@@ -30,8 +32,21 @@ constructor(private entriesService:EntriesService,
 
   ngOnInit(): void {
     this.getEntries();
-  
   }
+
+  generatePDF(entry: Entry){
+    
+    const dialogRef = this.dialog.open(PdfGeneratorComponent, {
+      data: { articleNum: entry.articleNum,
+              articleName: entry.articleName,
+              price: entry.priceBeforeTax,
+              priceVAT: entry.priceAfterTax
+              }
+      
+    });
+  }
+
+
   toggleSort(){
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
   }
@@ -109,6 +124,7 @@ constructor(private entriesService:EntriesService,
    });
    
   }
+
 
   openVatModal(): void {
     const dialogRef = this.dialog.open(VatModalComponent, {

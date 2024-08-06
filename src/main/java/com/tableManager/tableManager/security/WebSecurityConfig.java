@@ -17,6 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +32,22 @@ public class WebSecurityConfig {
 
     @Autowired
     private JwtAuthEntryPoint authEntryPoint;
+
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("*")); // Allow all origins
+        configuration.setAllowedMethods(List.of("GET", "PUT", "POST", "DELETE", "PATCH"));
+        configuration.setAllowedHeaders(List.of("accept", "Authorization", "Content-Type"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4300", "http://84.50.242.146"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 
     @Bean
     UserDetailsService userDetailsService (){
@@ -69,7 +89,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/**").hasAuthority(ADMIN)
                 .anyRequest().authenticated());
 
-
+        http.cors(co-> co.configurationSource(corsConfigurationSource()));/// neww
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
        http.csrf(AbstractHttpConfigurer::disable);
