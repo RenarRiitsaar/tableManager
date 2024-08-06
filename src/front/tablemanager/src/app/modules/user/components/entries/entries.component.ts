@@ -37,13 +37,16 @@ constructor(private entriesService:EntriesService,
   generatePDF(entry: Entry){
     
     const dialogRef = this.dialog.open(PdfGeneratorComponent, {
-      data: { articleNum: entry.articleNum,
+      data: { id:entry.id,
+              articleNum: entry.articleNum,
               articleName: entry.articleName,
               price: entry.priceBeforeTax,
-              priceVAT: entry.priceAfterTax
+              priceVAT: entry.priceAfterTax,
+              inventoryAmount: entry.inventoryAmount
               }
       
     });
+    this.getEntries();
   }
 
 

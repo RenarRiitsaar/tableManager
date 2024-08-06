@@ -1,8 +1,12 @@
+import { provideHttpClient } from '@angular/common/http';
+import { EntriesService } from './../../../../../auth/services/entries/entries.service';
 import { PdfGeneratorService } from './pdf-generator.service';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Entry } from '../../../../../model/Entry';
+import { catchError, of, tap } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -19,7 +23,9 @@ export class PdfGeneratorComponent {
   constructor( public dialogRef: MatDialogRef<PdfGeneratorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private pdfGeneratorService : PdfGeneratorService,
-    private fb:FormBuilder){
+    private fb:FormBuilder,
+    private entriesService: EntriesService,
+    private snackbar:MatSnackBar){
    
       this.form = this.fb.group({
         amount: [''],
@@ -70,8 +76,28 @@ addProduct(entry:Entry){
    (this.data.priceVAT * amount).toFixed(2) 
   ]);
   
+  
+  const updateAmount = this.data.inventoryAmount - amount;
+  const updateEntry: Entry = {
+    ...this.data,                      
+    inventoryAmount: updateAmount,
+    priceBeforeTax: this.data.price,
+    priceAfterTax: this.data.priceVAT
+  };
+
+  this.entriesService.updateEntry(updateEntry).pipe(
+    tap((res) =>
+      {
+        this.snackbar.open('Entry added to invoice and updated database!', 'Close', {duration: 5000})
+      }),
+  
+      catchError((error) => {
+        this.snackbar.open('Error adding entry to invoice', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
+        return of(null);
+      })
+    ).subscribe();
+
   this.saveEntries();
-  console.log(this.entryList);
 }
 
 saveEntries() {
