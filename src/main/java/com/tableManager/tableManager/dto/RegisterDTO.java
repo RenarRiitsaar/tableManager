@@ -10,6 +10,6 @@ public class RegisterDTO {
     private String password;
     private String firstName;
     private String lastName;
-    private boolean enabled = true;
+    private boolean enabled = false;
 
 }

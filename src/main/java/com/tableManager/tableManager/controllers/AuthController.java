@@ -53,8 +53,9 @@ public ResponseEntity<User> signUp(@RequestBody RegisterDTO registerDTO) {
                 String token = jwtGenerator.generateToken(authentication);
                 User user = userService.findByUsername(loginDTO.getUsername());
                 String roleName = userService.findByRoleId(user.getRoles());
+                boolean isEnabled = user.isEnabled();
                 return new ResponseEntity<>(new AuthResponseDTO(token, roleName, user.getId(),
-                        user.getUsername(), user.getEmail()), HttpStatus.OK);
+                        user.getUsername(), user.getEmail(),isEnabled), HttpStatus.OK);
 
     }
 }

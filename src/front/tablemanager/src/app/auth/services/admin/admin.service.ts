@@ -4,9 +4,10 @@ import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { catchError, Observable, tap } from 'rxjs';
 import { MatSnackBar, matSnackBarAnimations } from '@angular/material/snack-bar';
+import { environment } from '../../../../environments/environment';
 
 
-const BASIC_URL = "http://localhost:8080"
+const BASIC_URL = environment.serverUrl;
 
 @Injectable({
   providedIn: 'root'

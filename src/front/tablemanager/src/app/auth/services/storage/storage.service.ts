@@ -42,6 +42,18 @@ export class StorageService {
     return user.email;
   }
 
+  static getStatus():boolean{
+
+    if(this.getUser() == null){
+      return false;
+    }
+    else if(this.getUser().enabled){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   static getUserRole(): string{
     const user = this.getUser();
     if(user == null){

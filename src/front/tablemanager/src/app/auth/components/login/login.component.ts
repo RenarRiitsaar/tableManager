@@ -39,7 +39,8 @@ onSubmit() {
       if (res.id !== null) {
         const user = {
           id: res.id,
-          role: res.role
+          role: res.role,
+          enabled:res.enabled
         };
         StorageService.saveUser(user);
         StorageService.saveAccessToken(res.accessToken);
@@ -47,9 +48,15 @@ onSubmit() {
         
         if (StorageService.isAdmin()) {
           this.router.navigateByUrl('/admin/dashboard');
+        }
+        
+          else if(!StorageService.getStatus()){
+            this.router.navigateByUrl('/checkout');
+          
         } else {
           this.router.navigateByUrl('/user/dashboard');
         }
+
         this.snackbar.open('Login successful', 'Close', { duration: 5000 });
       } else {
         this.snackbar.open('Invalid credentials', 'Close', { duration: 5000, panelClass: 'error-snackbar' });

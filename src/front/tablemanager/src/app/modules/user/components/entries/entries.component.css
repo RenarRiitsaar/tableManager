@@ -1,9 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #ffffff; /* Example background color */
-  }
-  
+    background-color: #ffffff;
+}
   .centered {
       text-align: center;
       
@@ -11,7 +10,7 @@ body {
   
   .container {
     width: 100%;
-    max-width: 1200px; /* Adjust based on design */
+    max-width: 1200px; 
     margin: 0 auto;
     padding: 1rem;
     box-sizing: border-box;
@@ -30,15 +29,15 @@ body {
   .table td {
     padding: 20px;
     text-align: left;
-    border-bottom: 1px solid #ddd; /* Example border bottom */
+    border-bottom: 1px solid #ddd;
   }
   
   .table th {
-    background-color: #f2f2f2; /* Example header background color */
+    background-color: #f2f2f2; 
   }
   
   .table tbody tr:hover {
-    background-color: #9bfcc6; /* Example hover color */
+    background-color: #9bfcc6; 
   }
   
   .label {
@@ -85,4 +84,25 @@ body {
     .table-link-deactivate {
       margin-right: 5px;
       color: #ffd901; 
+      }
+      .search-bar {
+        margin-bottom: 15px;
+        text-align: center; 
+      }
+    
+      .search-bar input {
+        width: 100%; 
+        max-width: 600px; 
+        padding: 10px; 
+        font-size: 16px; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        box-sizing: border-box; 
+        outline: none; 
+      }
+    
+      .search-bar input:focus {
+        border-color: #007bff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
       }

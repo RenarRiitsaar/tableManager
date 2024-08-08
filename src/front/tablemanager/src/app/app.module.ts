@@ -31,6 +31,9 @@ import { MatListModule } from '@angular/material/list';
 import {provideHttpClient} from '@angular/common/http';
 import { DeleteConfirmComponent } from './public-components/delete-confirm/delete-confirm.component';
 import { EditUserDialogComponent } from './modules/admin/components/edit-user-dialog/edit-user-dialog.component';
+import { CancelComponent } from './stripe/cancel/cancel.component';
+import { SuccessComponent } from './stripe/success/success.component';
+import { CheckoutComponent } from './stripe/checkout/checkout.component';
 
 
 
@@ -41,7 +44,10 @@ import { EditUserDialogComponent } from './modules/admin/components/edit-user-di
     LoginComponent,
     SignupComponent,
     DeleteConfirmComponent,
-    EditUserDialogComponent
+    EditUserDialogComponent,
+    CancelComponent,
+    SuccessComponent,
+    CheckoutComponent
     
   ],
   imports: [

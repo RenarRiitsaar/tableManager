@@ -100,6 +100,12 @@ public class UserServiceImpl implements UserService {
      return userRoleName;
     }
 
+    @Override
+    public User findbyId(Long currentUserId) {
+       return userRepository.findById(currentUserId)
+               .orElseThrow(()->new RuntimeException("User not found"));
+    }
+
 
 }
 

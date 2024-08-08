@@ -24,7 +24,7 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

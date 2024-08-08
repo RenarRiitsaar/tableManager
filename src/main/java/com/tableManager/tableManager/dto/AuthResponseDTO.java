@@ -13,13 +13,15 @@ public class AuthResponseDTO {
     private Long id;
     private String username;
     private String email;
+    private boolean enabled;
 
 
-    public AuthResponseDTO(String accessToken, String role, Long id, String username, String email ) {
+    public AuthResponseDTO(String accessToken, String role, Long id, String username, String email, boolean enabled ) {
         this.accessToken = accessToken;
         this.role = role;
         this.id = id;
         this.username= username;
         this.email = email;
+        this.enabled = enabled;
     }
 }

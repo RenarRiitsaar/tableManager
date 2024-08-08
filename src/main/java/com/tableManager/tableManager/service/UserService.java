@@ -23,4 +23,5 @@ public interface UserService {
 
     String findByRoleId(Set<Role> roles);
 
+    User findbyId(Long currentUserId);
 }

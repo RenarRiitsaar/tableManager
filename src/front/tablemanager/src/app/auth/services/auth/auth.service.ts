@@ -4,9 +4,10 @@ import { Observable, Subscription, catchError, throwError, timer } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../../../environments/environment';
 
 
-const API_URL = "http://localhost:8080"
+const API_URL = environment.serverUrl
 
 @Injectable({
   providedIn: 'root'

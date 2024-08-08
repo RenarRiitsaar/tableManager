@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { Entry } from '../../../model/Entry';
 import { StorageService } from '../storage/storage.service';
+import { environment } from '../../../../environments/environment';
 
 
-const BASIC_URL = "http://localhost:8080"
+const BASIC_URL = environment.serverUrl
 
 @Injectable({
   providedIn: 'root'

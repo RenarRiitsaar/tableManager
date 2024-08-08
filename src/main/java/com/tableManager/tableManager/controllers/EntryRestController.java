@@ -1,6 +1,7 @@
 package com.tableManager.tableManager.controllers;
 
 import com.tableManager.tableManager.model.Entry;
+import com.tableManager.tableManager.model.User;
 import com.tableManager.tableManager.service.impl.EntryServiceImpl;
 import com.tableManager.tableManager.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ public class EntryRestController {
     @GetMapping("/entries")
     public ResponseEntity<List<Entry>> getEntries() {
         Long currentUserId =userService.getCurrentUserId();
-        if(currentUserId != null) {
+        User user = userService.findbyId(currentUserId);
+
+        if(currentUserId != null  && user.isEnabled()) {
             List<Entry> entries = entryService.findEntriesByUserId(currentUserId);
             return new ResponseEntity<>(entries, HttpStatus.OK);
         }else{
@@ -37,8 +40,9 @@ public class EntryRestController {
     @PostMapping("/addEntry")
     public ResponseEntity<Entry> addEntry( @RequestBody Entry entry) {
         Long currentUserId = userService.getCurrentUserId();
+        User user = userService.findbyId(currentUserId);
 
-        if(currentUserId != null) {
+        if(currentUserId != null && user.isEnabled()) {
             Entry newEntry = entryService.addEntry(currentUserId, entry);
             return new ResponseEntity<>(newEntry, HttpStatus.CREATED);
         }else{
@@ -49,8 +53,8 @@ public class EntryRestController {
     @DeleteMapping("/deleteEntry/{entryId}")
     public ResponseEntity<Entry> deleteEntry(@PathVariable Long entryId) {
         Long currentUserId = userService.getCurrentUserId();
-
-        if(currentUserId != null) {
+        User user = userService.findbyId(currentUserId);
+        if(currentUserId != null  && user.isEnabled()) {
             entryService.deleteEntry(currentUserId, entryId);
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
@@ -61,9 +65,8 @@ public class EntryRestController {
     @PutMapping("/updateEntry/{entryId}")
     public ResponseEntity<Entry> updateEntry( @PathVariable Long entryId, @RequestBody Entry entry) {
         Long currentUserId = userService.getCurrentUserId();
-
-        if(currentUserId != null) {
-
+        User user = userService.findbyId(currentUserId);
+        if(currentUserId != null && user.isEnabled()) {
             Entry updatedEntry = entryService.updateEntry(currentUserId, entryId, entry);
             return new ResponseEntity<>(updatedEntry, HttpStatus.OK);
         }else{

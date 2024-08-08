@@ -1,5 +1,5 @@
 import { Entry } from './../../../../model/Entry';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { EntriesService } from '../../../../auth/services/entries/entries.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog'
@@ -21,7 +21,8 @@ export class EntriesComponent implements OnInit {
   entries: Entry[] = [];
   editMode: {[key:number]: boolean} = {};
   sortDirection: 'asc' | 'desc' = 'asc';
-  
+  searchQuery: string = '';
+  filteredEntries: Entry[] = [];
  
 
 
@@ -32,7 +33,23 @@ constructor(private entriesService:EntriesService,
 
   ngOnInit(): void {
     this.getEntries();
+    
   }
+
+  searchEntry(query:string){
+    
+    this.searchQuery = query;
+    if(this.searchQuery.length > 0){
+    this.entries = this.entries.filter(entry =>
+      entry.articleName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+      entry.articleNum.toString().includes(this.searchQuery)
+    );
+    }else{
+    this.entries = [...this.entries];
+    this.getEntries();
+     }
+  }
+
 
   generatePDF(entry: Entry){
     

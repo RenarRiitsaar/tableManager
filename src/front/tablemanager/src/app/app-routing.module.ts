@@ -8,8 +8,14 @@ import { UDashboardComponent } from './modules/user/components/u-dashboard/u-das
 import { ManageUsersComponent } from './modules/admin/components/manage-users/manage-users.component';
 import { TicketsComponent } from './modules/admin/components/tickets/tickets.component';
 import { EntriesComponent } from './modules/user/components/entries/entries.component';
+import { CheckoutComponent } from './stripe/checkout/checkout.component';
+import { SuccessComponent } from './stripe/success/success.component';
+import { CancelComponent } from './stripe/cancel/cancel.component';
 const routes: Routes = [
-  
+
+  {path: "checkout", component : CheckoutComponent},
+  {path: "success", component : SuccessComponent},
+  {path: "cancel", component : CancelComponent},
   {path: "user/tickets", component : UserTicketsComponent},
   {path: "user/entry", component : EntriesComponent},
   {path: "admin/tickets", component : TicketsComponent},

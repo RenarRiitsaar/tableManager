@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class AppComponent {
   isAdminLoggedIn: boolean = StorageService.isAdmin();
   isUserLoggedIn: boolean = StorageService.isUser();
+  isEnabled: boolean = StorageService.getStatus();
   
 
   constructor(private router: Router,
@@ -24,6 +25,7 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       this.isAdminLoggedIn = StorageService.isAdmin();
       this.isUserLoggedIn = StorageService.isUser();
+      this.isEnabled = StorageService.getStatus();
     })
 
 
