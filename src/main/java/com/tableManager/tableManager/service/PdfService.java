@@ -16,4 +16,6 @@ public interface PdfService {
     PdfSettings updatePDF(PdfSettings pdfSettings, Long currentUserId);
 
     void deletePDF(Long currentUserId);
+
+    String getFilename(Long currentUserId);
 }

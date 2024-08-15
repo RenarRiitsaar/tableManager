@@ -6,7 +6,7 @@ import { StorageService } from '../storage/storage.service';
 import { environment } from '../../../../environments/environment';
 
 
-const BASIC_URL = environment.serverUrl
+const BASIC_URL = environment.serverUrl;
 
 @Injectable({
   providedIn: 'root'

@@ -33,7 +33,7 @@ public class PdfServiceImpl implements PdfService {
         createPDF.setLogoURL(pdfSettings.getLogoURL());
         createPDF.setCompanyName(pdfSettings.getCompanyName());
         createPDF.setCompanyAddress(pdfSettings.getCompanyAddress());
-        createPDF.setCompanyCity(pdfSettings.getCompanyCity());
+        createPDF.setCompanyCityCountry(pdfSettings.getCompanyCityCountry());
         createPDF.setCompanyPhone(pdfSettings.getCompanyPhone());
         createPDF.setCompanyEmail(pdfSettings.getCompanyEmail());
         createPDF.setBankDetails(pdfSettings.getBankDetails());
@@ -71,8 +71,8 @@ public class PdfServiceImpl implements PdfService {
         if (pdfSettings.getCompanyAddress() != null) {
             existingPDF.setCompanyAddress(pdfSettings.getCompanyAddress());
         }
-        if (pdfSettings.getCompanyCity() != null) {
-            existingPDF.setCompanyCity(pdfSettings.getCompanyCity());
+        if (pdfSettings.getCompanyCityCountry() != null) {
+            existingPDF.setCompanyCityCountry(pdfSettings.getCompanyCityCountry());
         }
         if (pdfSettings.getCompanyPhone() != null) {
         existingPDF.setCompanyPhone(pdfSettings.getCompanyPhone());
@@ -92,5 +92,11 @@ public class PdfServiceImpl implements PdfService {
     public void deletePDF(Long currentUserId) {
         PdfSettings pdf = pdfRepository.findByUserId(currentUserId);
         pdfRepository.delete(pdf);
+    }
+
+    @Override
+    public String getFilename(Long currentUserId) {
+        PdfSettings pdf = pdfRepository.findByUserId(currentUserId);
+       return pdf.getLogoURL();
     }
 }

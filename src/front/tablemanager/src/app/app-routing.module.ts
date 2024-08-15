@@ -13,6 +13,7 @@ import { SuccessComponent } from './stripe/success/success.component';
 import { CancelComponent } from './stripe/cancel/cancel.component';
 const routes: Routes = [
 
+  
   {path: "checkout", component : CheckoutComponent},
   {path: "success", component : SuccessComponent},
   {path: "cancel", component : CancelComponent},

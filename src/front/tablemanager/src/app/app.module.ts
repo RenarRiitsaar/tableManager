@@ -38,6 +38,7 @@ import { CheckoutComponent } from './stripe/checkout/checkout.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

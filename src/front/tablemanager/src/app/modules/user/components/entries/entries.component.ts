@@ -1,3 +1,4 @@
+import { Base64Service } from './../../../../auth/services/pdfsettings/base64.service';
 import { Entry } from './../../../../model/Entry';
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { EntriesService } from '../../../../auth/services/entries/entries.service';
@@ -23,16 +24,17 @@ export class EntriesComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
   searchQuery: string = '';
   filteredEntries: Entry[] = [];
- 
 
 
 constructor(private entriesService:EntriesService,
             private snackbar: MatSnackBar,
-            private dialog: MatDialog){}
+            private dialog: MatDialog,
+            private base64Service:Base64Service){}
 
 
   ngOnInit(): void {
     this.getEntries();
+  
     
   }
 
@@ -52,14 +54,16 @@ constructor(private entriesService:EntriesService,
 
 
   generatePDF(entry: Entry){
-    
+
+  
     const dialogRef = this.dialog.open(PdfGeneratorComponent, {
       data: { id:entry.id,
               articleNum: entry.articleNum,
               articleName: entry.articleName,
               price: entry.priceBeforeTax,
               priceVAT: entry.priceAfterTax,
-              inventoryAmount: entry.inventoryAmount
+              inventoryAmount: entry.inventoryAmount,
+              userId: entry.userId
               }
       
     });

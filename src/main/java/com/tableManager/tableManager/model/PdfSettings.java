@@ -20,7 +20,7 @@ public class PdfSettings {
     private String logoURL;
     private String companyName;
     private String companyAddress;
-    private String companyCity;
+    private String companyCityCountry;
     private String companyPhone;
     private String companyEmail;
     private String bankDetails;

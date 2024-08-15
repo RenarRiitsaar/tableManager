@@ -5,8 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../../../model/User';
 import { catchError, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ManageUsersComponent } from '../manage-users/manage-users.component';
-import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-edit-user-dialog',

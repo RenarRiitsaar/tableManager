@@ -1,12 +1,14 @@
-import { provideHttpClient } from '@angular/common/http';
 import { EntriesService } from './../../../../../auth/services/entries/entries.service';
 import { PdfGeneratorService } from './pdf-generator.service';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Entry } from '../../../../../model/Entry';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PdfSettings } from '../../../../../model/PdfSettings';
+import { PdfsettingsService } from '../../../../../auth/services/pdfsettings/pdfsettings.service';
+import { Base64Service } from '../../../../../auth/services/pdfsettings/base64.service';
 
 
 @Component({
@@ -20,12 +22,17 @@ export class PdfGeneratorComponent {
   entryList: any[] = [
     ['Article Num', 'Article Name', 'Amount', 'Price', 'Price VAT', 'Total']
   ];
+  pdfSettings!: PdfSettings | null;
+  base64Image: string = '';
+
   constructor( public dialogRef: MatDialogRef<PdfGeneratorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private pdfGeneratorService : PdfGeneratorService,
     private fb:FormBuilder,
     private entriesService: EntriesService,
-    private snackbar:MatSnackBar){
+    private snackbar:MatSnackBar,
+    private pdfService: PdfsettingsService,
+    private base64Service: Base64Service){
    
       this.form = this.fb.group({
         amount: [''],
@@ -34,7 +41,10 @@ export class PdfGeneratorComponent {
         address: ['', [Validators.required, Validators.min(1)]],
         email: ['', [Validators.required, Validators.min(1)]]
         
+        
   });
+  this.getPdfSettings();
+  this.getBase64();
   this.loadEntries();
 }
 
@@ -111,11 +121,30 @@ loadEntries() {
   }
 }
 
-generatePDF() {
+getPdfSettings(){
+  this.pdfService.getPdfSettings().pipe(
+    tap((settings: PdfSettings) =>{
+      this.pdfSettings = settings;
+    }),
+    catchError((error) => {
+      this.snackbar.open('Error getting PDF settings', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
+      return of(null);
+
+    })
+    ).subscribe();
+}
+
+getBase64(){
+  this.base64Service.getBase64Image().subscribe(data => {
+    this.base64Image = data;
+  });
+}
+
+   generatePDF() {
   if (this.form.invalid) {
     return;
   }
-
+  const pdfSettings = this.pdfSettings;
   const amount = this.form.get('amount')?.value;
   const firstName = this.form.get('firstName')?.value;
   const lastName = this.form.get('lastName')?.value;
@@ -125,9 +154,21 @@ generatePDF() {
   const randomNum = Math.floor(Math.random() * 10000000);
   const date = new Date();
   const formattedDate = `${('0' + date.getDate()).slice(-2)}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`;
+
+
   
+  
+  
+
   const doc = {
     content: [
+      {
+        image: 'data:image/png;base64,' + this.base64Image,
+        width: 100,
+        height: 50,
+       margin: [0, 0, 0, 0]
+      },
+    
       {
         columns: [
           {
@@ -149,7 +190,7 @@ generatePDF() {
             ]
           }
         ],
-        margin: [0, 60, 0, 40]
+        margin: [0, 40, 0, 40]
       },
       {
         text: `Invoice #${randomNum}`,
@@ -207,6 +248,7 @@ generatePDF() {
         margin: [0, 0, 0, 10]
       }
     },
+    
     pageMargins: [40, 60, 40, 80],
     footer: function(currentPage: any, pageCount: any) {
       if (currentPage === pageCount) {
@@ -216,21 +258,19 @@ generatePDF() {
               {
                 width: '50%',
                 text: [
-                  { text: 'Awesome company\n', style: 'footer' },
-                  'Address 1234\n',
-                  'Tartu, Estonia\n',
-                  'Phone: +372 5555 8158\n',
-                  'Email: awesome@company.com\n'
+                  { text:   pdfSettings?.companyName + "\n"},
+                  pdfSettings?.companyAddress  + "\n",
+                  pdfSettings?.companyCityCountry  + "\n",
+                  pdfSettings?.companyPhone  + "\n",
+                  pdfSettings?.companyEmail + "\n"
                 ],
                 alignment: 'left'
               },
               {
                 width: '50%',
                 text: [
-                  { text: '\nBank Details:\n', style: 'footer' },
-                  'SWEDBANK: EE1430250320022921\n',
-                  'LHV: EE920350923509232093898\n',
-                  'SEB: EE309250923509320905631\n'
+                  { text: 'Bank Details:\n'},
+                  pdfSettings?.bankDetails
                 ],
                 alignment: 'right'
               }
@@ -246,6 +286,7 @@ generatePDF() {
 
   this.pdfGeneratorService.generatePDF(doc, `Invoice Nr: ${randomNum}`);
   this.entryList = [];
+  this.onClose();
 }
 
   onClose(): void {
