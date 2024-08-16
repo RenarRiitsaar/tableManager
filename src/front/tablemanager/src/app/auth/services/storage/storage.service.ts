@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { tap } from 'rxjs';
 
 
 const accessToken = "token";
@@ -8,12 +10,13 @@ const USER = "user";
   providedIn: 'root'
 })
 export class StorageService {
-  
+
+
+  constructor(private authService:AuthService) { }
+
   static getToken() {
     return localStorage.getItem(accessToken);
   }
-
-  constructor() { }
 
   static saveAccessToken(token: string): void{
     window.localStorage.removeItem(accessToken);

@@ -1,4 +1,4 @@
-import { AddTicketComponent } from './modules/user/components/tickets/add-ticket/add-ticket.component';
+import { PdfSettings } from './model/PdfSettings';
 import { Component, HostListener } from '@angular/core';
 import { StorageService } from './auth/services/storage/storage.service';
 import { Router } from '@angular/router';
@@ -20,6 +20,8 @@ export class AppComponent {
   isAdminLoggedIn: boolean = StorageService.isAdmin();
   isUserLoggedIn: boolean = StorageService.isUser();
   isEnabled: boolean = StorageService.getStatus();
+  pdfList: PdfSettings[] = [];
+  hasPdf: boolean = false;
   
 
   constructor(private router: Router,
@@ -34,8 +36,9 @@ export class AppComponent {
       this.isAdminLoggedIn = StorageService.isAdmin();
       this.isUserLoggedIn = StorageService.isUser();
       this.isEnabled = StorageService.getStatus();
-    })
+      this.hasPDF();
 
+    })
 
   }
   @HostListener('window:mousemove')
@@ -45,6 +48,20 @@ export class AppComponent {
   resetLogoutTimer(): void {
     this.authService.startLogoutTimer();
   }
+
+  hasPDF(){
+    
+    this.pdfSettings.getPdfSettings().pipe(
+      tap((pdf) =>{
+        if(pdf && pdf.id != null){
+          this.hasPdf = true;
+        }else{
+          this.hasPdf = false;
+        }
+      })
+    ).subscribe();
+  }
+
 
   editPDF(){
     this.dialog.open(EditPDFComponent, {

@@ -47,14 +47,14 @@ onSubmit() {
         this.authService.startLogoutTimer();
         
         if (StorageService.isAdmin()) {
-          this.router.navigateByUrl('/admin/dashboard');
+          this.router.navigateByUrl('/admin/manageUsers');
         }
         
           else if(!StorageService.getStatus()){
             this.router.navigateByUrl('/checkout');
           
         } else {
-          this.router.navigateByUrl('/user/dashboard');
+          this.router.navigateByUrl('/user/entry');
         }
 
         this.snackbar.open('Login successful', 'Close', { duration: 5000 });

@@ -24,17 +24,15 @@
   
     <button mat-button [matMenuTriggerFor]="pdfMenu" class="mat-button">PDF Menu</button>
     <mat-menu #pdfMenu="matMenu">
-    <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">View PDF</button>
-    <button *ngIf="isEnabled" mat-button routerLink="/viewPdf" routerLinkActive="active">View PDF</button>
 
     <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">Create PDF</button>
-    <button *ngIf="isEnabled" mat-button (click)="createPDF()">Create PDF</button>
+    <button *ngIf="isEnabled && !hasPdf" mat-button (click)="createPDF()">Create PDF</button>
 
     <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">Edit PDF</button>
-    <button *ngIf="isEnabled" mat-button (click)="editPDF()">Edit PDF</button>
+    <button *ngIf="isEnabled && hasPdf" mat-button (click)="editPDF()">Edit PDF</button>
 
     <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">Delete PDF</button>
-    <button *ngIf="isEnabled" mat-button (click)="deletePDF()">Delete PDF</button>
+    <button *ngIf="isEnabled && hasPdf" mat-button (click)="deletePDF()">Delete PDF</button>
   </mat-menu>
 
   

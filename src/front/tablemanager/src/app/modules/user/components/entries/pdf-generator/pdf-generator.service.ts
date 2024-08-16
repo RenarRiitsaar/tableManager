@@ -11,10 +11,13 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts'
 export class PdfGeneratorService {
   constructor() {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
   }
 
   generatePDF(doc: any, filename: string) {
     pdfMake.createPdf(doc).download(filename);
+  }
+
+  openPDF(doc:any){
+    pdfMake.createPdf(doc).open();
   }
 }

@@ -1,13 +1,15 @@
-<mat-card class="example-card">
-    <mat-card-header>
-      <div mat-card-avatar></div>
-      <mat-card-title>Table Manager</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="" />
-  
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="pay()">
-        Buy it for 300€
-      </button>
-    </mat-card-actions>
-  </mat-card>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment required</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Required!</h1>
+        <p>In order to use the app you need to make a one time payment of 300€.</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="pay()">Buy it for 300€</button>
+</body>
+</html>

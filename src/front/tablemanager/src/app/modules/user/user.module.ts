@@ -8,12 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewTicketComponent } from './components/tickets/view-ticket/view-ticket.component';
 import { AddTicketComponent } from './components/tickets/add-ticket/add-ticket.component';
 import { VatModalComponent } from './components/entries/vat-modal/vat-modal.component';
-import { MatError, MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { PdfGeneratorComponent } from './components/entries/pdf-generator/pdf-generator.component';
 import { AddPdfSettingsComponent } from './components/pdf-settings/add-pdf-settings/add-pdf-settings.component';
 import { MatInputModule } from '@angular/material/input';
 import { EditPDFComponent } from './components/pdf-settings/edit-pdf/edit-pdf.component';
-import { ViewPdfComponent } from './components/pdf-settings/view-pdf/view-pdf.component';
+
 
 
 
@@ -30,8 +30,7 @@ import { ViewPdfComponent } from './components/pdf-settings/view-pdf/view-pdf.co
     VatModalComponent,
     PdfGeneratorComponent,
     AddPdfSettingsComponent,
-    EditPDFComponent,
-    ViewPdfComponent
+    EditPDFComponent
   ],
   imports: [
     CommonModule,
