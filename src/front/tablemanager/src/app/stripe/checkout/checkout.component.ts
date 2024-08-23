@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { loadStripe } from '@stripe/stripe-js';
 import { HttpClient } from '@angular/common/http';
+import { StorageService } from '../../auth/services/storage/storage.service';
 
 @Component({
   selector: 'app-checkout',
@@ -28,11 +29,13 @@ export class CheckoutComponent {
 
     const stripe = await this.stripePromise;
 
-    this.http.post(`${environment.serverUrl}/api/stripe/payment`, payment).subscribe((data:any) =>{
+    this.http.post(`${environment.serverUrl}/api/stripe/payment` + "/" + StorageService.getUserId(), payment).subscribe((data:any) =>{
       stripe?.redirectToCheckout({
         sessionId: data.id,
       });
     });
+
+    
   }
 
 }

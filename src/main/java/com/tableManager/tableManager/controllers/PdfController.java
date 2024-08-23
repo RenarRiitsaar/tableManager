@@ -26,7 +26,7 @@ public class PdfController {
 
     private final PdfServiceImpl pdfService;
     private final UserServiceImpl userService;
-    private static final String UPLOAD_DIR = "src/main/resources/logos/";
+    private static final String UPLOAD_DIR = "/data01/virt131441/domeenid/www.tablemanager.ee/logos/";
 
     public PdfController(PdfServiceImpl pdfService, UserServiceImpl userService) {
         this.pdfService = pdfService;
@@ -44,13 +44,11 @@ public class PdfController {
         }
 
         String logoURL = pdfSettings.getLogoURL();
-        Resource resource = new ClassPathResource(logoURL);
+        String path = "/data01/virt131441/domeenid/www.tablemanager.ee" + logoURL;
 
-        if (!resource.exists()) {
-            return ResponseEntity.notFound().build();
-        }
 
-        byte[] imageBytes = Files.readAllBytes(resource.getFile().toPath());
+
+        byte[] imageBytes = Files.readAllBytes(Path.of(path));
         String base64 = Base64.getEncoder().encodeToString(imageBytes);
 
         return ResponseEntity.ok(base64);

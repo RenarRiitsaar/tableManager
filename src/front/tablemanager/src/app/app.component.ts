@@ -36,8 +36,10 @@ export class AppComponent {
       this.isAdminLoggedIn = StorageService.isAdmin();
       this.isUserLoggedIn = StorageService.isUser();
       this.isEnabled = StorageService.getStatus();
-      this.hasPDF();
 
+      if(this.isUserLoggedIn && this.isEnabled){
+      this.hasPDF();
+      }
     })
 
   }

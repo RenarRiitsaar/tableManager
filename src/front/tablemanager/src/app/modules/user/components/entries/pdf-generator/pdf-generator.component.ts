@@ -144,6 +144,7 @@ getBase64(){
 }
 
    generatePDF() {
+
   if (this.form.invalid) {
     return;
   }
