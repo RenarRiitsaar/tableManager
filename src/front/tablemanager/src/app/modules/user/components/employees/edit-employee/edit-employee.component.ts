@@ -41,7 +41,11 @@ export class EditEmployeeComponent implements OnInit{
       photoURL:[this.data.photoURL],
       email: [this.data.email, [Validators.required]],
       phone: [this.data.phone, [Validators.required]],
-      iban: [this.data.iban, [Validators.required]]
+      iban: [this.data.iban, [Validators.required]],
+      customSchedule: [this.data.customSchedule,[Validators.required]],
+      salary: [this.data.salary, [Validators.required]],
+      contractStartDate: [this.data.contractStartDate, [Validators.required]],
+      payType:[this.data.payType, [Validators.required]],
     });
 
     this.originalPhoto = this.data.photoURL;

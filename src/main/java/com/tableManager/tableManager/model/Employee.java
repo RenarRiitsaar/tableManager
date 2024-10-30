@@ -29,7 +29,6 @@ public class Employee {
     private double salary;
     private LocalDate contractStartDate;
     private String payType;
-
     private Long userId;
 
 }

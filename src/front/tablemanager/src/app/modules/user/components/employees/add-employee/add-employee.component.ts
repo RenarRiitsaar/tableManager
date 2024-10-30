@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { catchError, tap } from 'rxjs';
 import { StorageService } from '../../../../../auth/services/storage/storage.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-add-employee',
@@ -28,7 +29,12 @@ export class AddEmployeeComponent implements OnInit {
       photoURL:[''],
       email:['', [Validators.email]],
       phone:['', [Validators.required]],
-      iban: ['',[Validators.required]]
+      iban: ['',[Validators.required]],
+      customSchedule: [[false],[Validators.required]],
+      salary: [0, [Validators.required]],
+      contractStartDate: [, [Validators.required]],
+      payType:['', [Validators.required]],
+      userId: [StorageService.getUserId()]
 
     });
   }
@@ -76,6 +82,12 @@ export class AddEmployeeComponent implements OnInit {
     if(this.addEmployeeForm.valid){
       this.onUpload();
       const formData = this.addEmployeeForm.value;
+
+      const contractStartDate = formData.contractStartDate;
+
+      if (contractStartDate) {
+        formData.contractStartDate = formatDate(contractStartDate, 'yyyy-MM-dd', 'en');
+      }
 
       this.employeeService.addEmployee(formData).pipe(
         tap(()=>{

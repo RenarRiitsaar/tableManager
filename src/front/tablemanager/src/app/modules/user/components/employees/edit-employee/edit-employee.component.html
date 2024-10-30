@@ -35,6 +35,49 @@
       </div>
 
       <div>
+        <label>8:00 - 16:30 schedule?:</label>
+        <label>
+          <input 
+            type="radio" 
+            formControlName="customSchedule" 
+            value="false" 
+          /> Yes
+        </label>
+        <label>
+          <input 
+            type="radio" 
+            formControlName="customSchedule" 
+            value="true" 
+          /> No
+        </label>
+      </div>
+
+      <label for="salary">Employee salary:</label>
+      <input id="salary" formControlName="salary" type="text" placeholder="Employee salary">
+      <div *ngIf="editEmployeeForm.get('salary')?.invalid && editEmployeeForm.get('salary')?.touched">
+        <span class="error-message">Enter employee salary!</span>
+      </div>
+
+      <div>
+        <label>Pay type:</label>
+        <label>
+          <input 
+            type="radio" 
+            formControlName="payType" 
+            value="hourly" 
+          /> Hourly
+        </label>
+        <label>
+          <input 
+            type="radio" 
+            formControlName="payType" 
+            value="monthly" 
+          /> Monthly
+        </label>
+      </div>
+
+
+      <div>
         <label for="photoUrl">Upload Photo:</label>
         <input type="file" (change)="onFileSelected($event)"/>
         <img *ngIf="selectedFile" [src]="selectedFile" alt="Employee Photo"/>
