@@ -1,3 +1,4 @@
+import { EmployeeEventService } from './../../../../../auth/services/employeeEvent/employee-event.service';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from '../../../../../model/Employee';
@@ -6,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatDate } from '@angular/common';
 import { catchError, tap } from 'rxjs';
+import { StorageService } from '../../../../../auth/services/storage/storage.service';
 
 @Component({
   selector: 'app-add-vacation',
@@ -20,7 +22,8 @@ export class AddVacationComponent {
               private vacationService:VacationRequestService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private snackbar: MatSnackBar,
-              private dialogRef: MatDialogRef<AddVacationComponent>
+              private dialogRef: MatDialogRef<AddVacationComponent>,
+              private employeeEventService:EmployeeEventService
               
   ){}
   ngOnInit(): void {
@@ -34,13 +37,73 @@ export class AddVacationComponent {
       creationDate: [formatDate(new Date(), 'yyyy-MM-dd', 'en')]
     });
   }
+
+  calculateDateRange(){
+    let empEventStartDate = new Date(this.addVacationForm.get('startDate')?.value);
+    let empEventEndDate = new Date(this.addVacationForm.get('endDate')?.value);
+    let daysBetween = 0;
+  
+    if (empEventStartDate && empEventEndDate) {
+    
+      empEventStartDate.setHours(0, 0, 0, 0);
+      empEventEndDate.setHours(0, 0, 0, 0);
+  
+  
+      const diffInMs = empEventEndDate.getTime() - empEventStartDate.getTime();
+  
+      daysBetween = Math.ceil(diffInMs / (1000 * 60 * 60 * 24)) + 1;
+    }
+  
+    return daysBetween;
+  }
+
+  getDatesBetween(startDate: Date, endDate: Date): string[] {
+    const dates = [];
+  
+  
+    
+    let currentDate = new Date(startDate);
+    currentDate.setDate(startDate.getDate() +1)
+    currentDate.setHours(0, 0, 0, 0);
+    
+    let finalDate = new Date(endDate);
+    finalDate.setDate(endDate.getDate() +1);
+    finalDate.setHours(0, 0, 0, 0);
+  
+    
+    while (currentDate <= finalDate) {
+      dates.push(currentDate.toISOString().split('T')[0]); 
+      
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return dates;
+  }
   
   onSubmit(){
     if(this.addVacationForm.valid){
       const formData = this.addVacationForm.value;
+
+      let startDate = new Date(formData.startDate);
+      let endDate = new Date(formData.endDate);
+
+      let daysBetween = this.getDatesBetween(startDate,endDate);
   
       this.vacationService.addRequest(formData).pipe(
         tap(()=>{
+          for(let day of daysBetween){
+
+            const empEvent = {
+              employeeId: this.addVacationForm.get('employeeId')?.value,
+              eventType: 'vacation',
+              startDate: day,
+              userId: StorageService.getUserId(),
+              workHours: 8
+            }
+
+            this.employeeEventService.addEvent(empEvent).subscribe();
+          }
+
           this.snackbar.open('Request added!', 'Close', {duration:5000});
         }),
         catchError((error)=>{

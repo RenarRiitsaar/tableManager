@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter @Setter
 @AllArgsConstructor
@@ -23,6 +25,11 @@ public class Employee {
     private String email;
     private String phone;
     private String IBAN;
+    private boolean customSchedule;
+    private double salary;
+    private LocalDate contractStartDate;
+    private String payType;
+
     private Long userId;
 
 }
