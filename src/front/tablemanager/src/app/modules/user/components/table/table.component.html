@@ -1,0 +1,70 @@
+
+<div @fade [@inOut]="slideIn" class="excel-table">
+    <h1>Webxel</h1>
+    <button (click)="createTable()">Create New Table</button>
+    <p *ngIf="tables">Ctrl+click on cell to edit or delete table cells.</p>
+    <p *ngIf="tables">Double left click on cell to add to equation and right click on cell to calculate</p>
+    <p *ngIf="tables">Pay in mind that order of operations is left to right!</p>
+
+    <div>Base value: {{cellFirstSelection}}
+        <input type="text" class="formula-input" placeholder="Formula"[(ngModel)]="inputValue" [disabled]="true">
+        
+        <select title="click on cell to add it to equazion and right click on  cell to calculate" [(ngModel)]="selectedOperation">
+          <option value="+">SUM</option>
+          <option value="-">SUBTRACT</option>
+          <option value="*">MULTIPLY</option>
+          <option value="/">DIVIDE</option>
+        </select>
+        
+        <div class="table-container-scroll">
+    <div *ngFor="let table of tables; let tableIndex = index">
+       
+        <h4 class="centered">{{ table.name }}</h4>
+        <button (click)="exportToCSV(table.id)">Export to CSV</button>
+        <br>
+    
+        <div class="table-container">
+            <table class="excel-table">
+                <thead>
+                    <tr>
+                        <th><button mat-button (click)="addRow(table.id)">Add row</button></th>
+                        
+                        <th *ngFor="let col of getColumnHeaders(table.rows); let colIndex = index">{{ col }}</th>
+                        <th><button mat-button (click)="addColumn(table)">Add Column</button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <tr *ngFor="let row of table.rows; let rowIndex = index" [@deleteSlide]="slideStates[row.id] || 'in'">
+                    
+                        <td>{{ rowIndex + 1 }}
+                           
+                            <a title="Delete row" (click)="deleteRow(table.id, row.id)">
+                                <span class="fa-stack">
+                                  <i class="fa fa-square fa-stack-2x" style="color: red;"></i>
+                                  <i class="fa fa-remove fa-stack-1x fa-inverse"></i>
+                                </span>
+                              </a>
+                        </td>
+                        <td *ngFor="let cell of row.cells; let colIndex = index">
+                            <div (contextmenu)="onRightClick($event, cell.id, row.id)">
+                            <input  type="text" (dblclick)="getCellId(cell.id, row.id)" (click)="editCell($event, cell.id, row.id)" [(ngModel)]="cell.value" (input)="onCellEdit(cell.id, table.id, cell.value, cell.dataType, cell.formula)"  />
+                            </div>
+                        </td>
+                        <td>
+                            <a title="Add cell"  mat-button (click)="addCell(row.id)">
+                                <span class="fa-stack">
+                                  <i class="fa fa-square fa-stack-2x" style="color: rgb(53, 228, 53);"></i>
+                                  <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                </span>
+                              </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+

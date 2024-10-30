@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+    padding:0;
+    margin: 0;
+    height: 100%;
+  }
+
+/* Container Style */
+.container {
+    width: 90%;
+    max-width: 1200px; /* Max width to prevent too wide a layout */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    text-align: center;
+    padding: 100px 20px; 
+    background-color: #f8f9fa; 
+    color: #080606; /* White text color for contrast */
+    margin-top: 20px; /* Margin to create space from the top */
+    
+}
+
+.hero-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2em;
+    color: #181515;
+}
+
+/* Features Section Styles */
+.features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    padding: 50px 0;
+    background-color: #f8f9fa; /* White background for contrast */
+    margin: 20px 0; /* Space above and below section */
+}
+
+.feature {
+    flex: 1 1 30%; /* Flex-grow, flex-shrink, and flex-basis for responsive layout */
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    background-color: #f4f4f9; /* Light background color for each feature */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.feature:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+}
+
+.feature h3 {
+    font-size: 1.8em;
+    color: #194072; /* Dark blue color for headings */
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 1em;
+    color: #555;
+}
+
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .features {
+        flex-direction: column; /* Stack features vertically on smaller screens */
+    }
+
+    .feature {
+        flex: 1 1 100%; /* Make each feature full-width on smaller screens */
+    }
+
+    .hero-section {
+        padding: 70px 20px; /* Reduced padding for smaller screens */
+    }
+
+    .hero-section h2 {
+        font-size: 2em; /* Smaller font size for headings */
+    }
+
+    .hero-section p {
+        font-size: 1em; /* Smaller font size for paragraphs */
+    }
+}

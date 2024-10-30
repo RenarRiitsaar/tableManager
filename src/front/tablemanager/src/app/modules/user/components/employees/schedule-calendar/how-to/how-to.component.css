@@ -1,0 +1,28 @@
+.center{
+    display:flex;
+ 
+    justify-content: center;
+}
+
+.paragraph{
+margin-left: 10px;
+margin-right:10px;
+}
+
+.paragraph-red{
+margin-left: 10px;
+margin-right:10px;
+color:red;
+}
+
+.paragraph-gray{
+    margin-left: 10px;
+margin-right:10px;
+color:gray;
+}
+
+.paragraph-orange{
+    margin-left: 10px;
+    margin-right:10px;
+    color:orange;
+}

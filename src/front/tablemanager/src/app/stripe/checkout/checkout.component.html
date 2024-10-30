@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment required</title>
 </head>
 <body>
     <div class="container">
-        <h1>Payment Required!</h1>
-        <p>In order to use the app you need to make a one time payment of 300€.</p>
+        <h1>Choose a payment plan.</h1>
+        <p>In order to use the app you need to select the payment plan.</p>
+   
+        <div class="container">
+            <button mat-raised-button color="primary" *ngIf="user.hasTrial" (click)="activateTrial()">30-day trial</button>
+            </div>
+            <br>
+    <div class="container">
+    <button mat-raised-button color="primary" (click)="pay(799)">One month: 7.99€</button>
     </div>
-    <button mat-raised-button color="primary" (click)="pay()">Buy it for 300€</button>
+    <br>
+    <div class="container">
+        <button mat-raised-button color="primary" (click)="pay(2099)">3 months: 20.99€</button>
+        </div>
+        <br>
+        <div class="container">
+            <button mat-raised-button color="primary" (click)="pay(3999)">6 months: 39.99€</button>
+            </div>
+        </div>
+
 </body>
+
+<router-outlet></router-outlet>
 </html>

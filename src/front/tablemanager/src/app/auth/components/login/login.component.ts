@@ -34,14 +34,21 @@ togglePasswordVisibility(){
 
 
 onSubmit() {
+  
+
   this.authService.login(this.loginForm.value).pipe(
     tap((res) => {
       if (res.id !== null) {
+        this.authService.checkTrial(this.loginForm.value);
         const user = {
           id: res.id,
           role: res.role,
-          enabled:res.enabled
+          enabled:res.enabled,
+          hasTrial: res.hasTrial
         };
+
+
+      
         StorageService.saveUser(user);
         StorageService.saveAccessToken(res.accessToken);
         this.authService.startLogoutTimer();
@@ -53,7 +60,7 @@ onSubmit() {
           else if(!StorageService.getStatus()){
             this.router.navigateByUrl('/checkout');
           
-        } else {
+         }else {
           this.router.navigateByUrl('/user/entry');
         }
 

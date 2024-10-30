@@ -1,0 +1,11 @@
+.calendar-container {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height:65vh;
+  }
+  
+  .fullcalendar {
+    max-width: 800px;
+    width: 100%;
+  }

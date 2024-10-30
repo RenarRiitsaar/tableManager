@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html @fade [@inOut]="slideIn" lang="en">
+<head>
+  <title>Sales</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  
+</head>
+<body>
+  <div  class="container">
+    <div  class="row">
+      <h2 >Sales</h2>
+      <p>Here are your generated pdf sales.</p>
+      <h6 class="table-link-danger">The backup of invoices are stored in server for 3 months.</h6>
+      <br>
+
+      <div class="chart-container-wrapper">
+        <div class="chart-container-left">
+          <div>
+            <label for="weekSelectorLeft"></label>
+            <select id="weekSelectorLeft" (change)="onDateRangeChange($event)">
+              <option id="currentWeekRange" value="current">{{dateToString(firstDay)}} - {{dateToString(lastDay)}}</option>
+              <option value="-1">{{dateToString(subtractDays(firstDay.toString(), 7))}} - {{dateToString(subtractDays(lastDay.toString(), 7))}}</option>
+              <option value="-2">{{dateToString(subtractDays(firstDay.toString(), 14))}} - {{dateToString(subtractDays(lastDay.toString(), 14))}}</option>
+              <option value="-3">{{dateToString(subtractDays(firstDay.toString(), 21))}} - {{dateToString(subtractDays(lastDay.toString(),21))}}</option>
+            </select>
+          </div>
+        </div>
+
+      
+        <div class="chart-container-right">
+          <div>
+            <label for="weekSelectorRight"></label>
+            <select id="weekSelectorRight" (change)="onDateRangeChange($event)">
+              <option value="currentYear">{{currentYear}}</option>
+              <option value="lastYear">{{lastYear}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container">
+      <ngx-charts-bar-vertical *ngIf="loaded"
+      [view]="[500, 200]"
+      [scheme]="colorScheme"
+      [results]="dailyData"
+      [gradient]="true"
+      [xAxis]="true"
+      [tooltipDisabled] = "false"
+      [yAxis]="true">
+      <ng-template #tooltipTemplate let-model="model">
+        <div>
+          <div><span>{{model.name}}</span></div>
+          <div><span>{{getDate(model.name)}}</span></div>
+          <br>
+           <div><span> Sales: {{model.value}}</span></div>
+           <span>Total: {{ getTotalDailyPrice(model.name).toFixed(2)}}€  </span>
+      </div>
+    </ng-template>
+    </ngx-charts-bar-vertical>
+
+    <ngx-charts-bar-vertical  *ngIf="loaded"
+    [view]="[500, 200]"
+    [scheme]="colorScheme"
+    [results]="monthlyData"
+    [gradient]="true"
+    [xAxis]="true"
+    [yAxis]="true">
+    <ng-template #tooltipTemplate let-model="model">
+      <div>
+        <div><span>{{model.name}}</span></div>
+        <div><span>{{getYear(model.name)}}</span></div>
+        <br>
+         <div><span> Sales: {{model.value}}</span></div>
+         <span>Total: {{ getTotalMonthlyPrice(model.name).toFixed(2)}}€  </span>
+    </div>
+  </ng-template>
+  </ngx-charts-bar-vertical>
+  
+  </div>
+ 
+      <div class="search-bar">
+        <input type="text"   [(ngModel)]="searchQuery" (ngModelChange)="searchSale($event)"  placeholder="Search sale">
+      </div>
+
+      <div class="col-lg-12">
+        <div class="main-box clearfix">
+          <div class="table-wrapper">
+            <table class="table user-list">
+              <thead>
+                <tr>
+                  <th class="text-center"> <a class="table-link" (click)="sortByInvoiceNum()" title="Sort by Invoice number">
+                    <span class="fa-stack">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
+                    </span>
+                  </a><span>Invoice Nr.</span></th>
+
+                  <th class="text-center"> <a class="table-link" (click)="sortByInvoiceType()" title="Sort by Invoice type">
+                    <span class="fa-stack">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
+                    </span>
+                  </a><span>Invoice type</span></th>
+
+                  <th class="text-center"><a class="table-link" (click)="sortByClientName()" title="Sort by client name">
+                    <span class="fa-stack">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
+                    </span>
+                  </a><span>Client</span></th>
+                   
+
+                  <th class="text-center"> <a class="table-link" (click)="sortByEmail()" title="Sort by email">
+                    <span class="fa-stack">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
+                    </span>
+                  </a><span>Email</span></th>
+
+                  <th class="text-center"> <a class="table-link" (click)="sortByRegNr()" title="Sort by registration number">
+                    <span class="fa-stack">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
+                    </span>
+                  </a><span>Reg. nr.</span></th>
+
+                  <th class="text-center"> <a class="table-link" (click)="sortByDate()" title="Sort by date">
+                    <span class="fa-stack">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
+                    </span>
+                  </a><span>Date</span></th>
+
+                  <th><a class="table-link" title="Sort by actions"></a><span>Actions</span></th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr  *ngFor="let sale of sales" [@deleteSlide]="slideStates[sale.invoiceNumber] || 'in'">
+                  <td><a>{{ sale.invoiceNumber }}</a></td>
+                  <td><a>{{ sale.invoiceType }}</a></td>
+                  <td><a>{{ sale.clientName }}</a></td>
+                  <td><a>{{ sale.customerEmail }}</a></td>
+                  <td><a>{{ sale.regNr }}</a></td>
+                  <td><a>{{ sale.saleDate }}</a></td>
+                  <td [@deleteSlide]="slideStates[sale.invoiceNumber] || 'in'">
+                    <a class="table-link" (click)="openSendMail(sale.invoiceNumber)" title="Mail invoice">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-send fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+
+                    <a class="table-link-check" (click)="downloadPdf(sale.invoiceNumber)" title="Download PDF">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-download fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+
+                    <a class="table-link-danger"  (click)="deleteSale(sale)" title="Delete sale">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

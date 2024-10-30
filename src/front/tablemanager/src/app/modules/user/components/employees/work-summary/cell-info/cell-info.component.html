@@ -1,0 +1,18 @@
+<div class="event-details">
+    <div class="typeContainer">
+    <h2 *ngIf="data.event.eventType == 'work'" class="h2-work">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
+    <h2 *ngIf="data.event.eventType == 'pardoned'" class="h2-pardoned">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
+    <h2 *ngIf="data.event.eventType == 'illness'" class="h2-sick">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
+    <h2 *ngIf="data.event.eventType == 'absent'" class="h2-absent">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
+</div>
+
+    <div *ngIf="data.event">
+      <p class="paragraph"><strong>Employee:</strong> {{ data.employeeName }}</p>
+      <p class="paragraph"><strong>Date: </strong>{{data.event.startDate | date:'dd.MM.yyyy'}}</p>
+      <p class="paragraph"><strong>Event Type:</strong> {{ data.event.eventType }}</p>
+      <p class="paragraph"><strong>Hours:</strong> {{ data.event.workHours }}</p>
+    </div>
+    <div *ngIf="!data">
+      <p>No event data available for this date.</p>
+    </div>
+  </div>

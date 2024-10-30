@@ -1,0 +1,34 @@
+
+<div class="form-container">
+<form (ngSubmit)="uploadAttachmentandSend()">
+    <div class=""><h2>Send Invoice</h2></div>
+   
+    <div>
+      <label for="from">From:</label>
+      <input type="email" id="from" [(ngModel)]="emailData.from" name="from" placeholder="Your email address:">
+    </div>
+  
+    <div>
+      <label for="to">To:</label>
+      <input type="email" id="to" [(ngModel)]="emailData.to" name="to" placeholder="Destination email address">
+    </div>
+  
+    <div>
+      <label for="subject">Title:</label>
+      <input type="text" id="subject" [(ngModel)]="emailData.subject" name="subject" placeholder="Email title" required>
+    </div>
+  
+    <div>
+      <label for="body">Message:</label>
+      <textarea id="body" [(ngModel)]="emailData.body" name="body" placeholder="Message: 
+      Note: The messaging might not work under your companies email because of authentication . You can use YourCompanyName@tablemanager.ee instead." required></textarea>
+    </div>
+  
+    <div>
+      <label for="attachment">Choose a file:</label>
+      <input type="file" (change)="onFileChange($event)">
+    </div>
+  
+    <button  type="submit">Send</button>
+  </form>
+</div>

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Edit Cell</h2>
+<form [formGroup]="editCellForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>Cell Value</mat-label>
+      <input matInput formControlName="value" placeholder="Enter cell value" />
+      <mat-error *ngIf="editCellForm.get('value')?.invalid && editCellForm.get('value')?.touched">
+        Cell value is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Data Type</mat-label>
+      <mat-select formControlName="dataType">
+        <mat-option value="text">Text</mat-option>
+        <mat-option value="number">Number</mat-option>
+        <mat-option value="date">Date</mat-option>
+        <!-- Add more data types as needed -->
+      </mat-select>
+      <mat-error *ngIf="editCellForm.get('dataType')?.invalid && editCellForm.get('dataType')?.touched">
+        Data type is required.
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-button type="button" (click)="deleteCell()">Delete cell</button>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" type="submit" [disabled]="editCellForm.invalid">Save</button>
+    <button mat-button type="button" (click)="onClose()">Cancel</button>
+  </mat-dialog-actions>
+</form>

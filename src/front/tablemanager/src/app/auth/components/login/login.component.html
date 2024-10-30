@@ -25,10 +25,14 @@
                                 </mat-form-field>
                         <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid"
                         (click)="onSubmit()">Login</button>
+                
             </form>
         </mat-card-content>
         <mat-card-actions>
             <button mat-button color="accent" routerLink="/signup">Don't have a account? Sign Up</button>
+            <button mat-button color="accent" routerLink="/forgotPassword">Forgot password?</button>
+            
+
         </mat-card-actions>
     </mat-card>
 </div>

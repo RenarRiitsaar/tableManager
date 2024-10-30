@@ -24,6 +24,17 @@ export class PdfsettingsService {
     });
   }
 
+  deleteLogo(logoUrl:string): Observable<any>{
+    return this.http.delete(BASIC_URL + `/api/user/${logoUrl}`,{
+      headers: this.authHeader()
+    }).pipe(
+      catchError((error) =>{
+        console.error("Error getting vacation days: " + error);
+        throw error;
+      })
+    );
+  }
+
   getPdfSettings(): Observable<PdfSettings>{
     return this.http.get<PdfSettings>(BASIC_URL + "/api/pdf/getPdfSettings",
       {headers: this.authHeader()}).pipe(

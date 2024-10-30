@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subscription, catchError, throwError, timer } from 'rxjs';
+import { Observable, Subscription, catchError, tap, throwError, timer } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,6 +22,12 @@ logoutTimer! : Subscription;
 
   signUp(signupRequest: any): Observable<any>{
     return this.http.post(API_URL+"/api/auth/signup", signupRequest).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  checkTrial(request:any): Observable<any>{
+    return this.http.post(API_URL + "/api/auth/checkTrial", request).pipe(
       catchError(this.handleError)
     );
   }
@@ -48,7 +54,12 @@ logoutTimer! : Subscription;
       this.logoutTimer.unsubscribe();
     
     }
-    this.logoutTimer = timer(15*60*1000).subscribe(() => this.logout());
+    this.logoutTimer = timer(29*60*1000).pipe(
+      tap(() =>{
+      this.logout();
+      this.router.navigateByUrl("/login");
+      })
+    ).subscribe();
     }
 
   handleError(error: HttpErrorResponse): Observable<never> {

@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html @fade [@inOut]="slideIn" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entry</title>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <div class="row">
-      <h2 class="centered">Entries</h2>
+      <h2  class="centered">Entries</h2>
       <br>
       <div class="search-bar">
         <input type="text"   [(ngModel)]="searchQuery" (ngModelChange)="searchEntry($event)"  placeholder="Search entries">
@@ -21,36 +19,35 @@
             <table class="table user-list">
               <thead>
                 <tr>
-                  <th class="text-center"> <a class="table-link" (click)="sortByArtNum()">
+                  <th class="text-center"> <a class="table-link" (click)="sortByArtNum()" title="Sort by Article Number">
                     <span class="fa-stack">
                       <i class="fa fa-square fa-stack-2x"></i>
                       <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
                     </span>
                   </a><span>Art. Number</span>
-                     
                       </th>
-                  <th class="text-center"><a class="table-link" (click)="sortByName()">
+                  <th class="text-center"><a class="table-link" (click)="sortByName()" title="Sort by Article Name">
                     <span class="fa-stack">
                       <i class="fa fa-square fa-stack-2x"></i>
                       <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
                     </span>
                   </a><span>Art. Name</span>
                     </th>
-                  <th class="text-center"><a class="table-link" (click)="sortByPrice()">
+                  <th class="text-center"><a class="table-link" (click)="sortByPrice()" title="Sort by price">
                     <span class="fa-stack">
                       <i class="fa fa-square fa-stack-2x"></i>
                       <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
                     </span>
                   </a><span>Price</span></th>
                   <th class="text-center"><span>VAT Price</span>
-                    <a class="table-link" (click)="openVatModal()">
+                    <a class="table-link" (click)="openVatModal()" title="Set VAT rate">
                       <span class="fa-stack">
                         <i class="fa fa-square fa-stack-2x"></i>
                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                       </span>
                     </a>
                   </th>
-                  <th class="text-center"> <a class="table-link" (click)="sortByAmount()">
+                  <th class="text-center"> <a class="table-link" (click)="sortByAmount()" title="Sort by inventory amount">
                     <span class="fa-stack">
                       <i class="fa fa-square fa-stack-2x"></i>
                       <i class="fa fa-sort fa-stack-1x fa-inverse"></i>
@@ -58,60 +55,79 @@
                   </a><span>Amount</span></th>
                   <th class="text-center"><a class="table-link">
                      
-                      </a><span>Actions</span><a class="table-link" (click)="addEntry()">
+                      </a><span>Actions</span><a class="table-link" (click)="addEntry()" title="Add an entry">
                         <span class="fa-stack">
                           <i class="fa fa-square fa-stack-2x"></i>
                           <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                         </span>
                       </a>
+                      
+                      <a class="table-link-check" (click)="generatePDF()" title="Generate PDF">
+                        <span class="fa-stack">
+                          <i class="fa fa-square fa-stack-2x"></i>
+                          <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+
                   </th>
                 </tr>
               </thead>
               <tbody>
             
-                <tr *ngFor="let entry of entries">
+                <tr *ngFor="let entry of entries"[@deleteSlide]="slideStates[entry.id] || 'in'">
                   <td *ngIf="!editMode[entry.id]"><a>{{ entry.articleNum }}</a></td>
                   <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.articleNum" /></td>
 
                   <td *ngIf="!editMode[entry.id]"><a>{{ entry.articleName }}</a></td>
-                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.articleName" /></td>
+                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.articleName" maxlength="100"/></td>
 
-                  <td *ngIf="!editMode[entry.id]"><a>{{ entry.priceBeforeTax }}</a></td>
-                  <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.priceBeforeTax" /></td>
-
-                  <td>{{entry.priceAfterTax}}</td>
+                  <td *ngIf="!editMode[entry.id]">
+                    <a>{{ entry.priceBeforeTax | number:'1.2-2' }}</a>
+                  </td>
+                  <td *ngIf="editMode[entry.id]">
+                    <input [(ngModel)]="entry.priceBeforeTax" (ngModelChange)="onPriceBeforeTaxChange(entry)" />
+                  </td>
+                  
+                  
+                  <td *ngIf="!editMode[entry.id]">
+                    <a>{{ entry.priceAfterTax | number:'1.2-2' }}</a>
+                  </td>
+                  <td *ngIf="editMode[entry.id]">
+                    <input [(ngModel)]="entry.priceAfterTax" (ngModelChange)="onPriceAfterTaxChange(entry)" />
+                  </td>
 
                   <td *ngIf="!editMode[entry.id]"><a>{{ entry.inventoryAmount }}</a></td>
                   <td *ngIf="editMode[entry.id]"><input [(ngModel)]="entry.inventoryAmount" /></td>
 
                   <td style="width: 20%;">
                    
-                    <a class="table-link" *ngIf="!editMode[entry.id]" (click)="enableEditing(entry.id)">
+                    <a class="table-link" *ngIf="!editMode[entry.id]" (click)="enableEditing(entry.id)" title="Edit entry">
                       <span class="fa-stack">
                         <i class="fa fa-square fa-stack-2x"></i>
                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                       </span>
                     </a>
-                    <a class="table-link-check" *ngIf="editMode[entry.id]" (click)="saveEntry(entry)">
+                    <a class="table-link-check" *ngIf="editMode[entry.id]" (click)="saveEntry(entry)" title="Save entry">
                       <span class="fa-stack">
                         <i class="fa fa-square fa-stack-2x"></i>
                         <i class="fa fa-save fa-stack-1x fa-inverse"></i>
                       </span>
                     </a>
-                    <a class="table-link-unanswered" *ngIf="editMode[entry.id]" (click)="cancelEditMode(entry.id)">
+                    <a class="table-link-unanswered" *ngIf="editMode[entry.id]" (click)="cancelEditMode(entry.id)" title="Cancel editing">
                       <span class="fa-stack">
                         <i class="fa fa-square fa-stack-2x"></i>
                         <i class="fa fa-times fa-stack-1x fa-inverse"></i>
                       </span>
                     </a>
 
-                    <a class="table-link" (click)="generatePDF(entry)">
-                        <span class="fa-stack">
-                          <i class="fa fa-square fa-stack-2x"></i>
-                          <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                        </span>
-                      </a>
-                    <a class="table-link-danger" *ngIf="!editMode[entry.id]" (click)="deleteEntry(entry.id)">
+                    <a class="table-link-check" (click)="productSelector(entry)" title="Add to PDF">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+
+                    <a class="table-link-danger" *ngIf="!editMode[entry.id]" (click)="deleteEntry(entry.id)" title="Delete entry">
                         <span class="fa-stack">
                           <i class="fa fa-square fa-stack-2x"></i>
                           <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>

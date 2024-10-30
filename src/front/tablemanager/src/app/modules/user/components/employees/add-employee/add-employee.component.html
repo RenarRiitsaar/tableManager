@@ -1,0 +1,39 @@
+<div class="add-employee-container">
+
+    <h2>Add Employee</h2>
+    <form [formGroup]="addEmployeeForm" (ngSubmit)="onSubmit()">
+      
+      <label for="employeeName">Employee Name:</label>
+      <input id="employeeName" formControlName="name" type="text" placeholder="Enter employee name">
+      
+      <div *ngIf="addEmployeeForm.get('name')?.invalid && addEmployeeForm.get('name')?.touched">
+        <span class="error-message">Employee name is required.</span>
+      </div>
+
+      <label for="email">Employee email:</label>
+      <input id="email" formControlName="email" type="text" placeholder="Employee email">
+      <div *ngIf="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched">
+        <span class="error-message">Enter employee email!</span>
+      </div>
+
+      <label for="phone">Employee phone number:</label>
+      <input id="phone" formControlName="phone" type="text" placeholder="Employee phone number">
+      <div *ngIf="addEmployeeForm.get('phone')?.invalid && addEmployeeForm.get('phone')?.touched">
+        <span class="error-message">Enter employee phone number!</span>
+      </div>
+
+      <label for="iban">Employee IBAN:</label>
+      <input id="iban" formControlName="iban" type="text" placeholder="Employee IBAN">
+      <div *ngIf="addEmployeeForm.get('iban')?.invalid && addEmployeeForm.get('iban')?.touched">
+        <span class="error-message">Enter employee IBAN number!</span>
+      </div>
+
+      <div>
+        <label for="photoUrl">Upload Photo:</label>
+        <input type="file" (change)="onFileSelected($event)"/>
+        <img *ngIf="selectedFile" [src]="selectedFile" alt="Employee Photo"/>
+        </div>
+
+      <button type="submit" [disabled]="addEmployeeForm.invalid">Add Employee</button>
+    </form>
+</div>

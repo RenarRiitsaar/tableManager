@@ -34,6 +34,14 @@ import { EditUserDialogComponent } from './modules/admin/components/edit-user-di
 import { CancelComponent } from './stripe/cancel/cancel.component';
 import { SuccessComponent } from './stripe/success/success.component';
 import { CheckoutComponent } from './stripe/checkout/checkout.component';
+import { HomeComponent } from './public-components/home/home.component';
+import { FooterComponent } from './public-components/footer/footer.component';
+import { QuickstartComponent } from './public-components/quickstart/quickstart.component';
+import { ContactUsComponent } from './public-components/contact-us/contact-us.component';
+import { ResetPasswordComponent } from './public-components/reset-password/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './public-components/reset-password/forgot-password/forgot-password.component';
+import { HoverMenuDirective } from './public-components/hoverMenu/hover-menu.directive';
+import { NgxChartsModule, TooltipModule } from '@swimlane/ngx-charts';
 
 
 
@@ -41,6 +49,7 @@ import { CheckoutComponent } from './stripe/checkout/checkout.component';
 
 @NgModule({
   declarations: [
+    HoverMenuDirective,
     AppComponent,
     LoginComponent,
     SignupComponent,
@@ -48,7 +57,13 @@ import { CheckoutComponent } from './stripe/checkout/checkout.component';
     EditUserDialogComponent,
     CancelComponent,
     SuccessComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    HomeComponent,
+    FooterComponent,
+    QuickstartComponent,
+    ContactUsComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
     
   ],
   imports: [
@@ -80,10 +95,15 @@ import { CheckoutComponent } from './stripe/checkout/checkout.component';
     MatDialogModule,
     MatTableModule,
     MatListModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    NgxChartsModule,
+    TooltipModule
 
   ],
+  exports: [
+    HoverMenuDirective
+  ],
+
   providers: [
     provideAnimationsAsync(),
     provideHttpClient()

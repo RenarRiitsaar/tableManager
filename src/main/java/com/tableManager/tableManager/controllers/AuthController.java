@@ -3,9 +3,11 @@ package com.tableManager.tableManager.controllers;
 import com.tableManager.tableManager.dto.AuthResponseDTO;
 import com.tableManager.tableManager.dto.LoginDTO;
 import com.tableManager.tableManager.dto.RegisterDTO;
+import com.tableManager.tableManager.model.Sales;
 import com.tableManager.tableManager.model.User;
 import com.tableManager.tableManager.security.JwtGenerator;
 import com.tableManager.tableManager.service.UserService;
+import com.tableManager.tableManager.service.impl.SalesServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,6 +35,10 @@ public class AuthController {
     private  AuthenticationManager authenticationManager;
     @Autowired
     private  UserService userService;
+    @Autowired
+    private SalesServiceImpl salesService;
+
+    private final String BASE_UPLOAD_DIR = "/data01/virt131441/domeenid/www.tablemanager.ee/clientSales/";
 
 
 @PostMapping("/signup")
@@ -44,18 +55,55 @@ public ResponseEntity<User> signUp(@RequestBody RegisterDTO registerDTO) {
 
     }
 
+    @PostMapping("/checkTrial")
+    public ResponseEntity<AuthResponseDTO> checkSubscription(@RequestBody LoginDTO loginDTO) {
+        User user = userService.findByUsername(loginDTO.getUsername());
+        List<Sales> sales = salesService.getSalesByUserId(user.getId());
+
+
+        if( user.getTrialEndDate() != null && user.isHasTrial() &&
+                user.getTrialEndDate().isBefore(LocalDateTime.now())){
+            userService.endTrial(user);
+        }
+
+        if(user.getSubscriptionStartDate() != null && user.isEnabled()
+                && user.getSubscriptionEndDate().isBefore(LocalDateTime.now())){
+
+            userService.endSubscription(user);
+        }
+
+        for(Sales sale : sales){
+            Path file = Path.of(BASE_UPLOAD_DIR + user.getId() + "/" + sale.getInvoiceNumber() + ".pdf");
+
+            if(Files.exists(file) && sale.getSaleDate().isBefore(LocalDateTime.now().minusDays(90))){
+                try {
+                    Files.delete(file);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+
+        User user = userService.findByUsername(loginDTO.getUsername());
+        checkSubscription(loginDTO);
+
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
 
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
-                User user = userService.findByUsername(loginDTO.getUsername());
                 String roleName = userService.findByRoleId(user.getRoles());
-                boolean isEnabled = user.isEnabled();
+
                 return new ResponseEntity<>(new AuthResponseDTO(token, roleName, user.getId(),
-                        user.getUsername(), user.getEmail(),isEnabled), HttpStatus.OK);
+                        user.getUsername(), user.getEmail(),user.isEnabled(), user.isHasTrial()), HttpStatus.OK);
 
     }
 }

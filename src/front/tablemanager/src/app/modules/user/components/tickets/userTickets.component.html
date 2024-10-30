@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html @fade [@inOut]="slideIn" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User List</title>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   
@@ -20,7 +18,7 @@
                   <th class="text-center"><span>Ticket ID</span></th>
                   <th class="text-center"><span>Active ticket?</span></th>
                   <th class="text-center"><span>Actions</span> <a  class="table-link">
-                    <span class="fa-stack" (click)="addTicket()">
+                    <span class="fa-stack" (click)="addTicket()" title="Add ticket">
                       <i class="fa fa-square fa-stack-2x"></i>
                       <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                     </span>
@@ -30,7 +28,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let ticket of tickets">
+                <tr *ngFor="let ticket of tickets" [@deleteSlide]="slideStates[ticket.id] || 'in'">
                   <td><a>{{ ticket.id }}</a></td>
 
                   <td class="text-center">
@@ -45,14 +43,14 @@
                       'table-link-check': ticket.answer !== null,
                       'table-link-unanswered': ticket.answer === null
                     }">
-                  <span class="fa-stack" (click)="viewTicket(ticket.id)">
+                  <span class="fa-stack" (click)="viewTicket(ticket.id)" title="View ticket">
                     <i class="fa fa-square fa-stack-2x"></i>
                     <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                   </span>
                 </a>
                      
                     <a  class="table-link-danger">
-                      <span class="fa-stack" (click)="deleteTicket(ticket.id)">
+                      <span class="fa-stack" (click)="deleteTicket(ticket.id)" title="Delete ticket">
                         <i class="fa fa-square fa-stack-2x"></i>
                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                       </span>

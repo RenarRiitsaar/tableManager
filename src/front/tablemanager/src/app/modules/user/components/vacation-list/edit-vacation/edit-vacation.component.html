@@ -1,0 +1,22 @@
+<div class="edit-vacation-container">
+    <h2>Edit Vacation
+        <a class="table-link-danger" (click)="deleteRequest(data.id)"  title="Delete vacation request">
+        <span class="fa-stack">
+          <i class="fa fa-square fa-stack-2x"></i>
+          <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+        </span>
+      </a></h2>
+   
+    <form [formGroup]="editVacationForm" (ngSubmit)="onSubmit()">
+        <label for="startDate">Start Date:</label>
+        <input id="startDate" formControlName="startDate" type="date">
+    
+        <label for="endDate">End Date:</label>
+        <input id="endDate" formControlName="endDate" type="date">
+    
+        <label for="comment">Comment:</label>
+        <textarea id="comment" formControlName="comment"></textarea>
+    
+        <button type="submit" [disabled]="editVacationForm.invalid">Edit</button>
+    </form>
+</div>
