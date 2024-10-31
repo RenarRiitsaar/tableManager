@@ -15,15 +15,6 @@
     flex-direction: column;
   }
   
-  input[type="date"],
-  textarea {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-
   button {
     padding: 10px 15px; 
     background-color: #004896; 
@@ -45,4 +36,13 @@
   .table-link-danger {
     margin-right: 5px;
     color: #ff2f20;
+  }
+
+  input[type="date"],
+  select, textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
   }

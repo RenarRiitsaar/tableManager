@@ -58,6 +58,7 @@ export class WorkSummaryComponent implements OnInit{
   
     this.days = [];
     this.generateDays();
+   
   
   }
 
@@ -71,7 +72,7 @@ export class WorkSummaryComponent implements OnInit{
 
      if(evtDate.getMonth()+1 == this.selectedMonthNum){
 
-      if(evt.eventType !="illness" ){ 
+      if(evt.eventType !=="illness" && evt.eventType !== 'vacation' ){ 
         requiredHours += 8
        }
 
@@ -96,7 +97,7 @@ export class WorkSummaryComponent implements OnInit{
 
     if(evtDate.getMonth()+1 == this.selectedMonthNum ){ 
 
-      if(evt.eventType !== 'illness'){
+      if(evt.eventType !== 'illness' && evt.eventType !== 'vacation'){
       overTimeHours = (totalWorkHours- requiredHours );
       }
 
@@ -121,7 +122,7 @@ export class WorkSummaryComponent implements OnInit{
           }
         }
 
-      if(evnt.eventType =='work' || evnt.eventType == 'vacation'){
+      if(evnt.eventType =='work'){
         totalHours += evnt.workHours;
       }
 
@@ -143,29 +144,52 @@ export class WorkSummaryComponent implements OnInit{
     for(let empEv of getEvent ){
       const month = new Date(empEv.startDate).getMonth();
       
-      if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'work'){
+      if(empId == empEv.employeeId && month +1 == this.selectedMonthNum){
+      
+      if(empEv.eventType == 'work'){
         return empHours = String(empEv.workHours);
       
-      }else if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'pardoned'){
+      }else if(empEv.eventType == 'pardoned'){
+        if(empEv.workHours >= 8){
         empHours = 'P';
-    }else if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'illness'){
-      empHours = 'S';
-  }else if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'absent'){
-    empHours = 'A';
+        }else{
+          empHours = String(8 - empEv.workHours);
+        }
 
-  }else if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'vacation'){
+    }else if(empEv.eventType == 'illness'){
+
+      if(empEv.workHours == 0 || empEv.workHours >= 8 ){
+      empHours = 'S';
+      }else{
+        empHours = String(empEv.workHours);
+      }
+
+  }else if(empEv.eventType == 'absent'){
+    if(empEv.workHours >= 8){
+    empHours = 'A';
+    }else{
+      empHours = String(8- empEv.workHours);
+    }
+
+  }else if(empEv.eventType == 'vacation'){
    empHours = 'V';
   }
   }
+}
   return empHours;
 }
 
 
   
   cellInfo(day:string, empId:number){
+    
+   
     let getEvent: string | any[] = [];
     if(empId != null){
-     getEvent = this.empEvents.filter((evnt) => new Date(evnt.startDate).getDate().toString() === day && evnt.employeeId === empId);
+     getEvent = this.empEvents.filter((evnt) => new Date(evnt.startDate).getDate().toString() === day &&
+     this.selectedMonthNum == new Date(evnt.startDate).getMonth()+1  &&
+      evnt.employeeId === empId);
+      
   }
   
     if(getEvent.length > 0){
@@ -180,7 +204,7 @@ export class WorkSummaryComponent implements OnInit{
     });
   }else{
     this.snackbar.open('No events on given day!', 'Close', {duration:5000});
-  }
+    }
   }
 
 
