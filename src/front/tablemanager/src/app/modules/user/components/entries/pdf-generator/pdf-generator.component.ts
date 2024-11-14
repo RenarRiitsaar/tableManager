@@ -24,7 +24,6 @@ export class PdfGeneratorComponent {
   pdfSettings!: PdfSettings | null;
   base64Image: string = '';
 
-
   constructor( public dialogRef: MatDialogRef<PdfGeneratorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private pdfGeneratorService : PdfGeneratorService,
@@ -52,7 +51,6 @@ export class PdfGeneratorComponent {
   this.getBase64();
   this.loadEntries();
   }
-
 
 calculateTotalWithVAT():number{
   let total = 0;
@@ -116,7 +114,6 @@ getPdfSettings(){
 getBase64(){
   this.base64Service.getBase64Image().subscribe(data => {
     this.base64Image = data;
-    
   });
 }
 

@@ -33,7 +33,6 @@ public class PdfController {
         this.userService = userService;
     }
 
-
     @GetMapping("/base64")
     public ResponseEntity<String> getImage() throws IOException {
         Long currentUserId = userService.getCurrentUserId();

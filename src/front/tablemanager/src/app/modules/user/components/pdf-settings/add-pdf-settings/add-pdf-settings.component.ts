@@ -16,7 +16,7 @@ export class AddPdfSettingsComponent implements OnInit {
 
   selectedFile: File | null = null;
   addPdfForm!: FormGroup;
-  allowedTypes = ['image/png'];
+  allowedTypes = ['image/png', 'image/jpeg'];
 
   
 
@@ -51,7 +51,7 @@ export class AddPdfSettingsComponent implements OnInit {
     if(file){
      
       if (!this.allowedTypes.includes(file.type)) {
-        this.snackbar.open('Invalid file type. Currently only PNG extention is supported.', 'Close', { duration: 5000 });
+        this.snackbar.open('Invalid file type. Please select a PNG or JPG file.', 'Close', { duration: 5000 });
         this.onCancel();
         return;
       }
