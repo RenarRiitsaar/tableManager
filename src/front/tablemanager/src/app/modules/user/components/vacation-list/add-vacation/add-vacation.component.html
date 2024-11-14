@@ -18,16 +18,6 @@
   
       <label for="endDate">End Date:</label>
       <input id="endDate" formControlName="endDate" type="date">
-
-      <label for="vacationType">Vacation type:</label>
-      <select id="vacationType" formControlName="vacationType">
-        <option value="" disabled>Select vacation type</option>
-        <option value="main">Main vacation</option>
-        <option value="payless">Payless vacation</option>
-      </select>
-      <div *ngIf="addVacationForm.get('vacationType')?.invalid && addVacationForm.get('vacationType')?.touched">
-        <span class="error-message">Vacation type is required.</span>
-      </div>
   
       <label for="comment">Comment:</label>
       <textarea id="comment" formControlName="comment"></textarea>

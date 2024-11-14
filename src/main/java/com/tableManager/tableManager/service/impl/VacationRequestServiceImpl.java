@@ -50,7 +50,6 @@ public class VacationRequestServiceImpl implements VacationRequestService {
             vr.setEndDate(request.getEndDate());
             vr.setComment(request.getComment());
             vr.setEmployeeId(request.getEmployeeId());
-            vr.setVacationType(request.getVacationType());
             vrRepository.save(vr);
         }
 
@@ -70,21 +69,17 @@ public class VacationRequestServiceImpl implements VacationRequestService {
         List<VacationRequest> requests = vrRepository.findAll();
         Map<Integer, Integer> vacationDaysByYear = new HashMap<>();
 
-
         for (VacationRequest request : requests) {
-            if (Objects.equals(request.getVacationType(), "main")) {
-                if (Objects.equals(request.getEmployeeId(), id)) {
-                    LocalDate startDate = request.getStartDate();
-                    LocalDate endDate = request.getEndDate();
+            if (Objects.equals(request.getEmployeeId(), id)) {
+                LocalDate startDate = request.getStartDate();
+                LocalDate endDate = request.getEndDate();
 
-                    if (startDate.getYear() == year) {
-                        int days = (int) DAYS.between(startDate, endDate) + 1;
-                        dayCount += days;
-                    }
+                if(startDate.getYear() == year) {
+                    int days = (int) DAYS.between(startDate, endDate) +1 ;
+                    dayCount += days;
                 }
             }
         }
-
         vacationDaysByYear.put(year, dayCount);
         return vacationDaysByYear.getOrDefault(year, 0);
     }
@@ -95,11 +90,9 @@ public class VacationRequestServiceImpl implements VacationRequestService {
         int requestedDays =(int) DAYS.between(request.getStartDate(), request.getEndDate()) +1;
         int sumOfDays = usedDays + requestedDays;
 
-        //return request.getStartDate().isAfter(LocalDate.now().plusDays(14)) &&
-        //                 request.getEndDate().isAfter(request.getStartDate())
-        //                && sumOfDays <= 28;                           // 14 day announcement return
 
-        return request.getEndDate().isAfter(request.getStartDate())
+        return request.getStartDate().isAfter(LocalDate.now().plusDays(14))
+                && request.getEndDate().isAfter(request.getStartDate())
                 && sumOfDays <= 28;
     }
 }
