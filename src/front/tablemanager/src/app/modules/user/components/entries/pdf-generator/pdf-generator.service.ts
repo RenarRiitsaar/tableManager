@@ -12,7 +12,6 @@ import { StorageService } from '../../../../../auth/services/storage/storage.ser
 export class PdfGeneratorService {
   constructor(private salesService:SalesService) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
   }
 
   generatePDF(doc: any, filename: string) {
@@ -24,5 +23,9 @@ export class PdfGeneratorService {
     })
   
     pdfMake.createPdf(doc).download(filename);
+  }
+
+  openPDF(doc:any){
+    pdfMake.createPdf(doc).open();
   }
 }
