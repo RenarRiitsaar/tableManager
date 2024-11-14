@@ -44,8 +44,6 @@ public class EmployeeEventController {
     @PostMapping()
     public ResponseEntity<EmployeeEvent> addEmployeeEvent(@RequestBody EmployeeEvent employeeEvent) {
         Long currentUserId = userService.getCurrentUserId();
-
-
         employeeEventService.addEvent(employeeEvent, currentUserId);
 
         if (employeeEvent.getEmployeeId() != null) {

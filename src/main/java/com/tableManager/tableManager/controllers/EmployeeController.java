@@ -4,6 +4,7 @@ import com.tableManager.tableManager.model.Employee;
 import com.tableManager.tableManager.service.impl.EmployeeServiceImpl;
 import com.tableManager.tableManager.service.impl.UserServiceImpl;
 import com.tableManager.tableManager.service.impl.VacationRequestServiceImpl;
+import jakarta.persistence.GeneratedValue;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

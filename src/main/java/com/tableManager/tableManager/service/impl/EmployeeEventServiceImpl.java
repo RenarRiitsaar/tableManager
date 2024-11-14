@@ -51,16 +51,13 @@ public class EmployeeEventServiceImpl implements EmployeeEventService {
     @Override
     public void updateEmployeeEvent(EmployeeEvent employeeEvent, Long userId) {
     if(Objects.equals(userId, employeeEvent.getUserId())){
-       EmployeeEvent event = EERepository.findById(employeeEvent.getId()).orElse(null);
+        EmployeeEvent event = new EmployeeEvent();
+        event.setUserId(employeeEvent.getUserId());
+        event.setEmployeeId(employeeEvent.getEmployeeId());
+        event.setEventType(employeeEvent.getEventType());
+        event.setStartDate(employeeEvent.getStartDate());
 
-       if(event != null) {
-           event.setUserId(employeeEvent.getUserId());
-           event.setEmployeeId(employeeEvent.getEmployeeId());
-           event.setEventType(employeeEvent.getEventType());
-           event.setStartDate(employeeEvent.getStartDate());
-           event.setWorkHours(employeeEvent.getWorkHours());
-           EERepository.save(event);
-       }
+        EERepository.save(event);
     }
     }
 
