@@ -52,12 +52,6 @@
         </label>
       </div>
 
-      <label for="salary">Employee salary:</label>
-      <input id="salary" formControlName="salary" type="text" placeholder="Employee salary">
-      <div *ngIf="editEmployeeForm.get('salary')?.invalid && editEmployeeForm.get('salary')?.touched">
-        <span class="error-message">Enter employee salary!</span>
-      </div>
-
       <div>
         <label>Pay type:</label>
         <label>
@@ -76,6 +70,11 @@
         </label>
       </div>
 
+      <label for="salary">Employee salary:</label>
+      <input id="salary" formControlName="salary" type="text" placeholder="Employee salary">
+      <div *ngIf="editEmployeeForm.get('salary')?.invalid && editEmployeeForm.get('salary')?.touched">
+        <span class="error-message">Enter employee salary!</span>
+      </div>
 
       <div>
         <label for="photoUrl">Upload Photo:</label>

@@ -34,7 +34,9 @@ export class AddVacationComponent {
       startDate: [this.data.startDate, [Validators.required]],
       endDate: [this.data.endDate, [Validators.required]],
       comment: [this.data.comment],
-      creationDate: [formatDate(new Date(), 'yyyy-MM-dd', 'en')]
+      creationDate: [formatDate(new Date(), 'yyyy-MM-dd', 'en')],
+      vacationType: ['', [Validators.required]],
+      userId: [StorageService.getUserId()]
     });
   }
 
@@ -107,7 +109,7 @@ export class AddVacationComponent {
           this.snackbar.open('Request added!', 'Close', {duration:5000});
         }),
         catchError((error)=>{
-          this.snackbar.open("Employee doesn't have enough vacation days left or vacation is announced too late (14 days)", 'Close', {duration:5000});
+          this.snackbar.open("The employee doesn't have enough vacation reserve or start date is after end date", 'Close', {duration:5000});
           throw error;
         })
       ).subscribe();

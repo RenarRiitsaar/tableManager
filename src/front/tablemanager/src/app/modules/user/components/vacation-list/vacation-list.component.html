@@ -64,6 +64,8 @@
                     </span>
                   </a><span>Vacation end</span></th>
                    
+                  <th class="text-center"> 
+                    <span>Type</span></th>
 
                   <th class="text-center"> 
                     <span>Comment</span></th>
@@ -92,6 +94,7 @@
                   </div></th>
 
                   <th></th>
+                  <th></th>
                   <th> <a class="table-link" (click)="openVacationCalendar()" title="Vacation calendar">
                     <span class="fa-stack">
                       <i class="fa fa-square fa-stack-2x"></i>
@@ -112,6 +115,7 @@
                   <td><a>{{getEmployeeName(request.employeeId)}}</a></td>
                   <td><a>{{request.startDate}}</a></td>
                   <td><a>{{request.endDate}}</a></td>
+                  <td><a>{{request.vacationType}}</a></td>
                   <td><a>{{request.comment}}</a></td>
                   <td><a>{{request.creationDate}}</a></td>
                   

@@ -19,5 +19,6 @@ public class VacationRequest {
     private String comment;
     private LocalDate creationDate;
     private Long employeeId;
+    private String vacationType;
     private Long userId;
 }
