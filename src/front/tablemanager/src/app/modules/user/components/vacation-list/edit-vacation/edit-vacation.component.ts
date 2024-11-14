@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VacationAnimationService } from '../../../../../auth/services/vacationRequest/vacation-animation.service';
 import { catchError, tap } from 'rxjs';
 import { DeleteConfirmComponent } from '../../../../../public-components/delete-confirm/delete-confirm.component';
-import { StorageService } from '../../../../../auth/services/storage/storage.service';
 
 @Component({
   selector: 'app-edit-vacation',
@@ -28,25 +27,21 @@ export class EditVacationComponent {
   ngOnInit(): void {
     this.editVacationForm = this.fb.group({
       id:[this.data.id],
-      employeeId:[this.data.employeeId],
       startDate: [this.data.startDate, [Validators.required]],
       endDate: [this.data.endDate, [Validators.required]],
-      comment: [this.data.comment],
-      vacationType: [this.data.vacationType],
-      userId: [StorageService.getUserId()]
+      comment: [this.data.comment]
     });
   }
     onSubmit(){
     if(this.editVacationForm.valid){
       const formData = this.editVacationForm.value;
-    
       this.vacationService.updateRequest(formData).pipe(
         tap(()=>{
           this.snackbar.open('Request edited!', 'Close', {duration:5000});
           
         }),
         catchError((error)=>{
-          this.snackbar.open("The employee doesn't have enough vacation reserve or start date is after end date", 'Close', {duration:5000});
+          this.snackbar.open("The employee doesn't have vacation reserve or vacation is planned too late ahead (14 days)", 'Close', {duration:5000});
           throw error;
         })
       ).subscribe();

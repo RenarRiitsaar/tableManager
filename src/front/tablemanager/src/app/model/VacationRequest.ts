@@ -5,6 +5,4 @@ export interface VacationRequest{
     endDate: Date;
     comment: string;
     creationDate: Date;
-    userId: number;
-    vacationType: string;
 }

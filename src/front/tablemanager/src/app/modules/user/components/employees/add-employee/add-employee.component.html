@@ -46,6 +46,12 @@
         </label>
       </div>
 
+      <label for="salary">Employee salary:</label>
+      <input id="salary" formControlName="salary" type="text" placeholder="Employee salary">
+      <div *ngIf="addEmployeeForm.get('salary')?.invalid && addEmployeeForm.get('salary')?.touched">
+        <span class="error-message">Enter employee salary!</span>
+      </div>
+
       <div>
         <label>Pay type:</label>
         <label>
@@ -62,12 +68,6 @@
             value="monthly" 
           /> Monthly
         </label>
-      </div>
-
-      <label for="salary">Employee salary:</label>
-      <input id="salary" formControlName="salary" type="text" placeholder="Employee salary">
-      <div *ngIf="addEmployeeForm.get('salary')?.invalid && addEmployeeForm.get('salary')?.touched">
-        <span class="error-message">Enter employee salary!</span>
       </div>
 
       <label for="contractStartDate">Start Date:</label>
