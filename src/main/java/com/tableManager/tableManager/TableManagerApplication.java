@@ -6,12 +6,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
-
 @SpringBootApplication
 public class TableManagerApplication extends SpringBootServletInitializer {
 
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 			SpringApplication.run(TableManagerApplication.class, args);
 	}
 

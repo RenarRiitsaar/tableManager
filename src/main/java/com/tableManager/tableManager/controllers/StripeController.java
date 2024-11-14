@@ -5,6 +5,7 @@ import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
+import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ import java.util.Map;
 @CrossOrigin("*")
 public class StripeController {
 
-    private static final String endpointSecret = "whsec_........";
+    private static final String endpointSecret = "whsec_GvIEORyrMG4VBiQAlrir9KcX7VIe8ozC";
     private String stripeApiKey = "pk_test_51Pl7V7RoGaLilpUFphwzkwitBGQnEXtwPScgHiA6U0y5Tmpbm2vxRxjGqHuXFdOHJeqhvuR25AZptNyMXBEwA6Yb00Kd8FbCZ8";
     private final AdminServiceImpl adminService;
     private final UserServiceImpl userService;
@@ -70,7 +72,21 @@ public class StripeController {
 
         switch (event.getType()) {
             case "payment_intent.succeeded":
-               adminService.setActive(sessionUser);
+                PaymentIntent paymentIntent = (PaymentIntent) event.getDataObjectDeserializer()
+                        .getObject()
+                        .orElseThrow(() -> new RuntimeException("Invalid data"));
+                Long amount = paymentIntent.getAmount();
+                if(amount == 799){
+                    userService.setSubscription(sessionUser,LocalDateTime.now(), LocalDateTime.now().plusDays(30));
+                }
+                if(amount == 2099){
+                    userService.setSubscription(sessionUser,LocalDateTime.now(), LocalDateTime.now().plusDays(90));
+                }
+                if(amount == 3999){
+                    userService.setSubscription(sessionUser,LocalDateTime.now(), LocalDateTime.now().plusDays(180));
+                }
+
+
                 break;
 
             default:

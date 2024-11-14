@@ -27,6 +27,7 @@ public class PdfController {
     private final PdfServiceImpl pdfService;
     private final UserServiceImpl userService;
     private static final String UPLOAD_DIR = "/data01/virt131441/domeenid/www.tablemanager.ee/logos/";
+    private static final String DIR_PREFIX = "/data01/virt131441/domeenid/www.tablemanager.ee";
 
     public PdfController(PdfServiceImpl pdfService, UserServiceImpl userService) {
         this.pdfService = pdfService;
@@ -44,7 +45,7 @@ public class PdfController {
         }
 
         String logoURL = pdfSettings.getLogoURL();
-        String path = "/data01/virt131441/domeenid/www.tablemanager.ee" + logoURL;
+        String path = DIR_PREFIX + logoURL;
 
 
 
@@ -122,7 +123,7 @@ public class PdfController {
         if (currentUserId != null && user.isEnabled()) {
 
             String filename = pdfService.getFilename(currentUserId);
-            Path path = Path.of(filename);
+            Path path = Path.of(DIR_PREFIX + filename);
 
             try{
                 Files.delete(path);

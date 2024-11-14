@@ -1,8 +1,12 @@
+import { AdminService } from './../../auth/services/admin/admin.service';
 import { Component } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { loadStripe } from '@stripe/stripe-js';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../../auth/services/storage/storage.service';
+import { User } from '../../model/User';
+import { Router } from '@angular/router';
+import { UserService } from '../../auth/services/user/user.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,19 +16,31 @@ import { StorageService } from '../../auth/services/storage/storage.service';
 export class CheckoutComponent {
 
   stripePromise = loadStripe(environment.stripe);
+  user: User = StorageService.getUser();
+  
 
-  constructor(private http:HttpClient){
-    
+  constructor(private http:HttpClient,
+              private userService: UserService,
+              private router:Router){
   }
 
-  async pay(): Promise<void>{
+  activateTrial(){
+
+    if(this.user.hasTrial){
+      
+    this.userService.activateTrial(this.user.id).subscribe();
+    this.router.navigateByUrl('/success');
+    }
+  }
+
+  async pay(amount: number): Promise<void>{
     const payment ={
       name: 'Table manager',
       currency: 'eur',
-      amount: 30000,
+      amount: amount,
       quantity:'1',
-      cancelUrl: 'http://localhost:4200/cancel',
-      successUrl: 'http://localhost:4200/success'
+      cancelUrl: 'https://tableManager.ee/cancel',
+      successUrl: 'https://tableManager.ee/success'
     };
 
     const stripe = await this.stripePromise;
