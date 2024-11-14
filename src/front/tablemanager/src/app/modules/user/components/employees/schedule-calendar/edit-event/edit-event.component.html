@@ -1,1 +1,24 @@
-<p>edit-event works!</p>
+<div class="add-event-container">
+    <h2>Edit event</h2>
+    <form [formGroup]="editEventForm" (ngSubmit)="onSubmit()">
+      
+   
+    
+      <label for="workHours">Hours:</label>
+      <input id="workHours" formControlName="workHours" type="text">
+  
+      <label for="eventType">Event type:</label>
+      <select id="eventType" formControlName="eventType">
+        <option value="" disabled>Select event type</option>
+        <option value="work">Work</option>
+        <option value="absent">Absent</option>
+        <option value="pardoned">Pardoned leave</option>
+        <option value="illness">Illness</option>
+      </select>
+      <div *ngIf="editEventForm.get('eventType')?.invalid && editEventForm.get('eventType')?.touched">
+        <span class="error-message">Event type is required!</span>
+      </div>
+  
+      <button type="submit" [disabled]="editEventForm.invalid">Edit event</button>
+    </form>
+  </div>

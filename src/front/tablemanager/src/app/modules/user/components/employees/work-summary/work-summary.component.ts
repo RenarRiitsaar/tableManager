@@ -198,7 +198,10 @@ export class WorkSummaryComponent implements OnInit{
       this.dialog.open(CellInfoComponent, {
         data: {
           event: getEvent.length > 0 ? getEvent[0] : null,
-          employeeName: emp?.name || 'Unknown'
+          employeeName: emp?.name || 'Unknown',
+          employeeId: emp?.id,
+          eventId: getEvent[0].id,
+          startDate: getEvent[0].startDate
         }
       });
     });

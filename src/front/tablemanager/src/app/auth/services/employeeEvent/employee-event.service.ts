@@ -47,8 +47,8 @@ export class EmployeeEventService {
     );
   }
 
-  updateEvent(eventId:number): Observable<any>{
-    return this.http.put(BASE_URL + `/api/event/${eventId}`,
+  updateEvent(eventId:number, event: any): Observable<any>{
+    return this.http.put(BASE_URL + `/api/event/${eventId}`,event,
       {headers: this.authHeader()}
     ).pipe(
       catchError((error) =>{
