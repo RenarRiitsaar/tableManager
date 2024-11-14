@@ -23,7 +23,6 @@ public class EmployeeEvent {
     private Long id;
     private String eventType;
     private LocalDate startDate;
-    private LocalDate endDate;
     private double workHours;
     private Long employeeId;
     private Long userId;

@@ -4,7 +4,6 @@
     <h2 *ngIf="data.event.eventType == 'pardoned'" class="h2-pardoned">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
     <h2 *ngIf="data.event.eventType == 'illness'" class="h2-sick">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
     <h2 *ngIf="data.event.eventType == 'absent'" class="h2-absent">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
-    <h2 *ngIf="data.event.eventType == 'vacation'" class="h2-vacation">{{data.event.eventType.substring(0,1).toUpperCase() + data.event.eventType.substring(1)}}</h2>
 </div>
 
     <div *ngIf="data.event">

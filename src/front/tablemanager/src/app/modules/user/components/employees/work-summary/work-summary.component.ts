@@ -121,7 +121,7 @@ export class WorkSummaryComponent implements OnInit{
           }
         }
 
-      if(evnt.eventType =='work' || evnt.eventType == 'vacation'){
+      if(evnt.eventType =='work'){
         totalHours += evnt.workHours;
       }
 
@@ -152,15 +152,11 @@ export class WorkSummaryComponent implements OnInit{
       empHours = 'S';
   }else if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'absent'){
     empHours = 'A';
-
-  }else if(empId == empEv.employeeId && month +1 == this.selectedMonthNum && empEv.eventType == 'vacation'){
-   empHours = 'V';
   }
+
   }
   return empHours;
 }
-
-
   
   cellInfo(day:string, empId:number){
     let getEvent: string | any[] = [];

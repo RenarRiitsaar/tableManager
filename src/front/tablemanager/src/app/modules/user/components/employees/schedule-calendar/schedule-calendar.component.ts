@@ -1,4 +1,3 @@
-import { VacationRequestService } from './../../../../../auth/services/vacationRequest/vacation-request.service';
 import { EmployeeEventService } from './../../../../../auth/services/employeeEvent/employee-event.service';
 import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from '../../../../../auth/services/employee/employee.service';
@@ -36,8 +35,7 @@ export class ScheduleCalendarComponent implements OnInit{
   constructor(private employeeService: EmployeeService,
               private dialog:MatDialog,
               private employeeEventService:EmployeeEventService,
-              private snackbar:MatSnackBar,
-              private vacationService:VacationRequestService
+              private snackbar:MatSnackBar
   ){}
 
   ngOnInit(): void {
@@ -62,7 +60,6 @@ export class ScheduleCalendarComponent implements OnInit{
     if(this.clickCount === 2){
       this.employeeEventService.deleteEvent(info.event.extendedProps.eventId).pipe(
         tap(() =>{
-        
           this.snackbar.open('Event removed!', 'Close', {duration:5000});
           this.buildCalendar();
           this.getEvents();
@@ -161,15 +158,11 @@ export class ScheduleCalendarComponent implements OnInit{
           case 'illness':
             backgroundColor = 'gray';
             break;
-          case 'vacation':
-            backgroundColor = 'blue';
-            break;
         }
   
         return {
           title: this.getEmployeeName(event.employeeId),
           start: startDate,
-          end: new Date(event.endDate),
           backgroundColor: backgroundColor,
           extendedProps: {
             eventType: event.eventType,
@@ -213,7 +206,6 @@ export class ScheduleCalendarComponent implements OnInit{
     const empEvent:EmployeeEvent ={
       eventType: this.selectedEvent,
       startDate: utcDate.toISOString(),
-      endDate: '',
       employeeId: this.selectedEmployee.id,
       userId: StorageService.getUserId(),
       workHours: this.selectedWorkHours
