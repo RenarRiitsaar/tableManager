@@ -42,7 +42,7 @@ public class WebSecurityConfig {
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "PUT", "POST", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(List.of("accept", "Authorization", "Content-Type", "Access-Control-Allow-Origin", "*"));
-        configuration.setAllowedOrigins(List.of("https://tablemanager.ee" ));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200" ));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -81,7 +81,7 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
 
-                .requestMatchers("/api/auth/**", "api/email/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .requestMatchers(HttpMethod.POST).permitAll()
                 .requestMatchers(HttpMethod.PUT).permitAll()
@@ -93,7 +93,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/**").hasAuthority(ADMIN)
                 .anyRequest().authenticated());
 
-        http.cors(co-> co.configurationSource(corsConfigurationSource()));/// neww
+        http.cors(co-> co.configurationSource(corsConfigurationSource()));
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
        http.csrf(AbstractHttpConfigurer::disable);
