@@ -6,9 +6,4 @@ export interface Employee{
     phone: string;
     iban: string;
     days?: number;
-    customSchedule: boolean;
-    salary: number;
-    contractStartDate: Date;
-    payType: string;
-
 }

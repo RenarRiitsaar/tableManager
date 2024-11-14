@@ -34,10 +34,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         newEmployee.setPhone(employee.getPhone());
         newEmployee.setPhotoURL(employee.getPhotoURL());
         newEmployee.setUserId(userId);
-        newEmployee.setCustomSchedule(employee.isCustomSchedule());
-        newEmployee.setSalary(employee.getSalary());
-        newEmployee.setContractStartDate(employee.getContractStartDate());
-        newEmployee.setPayType(employee.getPayType());
         employeeRepository.save(newEmployee);
     }
 
@@ -50,10 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeById.setEmail(employee.getEmail());
             employeeById.setPhone(employee.getPhone());
             employeeById.setIBAN(employee.getIBAN());
-            employeeById.setCustomSchedule(employee.isCustomSchedule());
-            employeeById.setSalary(employee.getSalary());
-            employeeById.setContractStartDate(employee.getContractStartDate());
-            employeeById.setPayType(employee.getPayType());
             employeeRepository.save(employeeById);
         }
     }
