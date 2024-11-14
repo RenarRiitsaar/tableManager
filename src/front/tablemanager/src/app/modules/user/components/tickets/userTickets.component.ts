@@ -8,20 +8,14 @@ import { catchError, of, tap } from 'rxjs';
 import { ViewTicketComponent } from './view-ticket/view-ticket.component';
 import { DeleteConfirmComponent } from '../../../../public-components/delete-confirm/delete-confirm.component';
 import { AddTicketComponent } from './add-ticket/add-ticket.component';
-import { deleteSlideOut, fade, slideIn } from '../../../../animations';
 
 @Component({
   selector: 'app-userTickets',
   templateUrl: './userTickets.component.html',
-  styleUrl: './userTickets.component.css',
-  animations:[
-    fade, slideIn,deleteSlideOut
-    ]
+  styleUrl: './userTickets.component.css'
 })
 export class UserTicketsComponent implements OnInit {
 
-  slideStates: { [key: number]: 'in' | 'out' } = {};
-  slideIn = 'out';
   tickets: Tickets[] = [];
 
   constructor(private ticketsService: TicketsService,
@@ -32,16 +26,8 @@ export class UserTicketsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.onAnimate();
     let userId = StorageService.getUserId();
     this.refreshTickets(userId);
-  }
-
-  onAnimate(){
-    setTimeout(() => {
-    this.slideIn == 'out' ? this.slideIn = "in" : this.slideIn = 'out';
-  },100);
-
   }
 
   addTicket(){
@@ -65,6 +51,7 @@ export class UserTicketsComponent implements OnInit {
       });
   
       dialogRef.afterClosed().subscribe(result => {
+        console.log("Closed message modal");
       });
     });
   }
@@ -74,12 +61,8 @@ export class UserTicketsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if(res){
-        this.slideStates[id] = 'out';
-
-        setTimeout(() =>{
         this.ticketsService.deleteTicket(id).pipe(
           tap((res) =>{
-         
             this.snackbar.open('Ticket deleted successfully', 'Close', {duration: 5000});
             this.refreshTickets(StorageService.getUserId());
     
@@ -89,7 +72,6 @@ export class UserTicketsComponent implements OnInit {
             return of(null);
           })
         ).subscribe();
-      })
       }
     });
   }

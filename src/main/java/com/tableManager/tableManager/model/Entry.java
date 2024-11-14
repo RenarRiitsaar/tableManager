@@ -17,7 +17,7 @@ public class Entry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
-    private String articleNum;
+    private int articleNum;
     private String articleName;
     private double priceBeforeTax;
     private double priceAfterTax;

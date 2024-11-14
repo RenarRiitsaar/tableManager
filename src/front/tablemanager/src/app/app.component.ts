@@ -1,5 +1,3 @@
-import { TicketsService } from './auth/services/tickets/tickets.service';
-import { UserService } from './auth/services/user/user.service';
 import { PdfSettings } from './model/PdfSettings';
 import { Component, HostListener } from '@angular/core';
 import { StorageService } from './auth/services/storage/storage.service';
@@ -12,8 +10,6 @@ import { PdfsettingsService } from './auth/services/pdfsettings/pdfsettings.serv
 import { catchError, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditPDFComponent } from './modules/user/components/pdf-settings/edit-pdf/edit-pdf.component';
-import { EditUserComponent } from './modules/user/components/userProfile/edit-user/edit-user.component';
-import { Tickets } from './model/Tickets';
 
 @Component({
   selector: 'app-root',
@@ -32,9 +28,7 @@ export class AppComponent {
               private authService: AuthService,
               private dialog:MatDialog,
               private pdfSettings: PdfsettingsService,
-              private snackbar: MatSnackBar,
-              private userService: UserService,
-              private ticketsService: TicketsService
+              private snackbar: MatSnackBar
   ) {}
 
   ngOnInit(){
@@ -42,70 +36,17 @@ export class AppComponent {
       this.isAdminLoggedIn = StorageService.isAdmin();
       this.isUserLoggedIn = StorageService.isUser();
       this.isEnabled = StorageService.getStatus();
-
-      if(this.isUserLoggedIn && this.isEnabled){
       this.hasPDF();
-      }
-    });
-  }
 
+    })
+
+  }
   @HostListener('window:mousemove')
   @HostListener('window:keypress')
   @HostListener('window:click')
   @HostListener('window:touchstart')
   resetLogoutTimer(): void {
     this.authService.startLogoutTimer();
-  }
-
-  deleteUser(){
-  
-   const dialogRef = this.dialog.open(DeleteConfirmComponent);
-
-   let tickets: Tickets[] = [];
-
-   this.ticketsService.findByUserId(StorageService.getUserId()).subscribe(( data : Tickets[]) => 
-    tickets = data);
-   
-   dialogRef.afterClosed().subscribe(res =>{
-   
-
-    if(res){
-
-      for(let tic of tickets){
-        if(tic.user.id == StorageService.getUserId()){
-          this.ticketsService.deleteTicket(tic.id).subscribe();
-        }
-      }
-
-      this.pdfSettings.deleteSettings().subscribe();
-      
-      this.userService.deleteUser().pipe(
-        tap(()=> {
-        
-         
-          this.snackbar.open("Account deleted.", 'Close', {duration:5000});
-          StorageService.logout();
-          this.router.navigateByUrl('/');
-        }),
-        catchError((error) =>{
-          console.error(error);
-          this.snackbar.open("Error deleting account!", 'Close', {duration:5000});
-          throw error;
-        })
-      ).subscribe();
-    }
-   })
-  }
-
-  editUser(){
-    const dialogRef = this.dialog.open(EditUserComponent,
-      {width:'400px'}
-    )
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-      }
-      
-    })
   }
 
   hasPDF(){
@@ -126,8 +67,6 @@ export class AppComponent {
     this.dialog.open(EditPDFComponent, {
       width:'400px',
     });
-
-
   }
 
   createPDF(){
@@ -143,7 +82,9 @@ export class AppComponent {
       if(res){
         this.pdfSettings.deleteSettings().pipe(
           tap((res) => {
-            this.snackbar.open('PDF deleted successfully', 'Close', {duration: 5000});  
+            this.snackbar.open('PDF deleted successfully', 'Close', {duration: 5000});
+            
+            
           }),
           catchError((error) => {
             this.snackbar.open('Error deleting PDF', 'Close', {duration: 5000, panelClass: 'error-snackbar'});

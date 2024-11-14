@@ -1,5 +1,6 @@
+import { Base64Service } from './../../../../auth/services/pdfsettings/base64.service';
 import { Entry } from './../../../../model/Entry';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { EntriesService } from '../../../../auth/services/entries/entries.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog'
@@ -8,28 +9,16 @@ import { catchError, of, tap } from 'rxjs';
 import { VatModalComponent } from './vat-modal/vat-modal.component';
 import { StorageService } from '../../../../auth/services/storage/storage.service';
 import { PdfGeneratorComponent } from './pdf-generator/pdf-generator.component';
-import { ProductSelectorComponent } from './product-selector/product-selector.component';
-import { deleteSlideOut, fade, slideIn } from '../../../../animations';
-
 
 
 
 @Component({
   selector: 'app-entries',
   templateUrl: './entries.component.html',
-  styleUrl: './entries.component.css',
-  animations:[
-    fade, slideIn,deleteSlideOut
-    ]
+  styleUrl: './entries.component.css'
 })
 export class EntriesComponent implements OnInit {
-
-  slideStates: { [key: number]: 'in' | 'out' } = {};
-  slideIn = 'out';
-  entryList: any[] = [['Article Num', 'Article Name', 'Amount', 'Price', 'Price VAT', 'Disount %', 'Total']];
   vatRate: number =22;
-  discountPercentage: number = 0;
-  amount: number = 0;
   entries: Entry[] = [];
   editMode: {[key:number]: boolean} = {};
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -39,20 +28,14 @@ export class EntriesComponent implements OnInit {
 
 constructor(private entriesService:EntriesService,
             private snackbar: MatSnackBar,
-            private dialog: MatDialog){}
+            private dialog: MatDialog,
+            private base64Service:Base64Service){}
 
 
   ngOnInit(): void {
-    this.onAnimate();
     this.getEntries();
+  
     
-  }
-
-  onAnimate(){
-    setTimeout(() => {
-    this.slideIn == 'out' ? this.slideIn = "in" : this.slideIn = 'out';
-  },100);
-
   }
 
   searchEntry(query:string){
@@ -69,98 +52,22 @@ constructor(private entriesService:EntriesService,
      }
   }
 
-  addProduct(entry: Entry){
-    let amount = this.amount;
-    let discountPercentage = this.discountPercentage;
-    let discount;
-    let VAT = this.vatRate;
-    let price = entry.priceBeforeTax;
-  
-    if(discountPercentage > 0 ){
-      
-      discount = price / 100 * discountPercentage;
-      price = price - discount;
-     
-    }
-    
-    let priceVat= (price / 100 * VAT) + price;
-  
-    this.entryList.push([
-      entry.articleNum, 
-      entry.articleName, 
-      amount,
-      entry.priceBeforeTax ,
-      entry.priceAfterTax,
-      discountPercentage,
-     (priceVat * amount).toFixed(2) 
-    ]);
-    
-    
-    const updateAmount = entry.inventoryAmount - amount;
-    const updateEntry: Entry = {
-      ...entry,                      
-      inventoryAmount: updateAmount,
-      priceBeforeTax: entry.priceBeforeTax,
-      priceAfterTax: entry.priceAfterTax
-  
-    };
-  
-    this.entriesService.updateEntry(updateEntry).pipe(
-      tap(() =>
-        {
-          this.snackbar.open('Entry added to invoice and updated database!', 'Close', {duration: 5000})
-          this.getEntries();
-        }),
-    
-        catchError(() => {
-          this.snackbar.open('Error adding entry to invoice', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
-          return of(null);
-        })
-      ).subscribe();
-  
-    this.saveEntries();
-   
-  }
-  
-  saveEntries() {
-    sessionStorage.setItem('entryList', JSON.stringify(this.entryList));
-  }
-  
 
-  productSelector(entry : Entry){
-    const dialogRef = this.dialog.open(ProductSelectorComponent,{
-      data:{ id:entry.id,
-             articleNum: entry.articleNum,
-             articleName: entry.articleName,
-             price: entry.priceBeforeTax,
-             priceVAT: entry.priceAfterTax,
-             inventoryAmount: entry.inventoryAmount,
-             userId: entry.userId}
-    });
-    dialogRef.afterClosed().subscribe(res => {
-      this.discountPercentage = res.discount;
-      this.amount = res.amount;
-     this.addProduct(entry);
-  
-    })
-  }
-  generatePDF(){
+  generatePDF(entry: Entry){
 
   
     const dialogRef = this.dialog.open(PdfGeneratorComponent, {
-      data: {
-              vatRate: this.vatRate,
-              discountPercentage: this.discountPercentage,
-              amount: this.amount,
-              entryList: this.entryList
+      data: { id:entry.id,
+              articleNum: entry.articleNum,
+              articleName: entry.articleName,
+              price: entry.priceBeforeTax,
+              priceVAT: entry.priceAfterTax,
+              inventoryAmount: entry.inventoryAmount,
+              userId: entry.userId
               }
       
     });
-    dialogRef.afterClosed().subscribe(() =>{
-      this.getEntries();
-      this.entryList = [['Article Nr', 'Article Name', 'Amount', 'Price', 'Price VAT', 'Disount %', 'Total']];
-    })
-    
+    this.getEntries();
   }
 
 
@@ -261,10 +168,6 @@ constructor(private entriesService:EntriesService,
     });
   }
 
-  calculateWithoutVAT(priceAfterTax: number, vatRate:number): number{
-    return priceAfterTax / (1 + (vatRate / 100));
-  }
-
   calculateVatPrice(priceBeforeTax: number, vatRate: number): number {
     return (priceBeforeTax * (1 + (vatRate / 100)))
   }
@@ -283,59 +186,24 @@ getEntries(): void{
 this.entries= entry);
 }
 
-onPriceBeforeTaxChange(entry: Entry): void {
- 
-  if(entry.priceBeforeTax && entry.priceBeforeTax != null){
-    let stringPriceBefore = entry.priceBeforeTax.toString();
-
-    if(stringPriceBefore.includes(',')){
-      stringPriceBefore = stringPriceBefore.replace(',','.');
-    }
-      entry.priceBeforeTax = parseFloat(stringPriceBefore);
-    }
-    entry.priceAfterTax = this.calculateVatPrice(entry.priceBeforeTax,this.vatRate);
-
-}
-
-onPriceAfterTaxChange(entry: Entry): void {
-  if (entry.priceAfterTax != null && entry.priceAfterTax) {
-    let stringPriceAfter = entry.priceAfterTax.toString();
-    if(stringPriceAfter.includes(',')){
-      stringPriceAfter = stringPriceAfter.replace(',', '.');
-    }
-    entry.priceAfterTax = parseFloat(stringPriceAfter);
-  }
-    entry.priceBeforeTax = this.calculateWithoutVAT(entry.priceAfterTax, this.vatRate);
-  }
- 
-
 
 saveEntry(entry: Entry): void{
   
-    
     entry.priceAfterTax= this.calculateVatPrice(entry.priceBeforeTax, this.vatRate);
-    entry.priceBeforeTax= this.calculateWithoutVAT(entry.priceAfterTax,this.vatRate);
-   
-    const artNumExists = this.entries.some(ent => ent.articleNum === entry.articleNum && ent.id !== entry.id);
     
-    if(artNumExists){
-      this.snackbar.open('Article number already exists!', 'Close', { duration: 5000, panelClass: 'error-snackbar' });
-    return;
-    }
-    
-        this.entriesService.updateEntry(entry).pipe(
-          tap((res) =>{
-  
-              this.snackbar.open('Entry updated successfully', 'Close', {duration: 5000});
-              this.editMode[entry.id] = false;
-              this.getEntries();
-            }),
-        
-            catchError((error) => {
-              this.snackbar.open('Error updating entry!', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
-              return of(null);
-            })
-          ).subscribe();
+this.entriesService.updateEntry(entry).pipe(
+  tap((res) =>
+    {
+      this.snackbar.open('Entry updated successfully', 'Close', {duration: 5000});
+      this.editMode[entry.id] = false;
+      this.getEntries();
+    }),
+
+    catchError((error) => {
+      this.snackbar.open('Error updating an entry', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
+      return of(null);
+    })
+  ).subscribe();
 }
 
 deleteEntry(id:number): void{
@@ -343,9 +211,6 @@ deleteEntry(id:number): void{
 
   dialogRef.afterClosed().subscribe(res => {
     if(res){
-      this.slideStates[id] = 'out';
-
-      setTimeout(() =>{
       this.entriesService.deleteEntry(id).pipe(
         tap((res) =>{
           this.snackbar.open('Entry deleted successfully', 'Close', {duration: 5000});
@@ -357,7 +222,6 @@ deleteEntry(id:number): void{
           return of(null);
         })
       ).subscribe();
-    },300);
     }
   });
 }

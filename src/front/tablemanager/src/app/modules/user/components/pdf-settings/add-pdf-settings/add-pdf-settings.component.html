@@ -26,8 +26,8 @@
       </mat-form-field>
   
       <mat-form-field appearance="fill">
-        <mat-label>Tax duty number</mat-label>
-        <input matInput formControlName="companyCityCountry" placeholder="Enter a reg. number or tax Duty code(KMKR)" />
+        <mat-label>City, Country</mat-label>
+        <input matInput formControlName="companyCityCountry" placeholder="Enter city and country" />
         <mat-error *ngIf="addPdfForm.get('companyCityCountry')?.hasError('required')">
         </mat-error>
       </mat-form-field>

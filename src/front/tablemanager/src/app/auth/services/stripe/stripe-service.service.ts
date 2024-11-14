@@ -26,17 +26,6 @@ export class StripeServiceService {
     );
   }
 
-  getUserStatus(): Observable<any>{
-    return this.http.get(BASIC_URL +"/api/stripe/userStatus",{
-      headers:this.authHeader()
-    }).pipe(
-      catchError((error) =>{
-      console.error(error)
-      throw error;
-    })
-  );
-  }
-
   private authHeader() {
     return new HttpHeaders().set('Authorization', 'Bearer ' + StorageService.getToken());
   }

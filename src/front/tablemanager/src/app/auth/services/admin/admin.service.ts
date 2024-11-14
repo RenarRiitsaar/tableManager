@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { catchError, Observable, tap } from 'rxjs';
+import { MatSnackBar, matSnackBarAnimations } from '@angular/material/snack-bar';
 import { environment } from '../../../../environments/environment';
 
 
@@ -19,16 +20,6 @@ users: User[] = [];
 
   constructor(private http: HttpClient) { }
 
-  getUserByToken(token: string){
-    return this.http.get(BASIC_URL + "api/email/resetPassword" + {token}, 
-      {headers: this.authHeader()}
-     ).pipe(
-      catchError((error) =>{
-        console.error(error);
-        throw error;
-      })
-     );
-  }
 
   updateUser(userId: number, value: any): Observable<any> {
     return this.http.put(BASIC_URL + "/api/admin/users/" + userId, value,

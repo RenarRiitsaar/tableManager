@@ -6,6 +6,4 @@ export interface User{
     firstName: String;
     lastName: String;
     enabled : boolean;
-    password: String;
-    hasTrial: boolean;
 }

@@ -1,106 +1,77 @@
-/* General Styles for Body */
+/* Global Styles */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  text-align: center;
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  padding-bottom: 60px; /* To prevent content from being hidden behind a fixed footer */
-
-}
-
-/* Navbar Styles */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  box-shadow: 0 4px 8px rgba(85, 11, 11, 0.1);
-  flex-wrap: wrap; /* Allow items to wrap within the toolbar */
-  width: 100%; /* Ensure navbar takes full width */
-}
-
-.navbar-brand {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #ffffff;
-}
-
-.spacer {
-  flex: 1;
-}
-
-mat-toolbar {
-  background-color: #194072 !important;
-  display: flex;
-  flex-wrap: wrap; /* Ensure the toolbar can wrap its content */
-  align-items: center;
-  justify-content: space-between; /* Adjust alignment */
-  width: 100%; /* Ensure toolbar takes full width */
-}
-
-button.mat-button {
-  color: #ffffff !important;
-  font-weight: 500;
-  margin-right: 10px;
-}
-
-button.mat-button-menu {
-  color: #5957d4!important;
-  font-weight: 500;
-  margin-right: 10px;
-}
-
-button.mat-button.active {
-  background-color: #64639c;
-}
-
-button.mat-button-menu.active {
-  background-color: #ffffff;
-}
-.mat-menu-item {
-  padding: 8px 16px; 
-  display: block; 
-}
-
-.mat-menu-button {
-  display: block; 
-  padding: 8px 16px;
-  text-align: left; 
-  box-sizing: border-box;
-}
-
-.mat-menu-panel {
-  top: 100% !important; 
-  left: 0 !important;
-  position: absolute;
-  z-index: 1000; 
-  overflow-x: hidden; 
-
-}
-
-mat-menu {
-  background-color: #ffffff;
-  margin-top: 0;
-}
-
-mat-menu button.mat-button {
-  color: #80a1d1 !important;
-  top: 100% !important;
-}
-
-button.mat-button:hover {
-  background-color: rgba(255, 198, 198, 0.1) !important;
-}
-
-button.mat-button:active {
-  background-color: rgba(240, 174, 174, 0.2) !important;
-}
-
-button.mat-button.router-link-active {
-  background-color: #bfc8ff;
-  font-weight: bold;
-}
-
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 4px 8px rgba(85, 11, 11, 0.1);
+  }
+  
+  .navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  
+  mat-toolbar {
+    background-color: #194072 !important;
+  }
+  
+  button.mat-button {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+  
+  button.mat-button.active {
+    background-color: #64639c;
+  }
+  
+  mat-menu {
+    background-color: #ffffff;
+  }
+  
+  mat-menu button.mat-button {
+    color: #80a1d1 !important;
+  }
+  
+  button.mat-button:hover {
+    background-color: rgba(255, 198, 198, 0.1) !important;
+  }
+  
+  button.mat-button:active {
+    background-color: rgba(240, 174, 174, 0.2) !important;
+  }
+  
+  /* Specific Styles for Router Links */
+  button.mat-button.router-link-active {
+    background-color: #bfc8ff;
+    font-weight: bold;
+  }
+  
+  /* Media Queries for Responsive Design */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .spacer {
+      display: none;
+    }
+  
+    button.mat-button {
+      margin-bottom: 10px;
+    }
+  }

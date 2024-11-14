@@ -1,15 +1,14 @@
+import { EntriesService } from './../../../../../auth/services/entries/entries.service';
 import { PdfGeneratorService } from './pdf-generator.service';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { catchError, of, tap } from 'rxjs';
+import { Entry } from '../../../../../model/Entry';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PdfSettings } from '../../../../../model/PdfSettings';
 import { PdfsettingsService } from '../../../../../auth/services/pdfsettings/pdfsettings.service';
 import { Base64Service } from '../../../../../auth/services/pdfsettings/base64.service';
-import { SalesService } from '../../../../../auth/services/sales/sales.service';
-import { Sales } from '../../../../../model/Sales';
-
 
 
 @Component({
@@ -20,7 +19,9 @@ import { Sales } from '../../../../../model/Sales';
 
 export class PdfGeneratorComponent {
   form: FormGroup;
-  entryList: any[] = [];
+  entryList: any[] = [
+    ['Article Num', 'Article Name', 'Amount', 'Price', 'Price VAT', 'Total']
+  ];
   pdfSettings!: PdfSettings | null;
   base64Image: string = '';
 
@@ -29,29 +30,24 @@ export class PdfGeneratorComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private pdfGeneratorService : PdfGeneratorService,
     private fb:FormBuilder,
+    private entriesService: EntriesService,
     private snackbar:MatSnackBar,
     private pdfService: PdfsettingsService,
-    private base64Service: Base64Service,
-    private salesService:SalesService){
+    private base64Service: Base64Service){
    
-      this.entryList = this.data.entryList;
       this.form = this.fb.group({
-        pdfLanguage:[false],
-        invoiceType:['',[Validators.required]],
-        paymentDate:['',[Validators.required]],
-        invoiceNr: ['', [Validators.required]],
-        firstName: [''],
-        lastName: [''],
-        address: [''],
-        regNr: [''],
-        email: ['']
+        amount: [''],
+        firstName: ['', [Validators.required, Validators.min(1)]],
+        lastName: ['', [Validators.required, Validators.min(1)]],
+        address: ['', [Validators.required, Validators.min(1)]],
+        email: ['', [Validators.required, Validators.min(1)]]
         
         
   });
   this.getPdfSettings();
   this.getBase64();
   this.loadEntries();
-  }
+}
 
 
 calculateTotalWithVAT():number{
@@ -60,29 +56,18 @@ calculateTotalWithVAT():number{
   for(let i =1; i< this.entryList.length; i++){
     const entry =this.entryList[i];
     
-    const totalPrice = parseFloat(entry[6]);
+    const totalPrice = parseFloat(entry[5]);
     total += totalPrice;
   }
   return total;
 }
 
 calculateTotalWithoutVAT():number{
-  
   let total = 0;
-  
-  let discount; 
-  
+
   for(let i =1; i< this.entryList.length; i++){
-  
     const entry =this.entryList[i];
-    
-    let priceWithoutVAT = parseFloat(entry[3]);
-
-    if(parseFloat(entry[5]) > 0){
-      discount =  parseFloat(entry[3]) / 100 * parseFloat(entry[5]);
-       priceWithoutVAT -= discount ;
-    }
-
+    const priceWithoutVAT = parseFloat(entry[3]);
     const amount = parseFloat(entry[2]);
 
     total+=priceWithoutVAT * amount;
@@ -91,7 +76,45 @@ calculateTotalWithoutVAT():number{
   return total
 }
 
+addProduct(entry:Entry){
+  const amount = this.form.get('amount')?.value;
 
+  this.entryList.push([
+    this.data.articleNum, 
+    this.data.articleName, 
+    amount,
+    this.data.price ,
+    this.data.priceVAT,
+   (this.data.priceVAT * amount).toFixed(2) 
+  ]);
+  
+  
+  const updateAmount = this.data.inventoryAmount - amount;
+  const updateEntry: Entry = {
+    ...this.data,                      
+    inventoryAmount: updateAmount,
+    priceBeforeTax: this.data.price,
+    priceAfterTax: this.data.priceVAT
+  };
+
+  this.entriesService.updateEntry(updateEntry).pipe(
+    tap((res) =>
+      {
+        this.snackbar.open('Entry added to invoice and updated database!', 'Close', {duration: 5000})
+      }),
+  
+      catchError((error) => {
+        this.snackbar.open('Error adding entry to invoice', 'Close', {duration : 5000, panelClass: 'error-snackbar'});
+        return of(null);
+      })
+    ).subscribe();
+
+  this.saveEntries();
+}
+
+saveEntries() {
+  sessionStorage.setItem('entryList', JSON.stringify(this.entryList));
+}
 
 loadEntries() {
   const storedEntries = sessionStorage.getItem('entryList');
@@ -120,92 +143,22 @@ getBase64(){
   });
 }
 
-formatDate(date: Date): string {
-  return `${('0' + date.getDate()).slice(-2)}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`;
-}
-
-addDaysToCurrentDate(paymentDate: number): string{
-  
-  const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + paymentDate);
-  return this.formatDate(currentDate);
-
-}
-
-saveSale(sale:Sales){
-  this.salesService.saveSale(sale).pipe(
-    catchError((error) =>{
-      console.error(error);
-      throw error;
-    })
-  ).subscribe();
-}
-
    generatePDF() {
-
   if (this.form.invalid) {
     return;
   }
   const pdfSettings = this.pdfSettings;
- 
-  const invoiceType = this.form.get('invoiceType')?.value;
-  const invoiceNr = this.form.get('invoiceNr')?.value;
+  const amount = this.form.get('amount')?.value;
   const firstName = this.form.get('firstName')?.value;
   const lastName = this.form.get('lastName')?.value;
   const address = this.form.get('address')?.value;
-  const regNr = this.form.get('regNr')?.value;
   const email = this.form.get('email')?.value;
-  const paymentDate = this.form.get('paymentDate')?.value;
 
+  const randomNum = Math.floor(Math.random() * 10000000);
   const date = new Date();
-  const formattedCurrentDate = this.formatDate(date);
-  const formattedPaymentDate = this.addDaysToCurrentDate(paymentDate);
-
-  const sale ={
-   
-    invoiceNumber : invoiceNr,
-    clientName : firstName + " " + lastName,
-    totalPrice : Number(this.calculateTotalWithoutVAT().toFixed(2)),
-    customerAddress : address,
-    customerEmail: email,
-    regNr: regNr,
-    saleDate:new Date(),
-    invoiceType: invoiceType
+  const formattedDate = `${('0' + date.getDate()).slice(-2)}-${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getFullYear()}`;
 
 
-  }
-
-  let billedTo = "Billed to:";
-  let customer = "Customer: ";
-  let varAddress = "Address: ";
-  let varDate = "Date: ";
-  let varPaymentDate = "Payment date: ";
-  let artNr = "Article Nr";
-  let artName = "Article name";
-  let varAmount = "Amount";
-  let varPrice  = "Price";
-  let varPriceVat = "Price VAT";
-  let varDiscount = "Discount %";
-  let varTotal = "Total";
-  let varBankDetails = "Bank details: "
-  let varVAT = "VAT";
-
-  if(this.form.get('pdfLanguage')?.value){
-    billedTo = "Kliendi info:"
-    customer = "Kliendi nimi: ";
-    varAddress= "Aadress: ";
-    varDate = "Kuupäev: ";
-    varPaymentDate = "Makse tähtaeg: ";
-    artNr = "Artikli nr.";
-    artName = "Artikli nimi";
-    varAmount = "Kogus";
-    varPrice = "Hind";
-    varPriceVat = "Hind + km";
-    varDiscount = "Allahindlus %";
-    varTotal = "Kokku" ;
-    varBankDetails = "Panga andmed: ";
-    varVAT = "km";
-  }
   
   
   
@@ -225,45 +178,35 @@ saveSale(sale:Sales){
             width: '50%',
             alignment: 'left',
             text: [
-              { text: `${billedTo}\n`, style: 'header' },
-              firstName ? `${customer} ${firstName} ${lastName}\n` : '',
-              email ? `Email: ${email}\n` : '',
-              address ? `${varAddress} ${address}\n` : '',
-               regNr ? `Reg nr: ${regNr}\n` : ''
+              { text: `Billed to:\n`, style: 'header' },
+              `Customer: ${firstName} ${lastName}\n`,
+              `Email: ${email}\n`,
+              `Address: ${address}\n`
             ]
           },
           {
             width: '50%',
             alignment: 'right',
             text: [
-              { text: `${invoiceType} #${invoiceNr}\n`, style: 'header' },
-              `${varDate} ${formattedCurrentDate}\n`,
-              `${varPaymentDate} ${formattedPaymentDate}`
+              { text: `Invoice #${randomNum}\n`, style: 'header' },
+              `Date: ${formattedDate}\n`
             ]
           }
         ],
         margin: [0, 40, 0, 40]
       },
       {
-        text: `${invoiceType} #${invoiceNr}`,
+        text: `Invoice #${randomNum}`,
         style: 'subheader',
         margin: [0, 0, 0, 20]
       },
       {
         table: {
-          widths: ['auto', '30%', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['*', '*', '*', '*', '*', '*'],
           body: [
-            [artNr, artName, varAmount, varPrice, varPriceVat, varDiscount, varTotal],
-            ...this.entryList.slice(1).map(entry => [
-              { text: entry[0], alignment: 'center' },
-              { text: entry[1], alignment: 'left', noWrap: false},
-              { text: entry[2], alignment: 'center' },
-              { text: entry[3].toFixed(2), alignment: 'center' },
-              { text: entry[4].toFixed(2), alignment: 'center' },
-              { text: entry[5], alignment: 'center' },
-              { text: entry[6], alignment: 'center' }
-          ])
-        ]
+            ['Article Num', 'Article Name', 'Amount', 'Price', 'Price VAT', 'Total'],
+            ...this.entryList.slice(1)
+          ]
         },
         layout: 'lightHorizontalLines',
         margin: [0, 20, 0, 40]
@@ -279,9 +222,9 @@ saveSale(sale:Sales){
             table: {
               widths: ['*'],
               body: [
-                [`${varPrice} ${this.calculateTotalWithoutVAT().toFixed(2)} EUR`],
-                [`${varVAT}: ${((this.calculateTotalWithVAT() - this.calculateTotalWithoutVAT())).toFixed(2)} EUR`],
-                [`${varTotal} ${this.calculateTotalWithVAT().toFixed(2)} EUR`]
+                [`Price: ${this.calculateTotalWithoutVAT().toFixed(2)} EUR`],
+                [`VAT(%): ${((this.calculateTotalWithVAT() - this.calculateTotalWithoutVAT())).toFixed(2)} EUR`],
+                [`Total price: ${this.calculateTotalWithVAT().toFixed(2)} EUR`]
               ]
             },
             width: '30%',
@@ -329,7 +272,7 @@ saveSale(sale:Sales){
               {
                 width: '50%',
                 text: [
-                  { text: `${varBankDetails}\n`},
+                  { text: 'Bank Details:\n'},
                   pdfSettings?.bankDetails
                 ],
                 alignment: 'right'
@@ -344,9 +287,8 @@ saveSale(sale:Sales){
     }
   };
 
-  this.pdfGeneratorService.generatePDF(doc, `${invoiceNr}`);
+  this.pdfGeneratorService.generatePDF(doc, `Invoice Nr: ${randomNum}`);
   this.entryList = [];
-  this.saveSale(sale);
   this.onClose();
 }
 

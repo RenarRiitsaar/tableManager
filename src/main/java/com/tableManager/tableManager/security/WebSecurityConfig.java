@@ -41,8 +41,8 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "PUT", "POST", "DELETE", "PATCH"));
-        configuration.setAllowedHeaders(List.of("accept", "Authorization", "Content-Type", "Access-Control-Allow-Origin", "*"));
-        configuration.setAllowedOrigins(List.of("https://tablemanager.ee" ));
+        configuration.setAllowedHeaders(List.of("accept", "Authorization", "Content-Type"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4300"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -81,14 +81,12 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
 
-                .requestMatchers("/api/auth/**", "api/email/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .requestMatchers(HttpMethod.POST).permitAll()
                 .requestMatchers(HttpMethod.PUT).permitAll()
                 .requestMatchers(HttpMethod.DELETE).permitAll()
-                .requestMatchers("/api/tickets/{userId}/newTicket",
-                        "/api/entry/**",
-                        "/api/pdf/**").hasAnyAuthority(USER, ADMIN)
+                .requestMatchers("/api/tickets/{userId}/newTicket", "/api/entry/updateEntry/**", "api/pdf/**").hasAnyAuthority(USER, ADMIN)
 
                 .requestMatchers("/**").hasAuthority(ADMIN)
                 .anyRequest().authenticated());

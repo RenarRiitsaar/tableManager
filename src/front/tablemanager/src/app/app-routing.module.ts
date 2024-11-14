@@ -11,32 +11,9 @@ import { EntriesComponent } from './modules/user/components/entries/entries.comp
 import { CheckoutComponent } from './stripe/checkout/checkout.component';
 import { SuccessComponent } from './stripe/success/success.component';
 import { CancelComponent } from './stripe/cancel/cancel.component';
-import { HomeComponent } from './public-components/home/home.component';
-import { QuickstartComponent } from './public-components/quickstart/quickstart.component';
-import { ContactUsComponent } from './public-components/contact-us/contact-us.component';
-import { ForgotPasswordComponent } from './public-components/reset-password/forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './public-components/reset-password/reset-password/reset-password.component';
-import { SendMailComponent } from './modules/user/components/send-mail/send-mail.component';
-import { SalesComponent } from './modules/user/components/sales/sales/sales.component';
-import { TableComponent } from './modules/user/components/table/table.component';
-import { VacationListComponent } from './modules/user/components/vacation-list/vacation-list.component';
-import { EmployeesComponent } from './modules/user/components/employees/employees.component';
-import { ScheduleCalendarComponent } from './modules/user/components/employees/schedule-calendar/schedule-calendar.component';
-import { WorkSummaryComponent } from './modules/user/components/employees/work-summary/work-summary.component';
 const routes: Routes = [
 
-  {path:"scheduleCalendar", component:ScheduleCalendarComponent},
-  {path:"workSummary", component: WorkSummaryComponent},
-  {path: "employees", component : EmployeesComponent},
-  {path: "vacation", component : VacationListComponent},
-  {path: "table", component : TableComponent},
-  {path: "sales", component : SalesComponent},
-  {path: "sendMail", component : SendMailComponent},
-  {path: "resetPassword", component : ResetPasswordComponent},
-  {path: "forgotPassword", component : ForgotPasswordComponent},
-  {path: "contact-us", component : ContactUsComponent},
-  {path: "quickstart", component : QuickstartComponent},
-  {path: "", component : HomeComponent},
+  
   {path: "checkout", component : CheckoutComponent},
   {path: "success", component : SuccessComponent},
   {path: "cancel", component : CancelComponent},

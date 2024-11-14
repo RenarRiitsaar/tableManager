@@ -1,7 +1,7 @@
 export interface Entry{
 
     id:number;
-    articleNum: string;
+    articleNum: number;
     articleName: string;
     priceBeforeTax: number;
     priceAfterTax: number;

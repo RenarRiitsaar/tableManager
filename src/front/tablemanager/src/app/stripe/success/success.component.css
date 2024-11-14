@@ -3,11 +3,9 @@ body {
     background-color: #f4f4f9;
     color: #333;
     text-align: center;
-    padding:0;
+    padding: 50px;
     margin: 0;
-    height: 100%;
 }
-
 
 .container {
     max-width: 600px;

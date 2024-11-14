@@ -18,5 +18,4 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     void deleteUserRolesByUserId(@Param("userId") Long userId);
 
     Role findByName(String roleName);
-
 }

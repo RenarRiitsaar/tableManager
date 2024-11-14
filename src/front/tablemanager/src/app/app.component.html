@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style rel="stylesheet" href="tablemanager\src\styles.css"></style>
   </head>
+
   <body>
-    
 <div *ngIf="!isAdminLoggedIn && !isUserLoggedIn">
   <mat-toolbar color = "primary" class = "navbar">
-    <a class="navbar-brand" routerLink="">Table manager</a>
+    <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
-    <button    mat-button  routerLink="/quickstart" routerLinkActive="active" class="mat-button">Quickstart</button>
     <button mat-button routerLink="/signup" routerLinkActive="active"  class="mat-button">Register</button>
     <button mat-button routerLink="/login" routerLinkActive="active"  class="mat-button">Login</button>
   </mat-toolbar>
@@ -19,59 +19,29 @@
   <mat-toolbar color = "primary" class = "navbar">
     <span class="navbar-brand">Table manager</span>
     <span class="spacer"></span>
-    
-    <button    mat-button  routerLink="/quickstart" routerLinkActive="active" class="mat-button">Quickstart</button>
-    <button mat-button [matMenuTriggerFor]="inventory" appHoverMenu class="mat-button">Inventory</button>
-    <mat-menu #inventory="matMenu">
-    <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/checkout" routerLinkActive="active" >Entries</button>
-    <button  *ngIf="isEnabled"  mat-button class="mat-menu-button"  routerLink="/user/entry" routerLinkActive="active" >Entries</button>
-    <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/checkout" routerLinkActive="active" >Sales</button>
-    <button  *ngIf="isEnabled"  mat-button  class="mat-menu-button" routerLink="/sales" routerLinkActive="active" >Sales</button>
-    </mat-menu>
-
-    <button mat-button [matMenuTriggerFor]="employee" appHoverMenu class="mat-button">Workforce</button>
-    <mat-menu #employee="matMenu">
-      <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/checkout" routerLinkActive="active" >Employees</button>
-      <button  *ngIf="isEnabled"  mat-button class="mat-menu-button"  routerLink="/employees" routerLinkActive="active" >Employees</button>
-
-      <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/checkout" routerLinkActive="active" >Schedule</button>
-      <button  *ngIf="isEnabled"  mat-button class="mat-menu-button"  routerLink="/scheduleCalendar" routerLinkActive="active" >Schedule</button>
-
-      <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/workSummary" routerLinkActive="active" >Work summary</button>
-      <button  *ngIf="isEnabled"  mat-button class="mat-menu-button"  routerLink="/workSummary" routerLinkActive="active" >Work summary</button>
-
-      <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/checkout" routerLinkActive="active" >Vacations</button>
-      <button  *ngIf="isEnabled"  mat-button class="mat-menu-button"  routerLink="/vacation" routerLinkActive="active" >Vacations</button>
-
-    </mat-menu>
-
-    <button mat-button [matMenuTriggerFor]="tools" appHoverMenu class="mat-button">Tools</button>
-    <mat-menu #tools="matMenu">
-      <button   *ngIf="!isEnabled" mat-button class="mat-menu-button"  routerLink="/checkout" routerLinkActive="active" >Webxel</button>
-      <button  *ngIf="isEnabled"  mat-button  class="mat-menu-button" routerLink="/table" routerLinkActive="active" >Webxel</button>
-    </mat-menu>
+    <button   *ngIf="!isEnabled" mat-button  routerLink="/checkout" routerLinkActive="active" class="mat-button">Entries</button>
+    <button  *ngIf="isEnabled"  mat-button  routerLink="/user/entry" routerLinkActive="active" class="mat-button">Entries</button>
   
-    <button mat-button [matMenuTriggerFor]="userProfile" appHoverMenu class="mat-button">Profile</button>
-    <mat-menu #userProfile="matMenu">
-     
-      <button  *ngIf="!isEnabled" mat-button  class="mat-menu-button" [routerLink]="['/checkout']" routerLinkActive="active">Tickets</button>
-      <button *ngIf="isEnabled" mat-button  class="mat-menu-button" [routerLink]="['/user/tickets']" routerLinkActive="active">Tickets</button>
+    <button mat-button [matMenuTriggerFor]="pdfMenu" class="mat-button">PDF Menu</button>
+    <mat-menu #pdfMenu="matMenu">
 
-      <button *ngIf="!isEnabled" mat-button class="mat-menu-button" routerLink="/checkout" routerLinkActive="active">Create PDF</button>
-      <button *ngIf="isEnabled && !hasPdf" mat-button (click)="createPDF()">Create PDF</button>
-  
-      <button *ngIf="!isEnabled" mat-button class="mat-menu-button" routerLink="/checkout" routerLinkActive="active">Edit PDF</button>
-      <button *ngIf="isEnabled && hasPdf" mat-button class="mat-menu-button" (click)="editPDF()">Edit PDF</button>
+    <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">Create PDF</button>
+    <button *ngIf="isEnabled && !hasPdf" mat-button (click)="createPDF()">Create PDF</button>
 
-      <button *ngIf="!isEnabled" mat-button class="mat-menu-button" routerLink="/checkout" routerLinkActive="active">Delete PDF</button>
-      <button *ngIf="isEnabled && hasPdf" mat-button class="mat-menu-button" (click)="deletePDF()">Delete PDF</button>
-  
-    <button  mat-button class="mat-menu-button" (click)="editUser()">Change password</button>
-    <button  mat-button class="mat-menu-button" (click)="deleteUser()">Delete Account</button>
+    <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">Edit PDF</button>
+    <button *ngIf="isEnabled && hasPdf" mat-button (click)="editPDF()">Edit PDF</button>
+
+    <button *ngIf="!isEnabled" mat-button routerLink="/checkout" routerLinkActive="active">Delete PDF</button>
+    <button *ngIf="isEnabled && hasPdf" mat-button (click)="deletePDF()">Delete PDF</button>
   </mat-menu>
-  <button mat-button (click) = "logout()" routerLinkActive="active" class="mat-button">Logout</button>
+
+  
+    <button  *ngIf="!isEnabled" mat-button [routerLink]="['/checkout']" routerLinkActive="active" class="mat-button">Tickets</button>
+  <button *ngIf="isEnabled" mat-button [routerLink]="['/user/tickets']" routerLinkActive="active" class="mat-button">Tickets</button>
+    <button mat-button (click) = "logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>
 </div>
+
 
 
 <div *ngIf="isAdminLoggedIn && !isUserLoggedIn">
@@ -86,8 +56,8 @@
   </mat-menu>
     <button mat-button (click)="logout()" routerLinkActive="active" class="mat-button">Logout</button>
   </mat-toolbar>
+
 </div>
 <router-outlet></router-outlet>
 </body>
-<app-footer></app-footer>
 </html>

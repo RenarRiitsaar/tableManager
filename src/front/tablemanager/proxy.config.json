@@ -1,6 +1,6 @@
 {
     "/api/stripe": {
-      "target": "https://217.146.69.7:80",
-      "secure": true
+      "target": "http://localhost:8080",
+      "secure": false
     }
   }

@@ -11,11 +11,29 @@ import { User } from '../../model/User';
   styleUrl: './success.component.css'
 })
 export class SuccessComponent implements OnInit {
+  user!: User;
+  
+  constructor(private stripeService:StripeServiceService,
+              private snackbar:MatSnackBar){}
 
-  constructor(){}
   ngOnInit(): void {
-   StorageService.logout();
+    this.setUserEnabled();
+    StorageService.logout();
+       
   }
 
+  setUserEnabled(){
+    const userId = StorageService.getUserId();
+    this.stripeService.toggleUserActive(userId).pipe(
+      tap(() =>{
+        
+        this.snackbar.open("Payment successful!", 'Close', {duration:5000});
+      }),
+      catchError((error) =>{
+        console.error(error);
+        return of(null);
+      })
+    ).subscribe();
+  }
 
 }

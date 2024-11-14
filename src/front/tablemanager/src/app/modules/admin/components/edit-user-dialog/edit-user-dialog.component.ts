@@ -54,7 +54,7 @@ export class EditUserDialogComponent implements OnInit{
     if(this.editUserForm.valid){
       this.adminService.updateUser(this.userId, this.editUserForm.value).pipe(
         tap((res) => {
-         
+          console.log('user updated');
           this.snackbar.open("User updated successfully", 'Close', {duration:5000});
           this.dialogRef.close(true);
         }),
